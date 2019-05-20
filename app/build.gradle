@@ -1,0 +1,72 @@
+apply plugin: 'com.android.application'
+apply plugin: "androidx.navigation.safeargs"
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+
+    defaultConfig {
+        applicationId "com.miedo.dtodoaqui"
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    compileOptions {
+        targetCompatibility = "8"
+        sourceCompatibility = "8"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    def nav_version = "2.1.0-alpha04"
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.vectordrawable:vectordrawable:1.0.1'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+
+    // ButterKnife 10.1.0
+    implementation 'com.jakewharton:butterknife:10.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+
+    // Temas y estilos de material design
+    implementation 'com.google.android.material:material:1.1.0-alpha06'
+
+    // NavigationComponent : Android Jetpack
+    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    implementation "androidx.navigation:navigation-ui:$nav_version"
+
+    // Picasso : Carga de imagenes
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    // Layout para simular un FlowLayout
+    implementation 'com.google.android:flexbox:1.1.0'
+
+    // Google Play API Places
+    implementation 'com.google.android.libraries.places:places:1.1.0'
+
+    // Retrofit 2 : Networking y Conversor a Scalars
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.14.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.1'
+
+    // Constraint Layout con android x
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+
+}
