@@ -28,9 +28,11 @@ public class BaseActivity extends AppCompatActivity {
             toast.show();
         }
 
+
     }
 
     public void showMessageError(String message) {
+        // aun por definir el color del snackbar para el error
         showSnackMessage(message, R.color.colorPrimaryDark);
     }
 

@@ -3,22 +3,27 @@ package com.miedo.dtodoaqui.core;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.miedo.dtodoaqui.R;
+import com.miedo.dtodoaqui.utils.StateView;
 
 public class BaseFragment extends Fragment {
 
-    private boolean loading = false;
-
-    public boolean isLoading() {
-        return loading;
-    }
-
-    public void setLoading(boolean loading) {
-        this.loading = loading;
-    }
+    private View content;
+    private StateView stateView;
 
     /**
      * Lanza un intent solicitando abir una url.
@@ -31,6 +36,7 @@ public class BaseFragment extends Fragment {
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivity(intent);
         }
+
     }
 
     /**
@@ -70,5 +76,41 @@ public class BaseFragment extends Fragment {
 
     }
 
+
+    public void showSnackMessage(String message, int colorResource) {
+        View container = getView().findViewById(R.id.container);
+        if (container != null) {
+            Snackbar snackbar = Snackbar.make(container, message, Snackbar.LENGTH_LONG);
+            /*snackbar.setActionTextColor(Color.WHITE);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(this, colorResource));
+            TextView textView = (TextView) sbView.findViewById(com.google.android.material.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);*/
+            snackbar.show();
+        } else {
+            Toast toast =
+                    Toast.makeText(getContext(),
+                            message, Toast.LENGTH_LONG);
+            toast.show();
+        }
+
+    }
+
+    public void showMessageError(String message) {
+        // aun por definir el color del snackbar para el error
+        showSnackMessage(message, R.color.colorPrimaryDark);
+    }
+
+    public void showMessage(String message) {
+        showSnackMessage(message, com.google.android.material.R.color.error_color_material_light);
+    }
+
+    public void setUpStateView(View parent, View anotherView) {
+        stateView = new StateView(parent,anotherView);
+    }
+
+    public StateView getStateView() {
+        return stateView;
+    }
 }
 

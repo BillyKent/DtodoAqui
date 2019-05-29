@@ -1,4 +1,4 @@
-package com.miedo.dtodoaqui;
+package com.miedo.dtodoaqui.presentation.searchscreen;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miedo.dtodoaqui.R;
 
 
 public class SearchFragment extends Fragment {

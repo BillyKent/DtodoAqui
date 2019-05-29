@@ -3,4 +3,17 @@
     <string name="title_profile">Perfil</string>
     <string name="title_search">Buscar</string>
     <string name="title_activity">Actividad</string>
+
+
+    <!-- String resources for predefined states -->
+    <string name="sin_internet_title">Se perdió la conexión</string>
+    <string name="sin_internet_descrip">No se puede conectar a internet, actualiza si crees que es un error.</string>
+
+    <string name="sin_resultados_busqueda_title">No se encontraron resultados.</string>
+    <string name="sin_resultados_busqueda_descrip">Parece que no hay establecimientos que concuerden con el filtro actual.</string>
+
+    <string name="sin_resultados_establecimientos_title">No hay establecimientos.</string>
+    <string name="sin_resultados_establecimientos_descrip">No se encontraron establecimientos en tu cuenta, crea uno ahora mismo es fácil y rápido.</string>
+
+
 </resources>

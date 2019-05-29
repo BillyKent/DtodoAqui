@@ -3,13 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivityFragment">
+    tools:context=".presentation.activityscreen.ActivityFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+
+    <include
+        layout="@layout/state_layout"
+        android:visibility="gone" />
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Activity Fragment" />
+        android:id="@+id/container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="GAAAAAAAAA" />
+
 
 </FrameLayout>

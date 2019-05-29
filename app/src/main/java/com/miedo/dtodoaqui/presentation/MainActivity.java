@@ -1,4 +1,4 @@
-package com.miedo.dtodoaqui;
+package com.miedo.dtodoaqui.presentation;
 
 import android.os.Bundle;
 
@@ -7,6 +7,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.core.BaseActivity;
 
 

@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/search_dest"
-        android:name="com.miedo.dtodoaqui.SearchFragment"
+        android:name="com.miedo.dtodoaqui.presentation.searchscreen.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/activity_dest"
-        android:name="com.miedo.dtodoaqui.ActivityFragment"
+        android:name="com.miedo.dtodoaqui.presentation.activityscreen.ActivityFragment"
         android:label="fragment_activity"
         tools:layout="@layout/fragment_activity" />
     <fragment
         android:id="@+id/profile_dest"
-        android:name="com.miedo.dtodoaqui.ProfileFragment"
+        android:name="com.miedo.dtodoaqui.presentation.profilescreen.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>
