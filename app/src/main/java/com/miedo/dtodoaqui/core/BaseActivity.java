@@ -1,6 +1,8 @@
 package com.miedo.dtodoaqui.core;
 
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Toast;
 
@@ -8,8 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.miedo.dtodoaqui.R;
+import com.miedo.dtodoaqui.utils.StateView;
 
 public class BaseActivity extends AppCompatActivity {
+
+
+    private StateView stateView;
 
     public void showSnackMessage(String message, int colorResource) {
         View container = findViewById(R.id.container);
@@ -38,5 +44,27 @@ public class BaseActivity extends AppCompatActivity {
 
     public void showMessage(String message) {
         showSnackMessage(message, com.google.android.material.R.color.error_color_material_light);
+    }
+
+    public void showToastMessage(String message) {
+        new Handler(Looper.getMainLooper())
+                .post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+    }
+
+
+    public void setUpStateView(View parent, View anotherView) {
+        stateView = new StateView(parent, anotherView);
+    }
+
+    public StateView getStateView() {
+        return stateView;
     }
 }

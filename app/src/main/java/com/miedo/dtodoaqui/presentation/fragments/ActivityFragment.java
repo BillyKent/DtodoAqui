@@ -1,4 +1,4 @@
-package com.miedo.dtodoaqui.presentation.activityscreen;
+package com.miedo.dtodoaqui.presentation.fragments;
 
 import android.os.Bundle;
 
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.core.BaseFragment;
+import com.miedo.dtodoaqui.utils.StateView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +46,7 @@ public class ActivityFragment extends BaseFragment {
                     e.printStackTrace();
                 }
 
-                getStateView().finishLoading();
+                getStateView().showCustomState(StateView.SIN_RESULTADOS_ESTABLECIMIENTOS_STATE);
 
             }
         }.start();

@@ -1,4 +1,4 @@
-package com.miedo.dtodoaqui.presentation.searchscreen;
+package com.miedo.dtodoaqui.presentation.fragments;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -21,9 +21,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.miedo.dtodoaqui.R;
+import com.miedo.dtodoaqui.adapters.EstablishmentSearchAdapter;
+import com.miedo.dtodoaqui.data.EstablishmentSearchTO;
 
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements EstablishmentSearchAdapter.OnClickViewHolder {
 
     private final int searchContainerColapsedHeight = 150;
     private final int searchContainerExpandedHeight = 450;
@@ -38,8 +40,8 @@ public class SearchFragment extends Fragment {
 
     private RecyclerView establishmentsSearchResult;
 
-   /* private EstablishmentsSearchViewModel viewModel;
-*/
+    /* private EstablishmentsSearchViewModel viewModel;
+     */
     private boolean colapsed = false;
 
 
@@ -49,7 +51,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // viewModel = ViewModelProviders.of(this).get(EstablishmentsSearchViewModel.class);
+        // viewModel = ViewModelProviders.of(this).get(EstablishmentsSearchViewModel.class);
     }
 
     @Override
@@ -123,7 +125,7 @@ public class SearchFragment extends Fragment {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 
-    public void hideKeyboard(){
+    public void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
         View view = getActivity().getCurrentFocus();
@@ -137,7 +139,7 @@ public class SearchFragment extends Fragment {
 
     //Animations
     public void expandSearchLayout(int duration) {
-        if(colapsed) {
+        if (colapsed) {
             int prevHeight = searchLayout.getHeight();
             int targetHeight = dpToPx(searchContainerExpandedHeight);
             /*searchLayout.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -172,8 +174,8 @@ public class SearchFragment extends Fragment {
     }
 
     public void collapseSearchLayout(int duration) {
-        if(!colapsed){
-            int prevHeight  = searchLayout.getHeight();
+        if (!colapsed) {
+            int prevHeight = searchLayout.getHeight();
             int targetHeight = dpToPx(searchContainerColapsedHeight);
 
             ValueAnimator valueAnimator = ValueAnimator.ofInt(prevHeight, targetHeight);
@@ -195,7 +197,7 @@ public class SearchFragment extends Fragment {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    colapseButton.setCompoundDrawablesWithIntrinsicBounds( 0, 0, 0 ,R.drawable.ic_arrow_up_black_24dp);
+                    colapseButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_arrow_up_black_24dp);
                 }
             });
             valueAnimator.setInterpolator(new DecelerateInterpolator());
@@ -203,5 +205,13 @@ public class SearchFragment extends Fragment {
             valueAnimator.start();
             colapsed = true;
         }
+    }
+
+    @Override
+    public void clickViewHolder(EstablishmentSearchTO est) {
+
+        //TODO insertar logica de navegacion hacia la pantalla de EstablishmentDetail
+
+
     }
 }

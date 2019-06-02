@@ -3,11 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/state_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
     android:orientation="vertical"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp">
+    android:gravity="center"
+    android:paddingLeft="35dp"
+    android:paddingRight="35dp">
 
     <ImageView
         android:id="@+id/state_icon"
@@ -44,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:textAlignment="center"
         android:text="@string/sin_resultados_establecimientos_descrip"
         android:visibility="visible" />
 

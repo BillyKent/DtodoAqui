@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".presentation.profilescreen.ProfileFragment">
+    tools:context=".presentation.fragments.LoggedFragment">
 
 
     <Button
