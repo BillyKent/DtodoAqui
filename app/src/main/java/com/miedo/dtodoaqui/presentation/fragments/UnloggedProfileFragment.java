@@ -8,11 +8,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.core.BaseFragment;
-import com.miedo.dtodoaqui.presentation.activityscreen.RegisterUserActivity;
+import com.miedo.dtodoaqui.presentation.activities.RegisterUserActivity;
 
 
 public class UnloggedProfileFragment extends BaseFragment {

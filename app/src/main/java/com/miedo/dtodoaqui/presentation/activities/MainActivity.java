@@ -1,4 +1,4 @@
-package com.miedo.dtodoaqui.presentation.activityscreen;
+package com.miedo.dtodoaqui.presentation.activities;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -59,13 +59,15 @@ public class MainActivity extends BaseActivity {
         public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
             switch (destination.getId()) {
                 case R.id.search_dest:
+                    navView.getMenu().findItem(R.id.search_tab).setChecked(true);
+                    break;
                 case R.id.activity_dest:
-                    navView.getMenu().findItem(destination.getId()).setChecked(true);
+                    navView.getMenu().findItem(R.id.activity_tab).setChecked(true);
                     break;
                 case R.id.logged_dest:
                 case R.id.unlogged_dest:
                     // Si se navega al perfil se debe marcar el tab Profile
-                    navView.getMenu().findItem(R.id.logged_dest).setChecked(true);
+                    navView.getMenu().findItem(R.id.profile_tab).setChecked(true);
                     break;
             }
         }
@@ -76,23 +78,29 @@ public class MainActivity extends BaseActivity {
         // Define la animacion de transicion y si se agrega al backstack
         // Si estamos en el tab search no se agrega al backstack
         NavOptions navOptions = new NavOptions.Builder()
-                .setPopUpTo(R.id.search_dest, (itemId == R.id.search_dest) ? true : false)
+                .setPopUpTo(R.id.search_dest, (itemId == R.id.search_tab) ? true : false)
                 .setEnterAnim(R.anim.fade_in)
                 .setExitAnim(R.anim.fade_out)
                 .setPopEnterAnim(R.anim.fade_in)
                 .setPopExitAnim(R.anim.fade_out)
                 .build();
-        int dest = itemId;
+
+        int dest = -1;
         switch (itemId) {
-            case R.id.logged_dest:
+            case R.id.profile_tab:
                 dest = (SessionManager.getInstance(getApplicationContext()).isUserLogged()) ? R.id.logged_dest : R.id.unlogged_dest;
                 break;
-            case R.id.search_dest:
-            case R.id.activity_dest:
-                dest = itemId;
+            case R.id.search_tab:
+                dest = R.id.search_dest;
+                break;
+            case R.id.activity_tab:
+                dest = R.id.activity_dest;
                 break;
         }
-        navController.navigate(dest, null, navOptions);
+        if (dest != -1) {
+            navController.navigate(dest, null, navOptions);
+        }
+
 
     }
 }

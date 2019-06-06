@@ -1,4 +1,4 @@
-package com.miedo.dtodoaqui.presentation.activityscreen;
+package com.miedo.dtodoaqui.presentation.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 

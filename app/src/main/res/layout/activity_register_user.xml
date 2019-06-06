@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
-    tools:context=".presentation.activityscreen.RegisterUserActivity">
+    tools:context=".presentation.activities.RegisterUserActivity">
 
     <include
         layout="@layout/state_layout"
