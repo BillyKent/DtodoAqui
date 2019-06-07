@@ -9,58 +9,46 @@
     <LinearLayout
         android:id="@+id/searchLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
+        android:layout_height="380dp"
+        android:background="@drawable/background_search"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:startIconDrawable="@drawable/ic_search_black_24dp">
+        <EditText
+            style="@style/EditTextRounded"
+            android:layout_marginTop="30dp"
+            android:drawableStart="@drawable/ic_search_black_24dp"
+            android:drawableLeft="@drawable/ic_search_black_24dp"
+            android:hint="@string/palabra_clave"
+            android:inputType="text" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Palabra clave" />
-        </com.google.android.material.textfield.TextInputLayout>
+        <EditText
+            style="@style/EditTextRounded"
+            android:drawableLeft="@drawable/ic_location_on_black_24dp"
+            android:hint="@string/ubicacion_text"
+            android:inputType="text"
+            android:drawableStart="@drawable/ic_location_on_black_24dp" />
 
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            app:startIconDrawable="@drawable/ic_location_on_black_24dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ubicación" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/categoriesSearchSpinner"
-            style="@android:style/Widget.Spinner.DropDown"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
+        <Spinner
+            android:id="@+id/spinner"
+            style="@style/EditTextRounded"
             android:entries="@array/categories_array"
-            android:spinnerMode="dropdown" />
+            android:spinnerMode="dialog" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/searchButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="BUSCAR ESTABLECIMIENTO" />
+            android:layout_height="60dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/buscar_establecimiento"
+            app:cornerRadius="50dp" />
     </LinearLayout>
 
     <Button
