@@ -1,5 +1,7 @@
 package com.miedo.dtodoaqui.model;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.miedo.dtodoaqui.data.ProfileTO;
@@ -16,6 +18,8 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class ProfileModel {
+    public static final String TAG = ProfileModel.class.getSimpleName();
+
 
     private MutableLiveData<ProfileViewModel.ProfileState> liveData;
 
@@ -23,6 +27,9 @@ public class ProfileModel {
     }
 
     public ProfileTO getProfile(String token) {
+
+        Log.i(TAG, "Token para obtener perfil : " + token);
+
         ProfileTO retorno = null;
         // Creamos la instancia de la api
         DeTodoAquiAPI api = ServiceGenerator.createServiceScalar(DeTodoAquiAPI.class);
@@ -35,12 +42,14 @@ public class ProfileModel {
             Response response = call.execute();
 
             if (response.isSuccessful()) {
-                retorno = new ProfileTO();
                 if (response.code() == 204) {
+                    retorno = new ProfileTO();
+                    Log.i(TAG, "Codigo 204 al obtener el perfil ");
 
                 } else if (response.code() == 200) { // Devuelve el ProfileTO del perfil encontrado
                     String rpta = ((ResponseBody) response.body()).string();
                     retorno = JSONUtils.getProfileFromJSONString(rpta);
+                    Log.i(TAG,"Perfil encontrado : "+retorno);
                 }
 
             } else {

@@ -1,12 +1,17 @@
 package com.miedo.dtodoaqui.viewmodels;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.miedo.dtodoaqui.data.ProfileTO;
 import com.miedo.dtodoaqui.data.UserTO;
 import com.miedo.dtodoaqui.model.ProfileModel;
 
-public class ProfileViewModel {
+public class ProfileViewModel extends ViewModel {
+    public static final String TAG = ProfileViewModel.class.getSimpleName();
+
     private ProfileModel model;
     private ProfileTO currentProfile;
 
@@ -36,7 +41,6 @@ public class ProfileViewModel {
 
 
     public void obtenerPerfil(String jwtToken) {
-        profileState.setValue(ProfileState.OBTENIENDO_PERFIL);
         new Thread() {
             @Override
             public void run() {
@@ -52,7 +56,6 @@ public class ProfileViewModel {
                 }
             }
         }.start();
-
     }
 
     public ProfileTO getCurrentProfile() {

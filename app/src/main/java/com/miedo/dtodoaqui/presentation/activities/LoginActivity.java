@@ -2,6 +2,7 @@ package com.miedo.dtodoaqui.presentation.activities;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -28,6 +29,8 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class LoginActivity extends BaseActivity {
+
+    public static final String TAG = LoginActivity.class.getSimpleName();
 
     @BindView(R.id.usernameEditText)
     TextInputEditText usernameEditText;
@@ -129,7 +132,8 @@ public class LoginActivity extends BaseActivity {
                     UserTO user = new UserTO();
                     user.setUsername(username);
                     user.setPassword(password);
-                    user.setPassword(JSONUtils.getJWT(((ResponseBody) response.body()).string()));
+                    user.setJwt(JSONUtils.getJWT(((ResponseBody) response.body()).string()));
+                    Log.i(TAG, "JWT del usuario encontrado es :" + user.getJwt());
 
                     SessionManager.getInstance(getApplicationContext()).startSession(user);
                     successful = true;

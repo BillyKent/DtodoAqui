@@ -30,18 +30,13 @@ public class SessionManager {
     // Variables para acceder a las preferencias
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
-    private UserTO currentUser =  null;
+    private UserTO currentUser = null;
 
     private SessionManager(Context context) {
         this.preferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         this.editor = preferences.edit();
 
         currentUser = getCurrentSession();
-    }
-
-
-    public UserTO getCurrentUser() {
-        return currentUser;
     }
 
     /**

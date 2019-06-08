@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.se.omapi.Session;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +13,15 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.adapters.ProfileInfoAdapter;
 import com.miedo.dtodoaqui.core.BaseFragment;
 import com.miedo.dtodoaqui.data.ProfileTO;
+import com.miedo.dtodoaqui.data.local.SessionManager;
 import com.miedo.dtodoaqui.viewmodels.ProfileViewModel;
 
 import java.util.ArrayList;
@@ -24,8 +29,10 @@ import java.util.ArrayList;
 
 public class LoggedFragment extends BaseFragment {
 
+    public static final String TAG = LoggedFragment.class.getSimpleName();
+
     ProfileViewModel viewModel;
-    ArrayList<ProfileInfoAdapter.ProfileItem> items;
+    ArrayList<ProfileInfoAdapter.ProfileItem> items = new ArrayList<>();
     ListView listView;
     private ProfileInfoAdapter adapter;
 
@@ -41,9 +48,59 @@ public class LoggedFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
+        setUpStateView(view, view.findViewById(R.id.container));
+        viewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
         listView = (ListView) view.findViewById(R.id.list_details);
-        adapter = new ProfileInfoAdapter(getContext(), new ArrayList<>());
+
+
+
+
+        viewModel.getProfileState().observe(getViewLifecycleOwner(),
+                new Observer<ProfileViewModel.ProfileState>() {
+                    @Override
+                    public void onChanged(ProfileViewModel.ProfileState profileState) {
+                        switch (profileState) {
+                            case VERIFICANDO_PERFIL:
+                                getStateView().showLoadingWithTitle("Verificando perfil");
+                                viewModel.verificarPerfil();
+                                break;
+                            case CON_PERFIL:
+                                loadItems(viewModel.getCurrentProfile());
+                                adapter = new ProfileInfoAdapter(getContext(), items);
+                                listView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                                getStateView().hideStateView();
+                                Log.i(TAG, "Estoy aca csmre");
+                                break;
+                            case OBTENIENDO_PERFIL:
+                                getStateView().showLoadingWithTitle("Obteniendo perfil");
+                                viewModel.obtenerPerfil(SessionManager.getInstance(getContext()).getCurrentSession().getJwt());
+                                break;
+
+                            case SIN_PERFIL:
+                                getStateView().showActionState(
+                                        "No tienes registrado un perfil de usuario.",
+                                        "Configura tu perfil, así podrás publicar reseñas y decirle al mundo quien eres.",
+                                        new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                showMessage("A ber");
+                                            }
+                                        }
+                                );
+                                break;
+
+                            case ERROR_STATE:
+                                showMessageError("Algo salió mal");
+                                break;
+
+
+                        }
+
+
+                    }
+                }
+        );
 
 
         //listView.setAdapter(adapter);

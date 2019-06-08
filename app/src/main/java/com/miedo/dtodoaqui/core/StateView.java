@@ -146,6 +146,7 @@ public class StateView {
                 .post(new Runnable() {
                     @Override
                     public void run() {
+                        stateView.setVisibility(View.GONE);
                         progressBar.setVisibility(View.GONE);
                         titleView.setText(resTitle);
                         descriptionView.setText(resDescription);
@@ -156,17 +157,34 @@ public class StateView {
                         titleView.setVisibility(View.VISIBLE);
                         imageView.setVisibility(View.VISIBLE);
                         buttonAction.setVisibility((listener != null) ? View.VISIBLE : View.GONE);
-                        stateView.setVisibility(View.GONE);
 
 
                         finalAnimation(stateView, anotherView);
+                    }
+                });
+    }
 
+    public void showActionState(String title, String description, View.OnClickListener listener) {
+        new Handler(Looper.getMainLooper())
+                .post(new Runnable() {
+                    @Override
+                    public void run() {
+                        stateView.setVisibility(View.GONE);
+                        titleView.setText(title);
+                        descriptionView.setText(description);
+                        buttonAction.setOnClickListener(listener);
+
+
+                        titleView.setVisibility(View.VISIBLE);
+                        descriptionView.setVisibility(View.VISIBLE);
+                        buttonAction.setVisibility(View.VISIBLE);
+                        imageView.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
+
+                        finalAnimation(stateView, anotherView);
 
                     }
-
-
                 });
-
     }
 
     public void showCustomState(int state) {
