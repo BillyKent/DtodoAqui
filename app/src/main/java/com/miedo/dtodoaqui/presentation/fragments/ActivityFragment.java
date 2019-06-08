@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.core.BaseFragment;
 import com.miedo.dtodoaqui.core.StateView;
@@ -25,11 +28,7 @@ public class ActivityFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_activity, container, false);
-
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(this, view);
         setUpStateView(view, anotherView);
 
@@ -51,7 +50,14 @@ public class ActivityFragment extends BaseFragment {
         }.start();
 
 
-        return view;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_activity, container, false);
+
     }
 
 
