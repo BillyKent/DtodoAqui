@@ -6,11 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".presentation.fragments.SearchFragment">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/searchLayout"
         android:layout_width="0dp"
         android:layout_height="380dp"
-        android:background="@drawable/background_search"
         android:orientation="vertical"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,50 +17,93 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="0dp"
+            android:layout_height="421dp"
+            android:background="@drawable/background_bottomrounded"
+            android:scaleType="center"
+            android:src="@drawable/background_search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <EditText
             android:id="@+id/keywordSearchET"
             style="@style/EditTextRounded"
-            android:layout_marginTop="30dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
             android:drawableStart="@drawable/ic_search_black_24dp"
             android:drawableLeft="@drawable/ic_search_black_24dp"
             android:hint="@string/palabra_clave"
-            android:inputType="text" />
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/locationSearchET"
             style="@style/EditTextRounded"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
             android:drawableStart="@drawable/ic_location_on_black_24dp"
             android:drawableLeft="@drawable/ic_location_on_black_24dp"
             android:hint="@string/ubicacion_text"
-            android:inputType="text" />
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/keywordSearchET" />
 
         <Spinner
             android:id="@+id/categoriesSearchSP"
             style="@style/EditTextRounded"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
             android:entries="@array/categories_array"
-            android:spinnerMode="dialog" />
+            android:spinnerMode="dialog"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/locationSearchET" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/searchSearchBT"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
             android:text="@string/buscar_establecimiento"
-            app:cornerRadius="50dp" />
-    </LinearLayout>
+            app:cornerRadius="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categoriesSearchSP" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/collapseSearchBT"
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="4dp"
         android:drawableBottom="@drawable/ic_arrow_up_black_24dp"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchLayout" />
+        app:layout_constraintTop_toTopOf="@+id/establishmentsSearchRV" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/establishmentsSearchRV"
@@ -69,10 +111,9 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/collapseSearchBT"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/searchLayout"
         tools:listitem="@layout/cardview_establishment_search">
 
     </androidx.recyclerview.widget.RecyclerView>

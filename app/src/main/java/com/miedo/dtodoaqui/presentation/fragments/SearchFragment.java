@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,15 +26,16 @@ import com.miedo.dtodoaqui.adapters.EstablishmentSearchAdapter;
 import com.miedo.dtodoaqui.data.EstablishmentSearchTO;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class SearchFragment extends Fragment implements EstablishmentSearchAdapter.OnClickViewHolder {
 
-    private final int searchContainerColapsedHeight = 150;
-    private final int searchContainerExpandedHeight = 450;
+    private final int searchContainerColapsedHeight = 120;
+    private final int searchContainerExpandedHeight = 380;
 
     @BindView(R.id.searchLayout)
-    LinearLayout searchLayout;
+    ConstraintLayout searchLayout;
     @BindView(R.id.keywordSearchET)
     EditText keywordSearchParam;
     @BindView(R.id.locationSearchET)
@@ -70,35 +72,8 @@ public class SearchFragment extends Fragment implements EstablishmentSearchAdapt
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        /*searchLayout = view.findViewById(R.id.searchLayout);
-        keywordSearchParam = (EditText) view.findViewById(R.id.keywordSearchET);
-        locationSearchParam = (EditText) view.findViewById(R.id.locationSearchET);
-        categoriesSearchParam = (Spinner) view.findViewById(R.id.categoriesSearchSpinner);
-        searchButton = (Button) view.findViewById(R.id.searchButton);
-        colapseButton = (Button) view.findViewById(R.id.colapseButton);
-        progressSearchBar = (ProgressBar) view.findViewById(R.id.progressSearchBar);
+        ButterKnife.bind(this,view);
 
-
-        viewModel.getSearchData().observe(this, new Observer<List<EstablishmentSearch>>() {
-            @Override
-            public void onChanged(List<EstablishmentSearch> establishmentSearches) {
-                progressSearchBar.setVisibility(View.GONE);
-                establishmentsSearchResult.setAdapter(new EstablishmentSearchAdapter(establishmentSearches, getContext()));
-            }
-        });
-
-        //Listeners
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideKeyboard();
-                collapseSearchLayout(150);
-                establishmentsSearchResult.setAdapter(null);
-                progressSearchBar.setVisibility(View.VISIBLE);
-                //Búsqueda
-                viewModel.SearchEstablishments(keywordSearchParam.getText().toString(),locationSearchParam.getText().toString(),"");
-            }
-        });
         colapseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,17 +85,7 @@ public class SearchFragment extends Fragment implements EstablishmentSearchAdapt
                 }
             }
         });
-        keywordSearchParam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                expandSearchLayout(300);
-            }
-        });
 
-        establishmentsSearchResult = (RecyclerView) view.findViewById(R.id.establishmentsSearchRV);
-
-        establishmentsSearchResult.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-*/
         return view;
     }
 
@@ -207,7 +172,7 @@ public class SearchFragment extends Fragment implements EstablishmentSearchAdapt
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    colapseButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_arrow_up_black_24dp);
+                    colapseButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_arrow_down_black_24dp);
                 }
             });
             valueAnimator.setInterpolator(new DecelerateInterpolator());
