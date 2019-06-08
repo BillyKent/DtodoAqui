@@ -1,5 +1,7 @@
 package com.miedo.dtodoaqui.utils;
 
+import com.miedo.dtodoaqui.data.ProfileTO;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,6 +59,28 @@ public final class JSONUtils {
         try {
             JSONObject response = new JSONObject(responseBody);
             retorno = response.getString("jwt");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return retorno;
+    }
+
+    public static ProfileTO getProfileFromJSONString(String response) {
+        ProfileTO retorno = null;
+
+        try {
+            JSONObject rpta = new JSONObject(response);
+            retorno = new ProfileTO();
+            retorno.setId(rpta.getInt("id"));
+            retorno.setAddress(rpta.getString("address"));
+            retorno.setCountry(rpta.getString("country"));
+            retorno.setDescription(rpta.getString("description"));
+            retorno.setFacebookUrl(rpta.getString("facebook"));
+            retorno.setFirstName(rpta.getString("first_name"));
+            retorno.setLastName(rpta.getString("last_name"));
+            retorno.setPhone(rpta.getString("phone"));
 
         } catch (JSONException e) {
             e.printStackTrace();

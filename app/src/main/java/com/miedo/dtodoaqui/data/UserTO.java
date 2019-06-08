@@ -7,7 +7,6 @@ public class UserTO {
     private String password;
     private String email;
     private String jwt;
-    private ProfileTO profile;
 
     public UserTO() {
     }
@@ -52,14 +51,6 @@ public class UserTO {
         this.email = email;
     }
 
-    public ProfileTO getProfile() {
-        return profile;
-    }
-
-    public void setProfile(ProfileTO profile) {
-        this.profile = profile;
-    }
-
     @Override
     public String toString() {
         return "UserTO{" +
@@ -67,7 +58,7 @@ public class UserTO {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", profile=" + profile +
+                ", jwt='" + jwt + '\'' +
                 '}';
     }
 }

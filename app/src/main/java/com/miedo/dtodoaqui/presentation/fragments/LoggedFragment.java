@@ -11,16 +11,20 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.adapters.ProfileInfoAdapter;
 import com.miedo.dtodoaqui.core.BaseFragment;
+import com.miedo.dtodoaqui.data.ProfileTO;
+import com.miedo.dtodoaqui.viewmodels.ProfileViewModel;
 
 import java.util.ArrayList;
 
 
 public class LoggedFragment extends BaseFragment {
 
+    ProfileViewModel viewModel;
     ArrayList<ProfileInfoAdapter.ProfileItem> items;
     ListView listView;
     private ProfileInfoAdapter adapter;
@@ -39,18 +43,30 @@ public class LoggedFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         listView = (ListView) view.findViewById(R.id.list_details);
-        items = new ArrayList<>();
-        loadItems();
-        adapter = new ProfileInfoAdapter(getContext(),items);
-        listView.setAdapter(adapter);
+        adapter = new ProfileInfoAdapter(getContext(), new ArrayList<>());
+
+
+        //listView.setAdapter(adapter);
     }
 
-    void loadItems() {
-
-        items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_account_box_black_24dp, "Nombre", "Sopa do macaco"));
-        items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_phone_black_24dp, "Telefono", "+51994224498"));
-        items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_location_on_black_24dp, "Dirección", "Av.Brasil #322"));
-        items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_facebook, "Nombre", "https://www.facebook.com/sopademacacodelicia/"));
+    void loadItems(ProfileTO profile) {
+        items.clear();
+        // nombre
+        items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_account_box_black_24dp, "Nombre",
+                profile.getFirstName() + " " + profile.getLastName()
+        ));
+        // telefono
+        items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_phone_black_24dp, "Telefono",
+                profile.getPhone()
+        ));
+        // direccion
+        items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_location_on_black_24dp, "Dirección",
+                profile.getAddress()
+        ));
+        // facebook
+        items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_facebook, "Facebook",
+                profile.getFacebookUrl()
+        ));
 
     }
 

@@ -20,11 +20,15 @@ import java.util.ArrayList;
 public class ProfileInfoAdapter extends ArrayAdapter<ProfileInfoAdapter.ProfileItem> {
 
     private final Context mContext;
-    private final ArrayList<ProfileItem> mData;
+    ArrayList<ProfileItem> mData;
 
     public ProfileInfoAdapter(Context mContext, ArrayList<ProfileItem> mData) {
         super(mContext, R.layout.cardview_profile_info, mData);
         this.mContext = mContext;
+        this.mData = mData;
+    }
+
+    public void setmData(ArrayList<ProfileItem> mData) {
         this.mData = mData;
     }
 
