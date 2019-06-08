@@ -19,6 +19,7 @@
 
 
         <EditText
+            android:id="@+id/keywordSearchET"
             style="@style/EditTextRounded"
             android:layout_marginTop="30dp"
             android:drawableStart="@drawable/ic_search_black_24dp"
@@ -27,20 +28,21 @@
             android:inputType="text" />
 
         <EditText
+            android:id="@+id/locationSearchET"
             style="@style/EditTextRounded"
+            android:drawableStart="@drawable/ic_location_on_black_24dp"
             android:drawableLeft="@drawable/ic_location_on_black_24dp"
             android:hint="@string/ubicacion_text"
-            android:inputType="text"
-            android:drawableStart="@drawable/ic_location_on_black_24dp" />
+            android:inputType="text" />
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/categoriesSearchSP"
             style="@style/EditTextRounded"
             android:entries="@array/categories_array"
             android:spinnerMode="dialog" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/searchButton"
+            android:id="@+id/searchSearchBT"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginLeft="30dp"
@@ -52,7 +54,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/colapseButton"
+        android:id="@+id/collapseSearchBT"
         android:layout_width="wrap_content"
         android:layout_height="24dp"
         android:drawableBottom="@drawable/ic_arrow_up_black_24dp"
@@ -69,14 +71,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/colapseButton"
+        app:layout_constraintTop_toTopOf="@id/collapseSearchBT"
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/cardview_establishment_search">
 
     </androidx.recyclerview.widget.RecyclerView>
 
     <ProgressBar
-        android:id="@+id/progressSearchBar"
+        android:id="@+id/progressSearchPB"
         style="?android:attr/progressBarStyle"
         android:layout_width="100dp"
         android:layout_height="100dp"

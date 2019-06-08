@@ -66,10 +66,11 @@
                 android:text="Únete a nuestra comunidad y escribe reseñas, haz check-in en negocios ¡y mucho más!"
                 android:textAlignment="center" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/registerButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
+                app:cornerRadius="50dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"

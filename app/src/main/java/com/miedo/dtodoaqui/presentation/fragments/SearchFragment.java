@@ -24,21 +24,31 @@ import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.adapters.EstablishmentSearchAdapter;
 import com.miedo.dtodoaqui.data.EstablishmentSearchTO;
 
+import butterknife.BindView;
+
 
 public class SearchFragment extends Fragment implements EstablishmentSearchAdapter.OnClickViewHolder {
 
     private final int searchContainerColapsedHeight = 150;
     private final int searchContainerExpandedHeight = 450;
 
-    private LinearLayout searchLayout;
-    private EditText keywordSearchParam;
-    private EditText locationSearchParam;
-    private Spinner categoriesSearchParam;
-    private Button searchButton;
-    private Button colapseButton;
-    private ProgressBar progressSearchBar;
+    @BindView(R.id.searchLayout)
+    LinearLayout searchLayout;
+    @BindView(R.id.keywordSearchET)
+    EditText keywordSearchParam;
+    @BindView(R.id.locationSearchET)
+    EditText locationSearchParam;
+    @BindView(R.id.categoriesSearchSP)
+    Spinner categoriesSearchParam;
+    @BindView(R.id.searchSearchBT)
+    Button searchButton;
+    @BindView(R.id.collapseSearchBT)
+    Button colapseButton;
+    @BindView(R.id.progressSearchPB)
+    ProgressBar progressSearchBar;
 
-    private RecyclerView establishmentsSearchResult;
+    @BindView(R.id.establishmentsSearchRV)
+    RecyclerView establishmentsSearchResult;
 
     /* private EstablishmentsSearchViewModel viewModel;
      */
