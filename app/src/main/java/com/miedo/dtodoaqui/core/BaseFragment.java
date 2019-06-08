@@ -3,22 +3,14 @@ package com.miedo.dtodoaqui.core;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.miedo.dtodoaqui.R;
-import com.miedo.dtodoaqui.utils.StateView;
 
 public class BaseFragment extends Fragment {
 
@@ -62,25 +54,12 @@ public class BaseFragment extends Fragment {
         }
     }
 
-    /**
-     * Alterna la visibilidad de un view pasado por parametro
-     *
-     * @param view
-     */
-    public void toggleVisibilityView(View view) {
-        if (view.getVisibility() == View.GONE || view.getVisibility() == View.INVISIBLE) {
-            view.setVisibility(View.VISIBLE);
-        } else {
-            view.setVisibility(View.GONE);
-        }
-
-    }
-
 
     public void showSnackMessage(String message, int colorResource) {
         View container = getView().findViewById(R.id.container);
         if (container != null) {
             Snackbar snackbar = Snackbar.make(container, message, Snackbar.LENGTH_LONG);
+
             /*snackbar.setActionTextColor(Color.WHITE);
             View sbView = snackbar.getView();
             sbView.setBackgroundColor(ContextCompat.getColor(this, colorResource));
@@ -106,7 +85,7 @@ public class BaseFragment extends Fragment {
     }
 
     public void setUpStateView(View parent, View anotherView) {
-        stateView = new StateView(parent,anotherView);
+        stateView = new StateView(parent, anotherView);
     }
 
     public StateView getStateView() {

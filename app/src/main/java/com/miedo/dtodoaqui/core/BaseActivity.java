@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.miedo.dtodoaqui.R;
-import com.miedo.dtodoaqui.utils.StateView;
 
 public class BaseActivity extends AppCompatActivity {
 

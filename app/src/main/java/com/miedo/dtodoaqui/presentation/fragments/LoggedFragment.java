@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.core.BaseFragment;
 

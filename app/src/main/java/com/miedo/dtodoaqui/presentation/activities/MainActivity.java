@@ -41,6 +41,8 @@ public class MainActivity extends BaseActivity {
 
         // listener para la seleccion de tabs
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        SessionManager.getInstance(this).closeSession();
     }
 
 
@@ -74,7 +76,7 @@ public class MainActivity extends BaseActivity {
     };
 
 
-    private void navigateTo(int itemId) {
+    public void navigateTo(int itemId) {
         // Define la animacion de transicion y si se agrega al backstack
         // Si estamos en el tab search no se agrega al backstack
         NavOptions navOptions = new NavOptions.Builder()

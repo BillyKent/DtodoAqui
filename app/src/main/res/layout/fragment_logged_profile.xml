@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,83 +9,14 @@
     tools:context=".presentation.fragments.LoggedFragment">
 
 
-    <Button
-        android:id="@+id/bt_establishments"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="16dp"
-        android:text="Mis establecimientos"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/bt_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="16dp"
-        android:text="INICIAR SESIÓN"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/bt_register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="16dp"
-        android:text="REGISTRO"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/bt_update"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="16dp"
-        android:text="MODIFICAR PERFIL"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/bt_logout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="16dp"
-        android:text="CERRAR SESIÓN"
-        android:visibility="gone" />
-
-    <LinearLayout
-        android:id="@+id/progressLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center"
-            tools:text="Cargando..." />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="103dp" />
-    </LinearLayout>
-
-</LinearLayout>
+        android:layout_marginStart="136dp"
+        android:layout_marginLeft="136dp"
+        android:layout_marginTop="172dp"
+        android:text="Hola soy gokú"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

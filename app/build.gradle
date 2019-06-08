@@ -30,6 +30,7 @@ android {
 
 dependencies {
     def nav_version = "2.1.0-alpha04"
+    def retrofit_version = "2.6.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -59,9 +60,10 @@ dependencies {
     // Google Play API Places
     implementation 'com.google.android.libraries.places:places:1.1.0'
 
-    // Retrofit 2 : Networking y Conversor a Scalars
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
+    // Retrofit 2 : Networking y Conversor a Scalars-GSON
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-scalars:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation 'com.squareup.okhttp3:okhttp:3.14.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.14.1'
 

@@ -4,6 +4,9 @@
     <string name="title_search">Buscar</string>
     <string name="title_activity">Actividad</string>
 
+    <!-- String resources for error messages -->
+    <string name="empty_field_error">Este campo no puede estar vacío</string>
+
 
     <!-- String resources for predefined states -->
     <string name="sin_internet_title">Se perdió la conexión</string>

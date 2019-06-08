@@ -6,17 +6,18 @@ public class UserTO {
     private String username;
     private String password;
     private String email;
+    private String jwt;
     private ProfileTO profile;
 
     public UserTO() {
     }
 
-    public UserTO(String id, String username, String password, String email, ProfileTO profile) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.profile = profile;
+    public String getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
     }
 
     public String getId() {

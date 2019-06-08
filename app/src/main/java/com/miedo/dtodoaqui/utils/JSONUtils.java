@@ -3,7 +3,7 @@ package com.miedo.dtodoaqui.utils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class JSONFactory {
+public final class JSONUtils {
 
     /**
      * Funcion que retorna un {@link JSONObject} para el registro de usuario.
@@ -13,7 +13,7 @@ public class JSONFactory {
      * @param password Password del usuario a registrar
      * @return JSONObject para el request body del registro de usuarios.
      */
-    public JSONObject getRegisterUserRequestJSON(String email, String username, String password) {
+    public static String getRegisterUserRequestJSON(String email, String username, String password) {
         JSONObject retorno = new JSONObject();
         JSONObject user = new JSONObject();
 
@@ -27,7 +27,7 @@ public class JSONFactory {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return retorno;
+        return retorno.toString();
     }
 
 
@@ -39,7 +39,7 @@ public class JSONFactory {
      * @param password Password a loguear.
      * @return JSONObject con el formato del body para el request del login.
      */
-    public JSONObject getLoginRequestJSON(String username, String password) {
+    public static String getLoginRequestJSON(String username, String password) {
         JSONObject retorno = new JSONObject();
         try {
             retorno.put("username", username);
@@ -47,6 +47,21 @@ public class JSONFactory {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        return retorno.toString();
+    }
+
+
+    public static String getJWT(String responseBody) {
+        String retorno = "";
+
+        try {
+            JSONObject response = new JSONObject(responseBody);
+            retorno = response.getString("jwt");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return retorno;
     }
 

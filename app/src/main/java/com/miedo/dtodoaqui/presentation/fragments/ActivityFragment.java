@@ -5,12 +5,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.core.BaseFragment;
-import com.miedo.dtodoaqui.utils.StateView;
+import com.miedo.dtodoaqui.core.StateView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

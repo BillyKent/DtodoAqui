@@ -12,10 +12,10 @@ public class SessionManager {
     private static final String PREFERENCE_NAME = "DTodoAquiClient";
 
     // String keys
-    public static final String USER_NAME = "user_name";
     public static final String IS_LOGGED = "user_login";
+    public static final String USER_NAME = "user_name";
     public static final String USER_PASSWORD = "user_pass";
-
+    public static final String JWT_TOKEN = "jwt_token";
 
     // Singleton
     private static SessionManager instance = null;
@@ -26,14 +26,17 @@ public class SessionManager {
         }
         return instance;
     }
+
     // Variables para acceder a las preferencias
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
-    private UserTO currentUser;
+    private UserTO currentUser =  null;
 
     private SessionManager(Context context) {
         this.preferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         this.editor = preferences.edit();
+
+        currentUser = getCurrentSession();
     }
 
 
@@ -47,10 +50,11 @@ public class SessionManager {
      *
      * @param user datos del login de usuario
      */
-    public void StartSession(UserTO user) {
+    public void startSession(UserTO user) {
         editor.putBoolean(IS_LOGGED, true);
         editor.putString(USER_NAME, user.getUsername());
         editor.putString(USER_PASSWORD, user.getPassword());
+        editor.putString(JWT_TOKEN, user.getJwt());
         editor.commit();
         currentUser = user;
     }
@@ -59,10 +63,11 @@ public class SessionManager {
      * Elimina los datos ingresados del usuario, si los hubiera
      * y marca el login como false
      */
-    public void CloseSession() {
+    public void closeSession() {
         editor.putBoolean(IS_LOGGED, false);
         editor.remove(USER_NAME);
         editor.remove(USER_PASSWORD);
+        editor.remove(JWT_TOKEN);
         editor.commit();
         currentUser = null;
     }
@@ -74,10 +79,14 @@ public class SessionManager {
      * @return Objeto @{@link UserTO} con los datos de la sesion.
      */
     public UserTO getCurrentSession() {
-        UserTO retorno = new UserTO();
-        retorno.setUsername(preferences.getString(USER_NAME, ""));
-        retorno.setPassword(preferences.getString(USER_PASSWORD, ""));
-        return retorno;
+
+        if (currentUser != null) return currentUser;
+
+        currentUser = new UserTO();
+        currentUser.setUsername(preferences.getString(USER_NAME, ""));
+        currentUser.setPassword(preferences.getString(USER_PASSWORD, ""));
+        currentUser.setJwt(preferences.getString(JWT_TOKEN, ""));
+        return currentUser;
     }
 
     /**
@@ -85,7 +94,6 @@ public class SessionManager {
      *
      * @return true si la preferencia IS_LOGGED es true, false de lo contrario
      */
-
     public boolean isUserLogged() {
         return preferences.getBoolean(IS_LOGGED, false);
     }

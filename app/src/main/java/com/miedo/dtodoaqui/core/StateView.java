@@ -1,4 +1,4 @@
-package com.miedo.dtodoaqui.utils;
+package com.miedo.dtodoaqui.core;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -53,6 +53,28 @@ public class StateView {
     }
 
     public void showLoadingWithTitle(int title) {
+
+        new Handler(Looper.getMainLooper())
+                .post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // configuramos el state view
+                        titleView.setText(title);
+
+                        progressBar.setVisibility(View.VISIBLE);
+                        titleView.setVisibility(View.VISIBLE);
+                        descriptionView.setVisibility(View.GONE);
+                        imageView.setVisibility(View.GONE);
+                        buttonAction.setVisibility(View.GONE);
+
+                        finalAnimation(stateView, anotherView);
+
+                    }
+                });
+
+    }
+
+    public void showLoadingWithTitle(String title) {
 
         new Handler(Looper.getMainLooper())
                 .post(new Runnable() {
