@@ -9,7 +9,11 @@
         android:id="@+id/search_dest"
         android:name="com.miedo.dtodoaqui.presentation.fragments.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_search_dest_to_establishment_dest"
+            app:destination="@id/establishment_dest" />
+    </fragment>
     <fragment
         android:id="@+id/activity_dest"
         android:name="com.miedo.dtodoaqui.presentation.fragments.ActivityFragment"
@@ -25,4 +29,10 @@
         android:name="com.miedo.dtodoaqui.presentation.fragments.LoggedFragment"
         android:label="fragment_logged_profile"
         tools:layout="@layout/fragment_logged_profile" />
+
+    <activity
+        android:id="@+id/establishment_dest"
+        android:name="com.miedo.dtodoaqui.presentation.activities.EstablishmentActivity"
+        android:label="activity_establishment"
+        tools:layout="@layout/activity_establishment" />
 </navigation>

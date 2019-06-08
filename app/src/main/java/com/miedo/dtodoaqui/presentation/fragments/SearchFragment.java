@@ -15,15 +15,23 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.adapters.EstablishmentSearchAdapter;
 import com.miedo.dtodoaqui.data.EstablishmentSearchTO;
+import com.miedo.dtodoaqui.viewmodels.EstablishmentsSearchViewModel;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,8 +39,8 @@ import butterknife.ButterKnife;
 
 public class SearchFragment extends Fragment implements EstablishmentSearchAdapter.OnClickViewHolder {
 
-    private final int searchContainerColapsedHeight = 120;
-    private final int searchContainerExpandedHeight = 380;
+    private final int searchContainerColapsedHeight = 110;
+    private final int searchContainerExpandedHeight = 360;
 
     @BindView(R.id.searchLayout)
     ConstraintLayout searchLayout;
@@ -52,8 +60,8 @@ public class SearchFragment extends Fragment implements EstablishmentSearchAdapt
     @BindView(R.id.establishmentsSearchRV)
     RecyclerView establishmentsSearchResult;
 
-    /* private EstablishmentsSearchViewModel viewModel;
-     */
+    private EstablishmentsSearchViewModel viewModel;
+
     private boolean colapsed = false;
 
 
@@ -63,7 +71,7 @@ public class SearchFragment extends Fragment implements EstablishmentSearchAdapt
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // viewModel = ViewModelProviders.of(this).get(EstablishmentsSearchViewModel.class);
+         viewModel = ViewModelProviders.of(this).get(EstablishmentsSearchViewModel.class);
     }
 
     @Override
@@ -74,6 +82,32 @@ public class SearchFragment extends Fragment implements EstablishmentSearchAdapt
 
         ButterKnife.bind(this,view);
 
+
+        viewModel.getSearchData().observe(this, new Observer<List<EstablishmentSearchTO>>() {
+            @Override
+            public void onChanged(List<EstablishmentSearchTO> establishmentSearches) {
+                progressSearchBar.setVisibility(View.GONE);
+                establishmentsSearchResult.setAdapter(new EstablishmentSearchAdapter(new EstablishmentSearchAdapter.OnClickViewHolder() {
+                    @Override
+                    public void clickViewHolder(EstablishmentSearchTO est) {
+                        //Navigation.createNavigateOnClickListener(R.id.establishment_dest);
+                    }
+                }, establishmentSearches, getContext()));
+            }
+        });
+
+        //Listeners
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideKeyboard();
+                collapseSearchLayout(150);
+                establishmentsSearchResult.setAdapter(null);
+                progressSearchBar.setVisibility(View.VISIBLE);
+                //Búsqueda
+                viewModel.SearchEstablishments(keywordSearchParam.getText().toString(),locationSearchParam.getText().toString(),categoriesSearchParam.getSelectedItem().toString());
+            }
+        });
         colapseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +119,16 @@ public class SearchFragment extends Fragment implements EstablishmentSearchAdapt
                 }
             }
         });
+        keywordSearchParam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expandSearchLayout(300);
+            }
+        });
+
+        establishmentsSearchResult = (RecyclerView) view.findViewById(R.id.establishmentsSearchRV);
+
+        establishmentsSearchResult.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
         return view;
     }

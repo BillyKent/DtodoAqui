@@ -1,5 +1,6 @@
 package com.miedo.dtodoaqui.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,26 +28,28 @@ public class EstablishmentSearchAdapter extends RecyclerView.Adapter<Establishme
     }
 
     private final OnClickViewHolder listener;
-    private List<EstablishmentSearchTO> data;
+    private List<EstablishmentSearchTO> establishments;
+    private Context context;
 
-    public EstablishmentSearchAdapter(OnClickViewHolder listener) {
+    public EstablishmentSearchAdapter(OnClickViewHolder listener, List<EstablishmentSearchTO> establishments, Context context) {
         this.listener = listener;
-        data = new ArrayList<>();
+        this.establishments = establishments;
+        this.context = context;
     }
 
     // actualiza el recyclerview
     public void setData(List<EstablishmentSearchTO> newData) {
-        if (data != null) {
-            EstablishmentUserDiffCallback postDiffCallback = new EstablishmentUserDiffCallback(data, newData);
+        if (establishments != null) {
+            EstablishmentUserDiffCallback postDiffCallback = new EstablishmentUserDiffCallback(establishments, newData);
             DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(postDiffCallback);
 
-            data.clear();
-            data.addAll(newData);
+            establishments.clear();
+            establishments.addAll(newData);
             diffResult.dispatchUpdatesTo(this);
 
         } else {
             // first initialization
-            data = newData;
+            establishments = newData;
         }
     }
 
@@ -59,12 +62,15 @@ public class EstablishmentSearchAdapter extends RecyclerView.Adapter<Establishme
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.bind(data.get(position));
+        holder.bind(establishments.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        if(establishments != null)
+            return establishments.size();
+        else
+            return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

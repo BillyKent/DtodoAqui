@@ -69,6 +69,7 @@ dependencies {
 
     // Constraint Layout con android x
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
 
 
 }
