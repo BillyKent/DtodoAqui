@@ -26,6 +26,20 @@ import retrofit2.Response;
 public class EstablishmentsSearchModel {
 
 
+    public void TestSearchEstablishments(String keyword, String location, String category, MutableLiveData<List<EstablishmentSearchTO>> data){
+        List<EstablishmentSearchTO> establishments = new ArrayList<>();
+        if(keyword.equals("1")){
+            establishments.add(new EstablishmentSearchTO(1,"La tiendita de don pepe", "Av. holi 124", "https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg",5));
+            establishments.add(new EstablishmentSearchTO(2,"Pollería", "Av. holi 124", "https://www.chiquipedia.com/imagenes/animo01.jpg",4));
+            establishments.add(new EstablishmentSearchTO(3,"Esta es una prueba", "Av. holi 124", "https://www.chiquipedia.com/imagenes/imagenes-san-valentin18.jpg",3.5f));
+        }else{
+            establishments.add(new EstablishmentSearchTO(4,"Casa de Coco", "Av. holi 124", "https://www.chiquipedia.com/imagenes/imagenes-animo10.jpg",1));
+            establishments.add(new EstablishmentSearchTO(5,"Patio de SMAAAAAAAAASH", "Av. holi 124", "https://www.chiquipedia.com/imagenes/imagenes-frases05.jpg",4.5f));
+        }
+
+        data.setValue(establishments);
+    }
+
     public void SearchEstablishments(String keyword, String location, String category, MutableLiveData<List<EstablishmentSearchTO>> data){
 
         // Creamos la instancia de la api
