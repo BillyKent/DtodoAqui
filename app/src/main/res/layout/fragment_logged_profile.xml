@@ -15,11 +15,11 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
 
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="175dp"
             android:fitsSystemWindows="true"
             app:collapsedTitleTextAppearance="@android:color/transparent"
             app:contentScrim="@color/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snapMargins">
 
             <ImageView
                 android:id="@+id/iv_background"
@@ -36,8 +36,8 @@
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:layout_collapseMode="pin" />
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
 
@@ -47,31 +47,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
 
-        <include layout="@layout/content_profile" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                layout="@layout/content_profile"
+                android:visibility="visible" />
+
+            <include layout="@layout/state_layout"
+                android:visibility="gone"/>
+
+
+        </FrameLayout>
+
 
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="160dp"
         android:layout_height="160dp"
-        android:scaleType="centerCrop"
+        android:layout_marginBottom="80dp"
         android:foreground="@drawable/logo_default"
+        android:scaleType="centerCrop"
         android:visibility="visible"
+        app:backgroundTint="@android:color/transparent"
         app:layout_anchor="@id/app_bar_layout"
-
-        app:layout_anchorGravity="bottom|center"
+        app:layout_anchorGravity="center"
         app:pressedTranslationZ="10dp" />
-
-    <ImageView
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:visibility="gone"
-        android:src="@drawable/logo_default"
-        app:layout_anchor="@id/app_bar_layout"
-        app:layout_anchorGravity="bottom|center" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
