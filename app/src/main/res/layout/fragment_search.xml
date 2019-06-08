@@ -21,7 +21,6 @@
             android:id="@+id/imageView3"
             android:layout_width="0dp"
             android:layout_height="421dp"
-            android:background="@drawable/background_bottomrounded"
             android:scaleType="center"
             android:src="@drawable/background_search"
             app:layout_constraintBottom_toBottomOf="parent"
