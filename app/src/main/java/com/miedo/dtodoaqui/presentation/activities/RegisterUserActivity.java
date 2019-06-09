@@ -59,9 +59,8 @@ public class RegisterUserActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_user);
 
-        View viewParent = findViewById(R.id.parent);
         View container = findViewById(R.id.container);
-        setUpStateView(viewParent, container);
+        setUpStateView(container);
         ButterKnife.bind(this);
 
         registerButton.setOnClickListener(v -> {
@@ -158,7 +157,7 @@ public class RegisterUserActivity extends BaseActivity {
     private class RegisterTask extends AsyncTask<String, Void, Boolean> {
         @Override
         protected void onPreExecute() {
-            getStateView().showLoadingWithTitle("Registrando");
+            getStateView().showLoadingTitle("Registrando");
         }
 
         @Override

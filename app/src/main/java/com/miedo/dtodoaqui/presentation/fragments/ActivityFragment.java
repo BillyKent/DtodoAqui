@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.core.BaseFragment;
-import com.miedo.dtodoaqui.core.StateView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,11 +28,9 @@ public class ActivityFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        ButterKnife.bind(this, view);
-        setUpStateView(view, anotherView);
 
 
-        getStateView().showLoading();
+        getStateView().showLoadingTitle("Cargando gaaaaaaaaaaa");
 
         new Thread() {
             @Override
@@ -44,19 +41,21 @@ public class ActivityFragment extends BaseFragment {
                     e.printStackTrace();
                 }
 
-                getStateView().showCustomState(StateView.SIN_RESULTADOS_ESTABLECIMIENTOS_STATE);
+                getStateView().showTitleMessageIcon("Ste men", "JAsjsjs uy", R.drawable.ic_not_found);
 
             }
         }.start();
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_activity, container, false);
+        View view = inflater.inflate(R.layout.fragment_activity, container, false);
+        ButterKnife.bind(this, view);
+        setUpStateView(anotherView);
+
+        return view;
 
     }
 

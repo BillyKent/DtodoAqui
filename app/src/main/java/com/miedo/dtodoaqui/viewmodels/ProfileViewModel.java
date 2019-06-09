@@ -18,27 +18,14 @@ public class ProfileViewModel extends ViewModel {
     final MutableLiveData<ProfileState> profileState = new MutableLiveData<>();
 
     public enum ProfileState {
-        VERIFICANDO_PERFIL,
         ERROR_STATE,
-        OBTENIENDO_PERFIL,
         CON_PERFIL,
         SIN_PERFIL
     }
 
     public ProfileViewModel() {
-        profileState.setValue(ProfileState.VERIFICANDO_PERFIL);
         model = new ProfileModel();
     }
-
-
-    public void verificarPerfil() { // primer paso
-        if (currentProfile == null) {
-            profileState.setValue(ProfileState.OBTENIENDO_PERFIL);
-        } else {
-            profileState.setValue(ProfileState.CON_PERFIL);
-        }
-    }
-
 
     public void obtenerPerfil(String jwtToken) {
         new Thread() {

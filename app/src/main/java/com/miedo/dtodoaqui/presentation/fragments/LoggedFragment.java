@@ -1,11 +1,7 @@
 package com.miedo.dtodoaqui.presentation.fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
-import android.se.omapi.Session;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +9,12 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.adapters.ProfileInfoAdapter;
 import com.miedo.dtodoaqui.core.BaseFragment;
+import com.miedo.dtodoaqui.core.StateView;
 import com.miedo.dtodoaqui.data.ProfileTO;
 import com.miedo.dtodoaqui.data.local.SessionManager;
 import com.miedo.dtodoaqui.viewmodels.ProfileViewModel;
@@ -39,20 +34,76 @@ public class LoggedFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        // obtenemos el viewmodel
+        viewModel = ViewModelProviders.of(requireActivity()).get(ProfileViewModel.class);
         View view = inflater.inflate(R.layout.fragment_logged_profile, container, false);
-
+        listView = (ListView) view.findViewById(R.id.list_details);
+        adapter = new ProfileInfoAdapter(getContext(), items);
+        listView.setAdapter(adapter);
+        stateView = new StateView(view.findViewById(R.id.container));
         return view;
     }
 
 
+    StateView stateView;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        setUpStateView(view, view.findViewById(R.id.container));
-        viewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
-        listView = (ListView) view.findViewById(R.id.list_details);
 
 
+        if (viewModel.getCurrentProfile() == null) {
+            viewModel.obtenerPerfil(SessionManager.getInstance(getContext()).getCurrentSession().getJwt());
+        } else {
+            loadItems(viewModel.getCurrentProfile());
+            adapter.notifyDataSetChanged();
+        }
+
+        viewModel.getProfileState().observe(getViewLifecycleOwner(), profileState -> {
+            stateView.hideStateView();
+            switch (profileState) {
+                case CON_PERFIL:
+                    loadItems(viewModel.getCurrentProfile());
+                    adapter.notifyDataSetChanged();
+                    break;
+                case SIN_PERFIL:
+                    stateView.showTitleMessageAction(
+                            "Sin perfil",
+                            "No encontramos un perfil asociado a tu cuenta," +
+                                    "configura uno ahora mismo es fácil y rápido.",
+                            v -> {
+                                showMessage("GAAAA ABER");
+                                viewModel.obtenerPerfil(SessionManager.getInstance(getContext()).getCurrentSession().getJwt());
+                                stateView.showLoadingTitle("Buscando");
+                            }
+                    );
+                    break;
+
+            }
+        });
+
+
+        /*new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+
+                    stateView.hideStateView();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }.start();*/
+
+
+        // configuracion del stateView
+        //setUpStateView(view, view.findViewById(R.id.container));
+
+        /*viewModel = ViewModelProviders.of(requireActivity()).get(ProfileViewModel.class);
+        adapter = new ProfileInfoAdapter(getContext(), items);
+        listView = (ListView) view.findViewById(R.id.listview_profile);
+        listView.setAdapter(adapter);
 
 
         viewModel.getProfileState().observe(getViewLifecycleOwner(),
@@ -61,19 +112,16 @@ public class LoggedFragment extends BaseFragment {
                     public void onChanged(ProfileViewModel.ProfileState profileState) {
                         switch (profileState) {
                             case VERIFICANDO_PERFIL:
-                                getStateView().showLoadingWithTitle("Verificando perfil");
+                                //getStateView().showLoadingWithTitle("Verificando perfil");
                                 viewModel.verificarPerfil();
                                 break;
                             case CON_PERFIL:
                                 loadItems(viewModel.getCurrentProfile());
-                                adapter = new ProfileInfoAdapter(getContext(), items);
-                                listView.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();
-                                getStateView().hideStateView();
-                                Log.i(TAG, "Estoy aca csmre");
+                                //getStateView().hideStateView();
                                 break;
                             case OBTENIENDO_PERFIL:
-                                getStateView().showLoadingWithTitle("Obteniendo perfil");
+                                //getStateView().showLoadingWithTitle("Obteniendo perfil");
                                 viewModel.obtenerPerfil(SessionManager.getInstance(getContext()).getCurrentSession().getJwt());
                                 break;
 
@@ -101,7 +149,7 @@ public class LoggedFragment extends BaseFragment {
                     }
                 }
         );
-
+*/
 
         //listView.setAdapter(adapter);
     }

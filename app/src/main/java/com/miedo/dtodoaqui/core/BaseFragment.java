@@ -84,8 +84,8 @@ public class BaseFragment extends Fragment {
         showSnackMessage(message, com.google.android.material.R.color.error_color_material_light);
     }
 
-    public void setUpStateView(View parent, View anotherView) {
-        stateView = new StateView(parent, anotherView);
+    public void setUpStateView(View anotherView) {
+        stateView = new StateView(anotherView);
     }
 
     public StateView getStateView() {

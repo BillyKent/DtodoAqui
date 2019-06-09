@@ -48,9 +48,8 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        View viewParent = findViewById(R.id.parent);
         View container = findViewById(R.id.container);
-        setUpStateView(viewParent, container);
+        setUpStateView(container);
         ButterKnife.bind(this);
 
         buttonLogin.setOnClickListener(v -> {
@@ -89,7 +88,7 @@ public class LoginActivity extends BaseActivity {
     private class LoginTask extends AsyncTask<String, Void, Boolean> {
         @Override
         protected void onPreExecute() {
-            getStateView().showLoadingWithTitle("Iniciando sesión como " + usernameEditText.getText().toString().trim());
+            getStateView().showLoadingTitle("Iniciando sesión como " + usernameEditText.getText().toString().trim());
         }
 
         @Override

@@ -59,8 +59,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
-    public void setUpStateView(View parent, View anotherView) {
-        stateView = new StateView(parent, anotherView);
+    public void setUpStateView(View anotherView) {
+        stateView = new StateView(anotherView);
     }
 
     public StateView getStateView() {
