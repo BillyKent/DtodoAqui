@@ -108,6 +108,71 @@ public class StateView {
         });
     }
 
+    public void forceHideStateView() {
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                forceAnimation(target, stateView);
+
+                progressBar.setVisibility(View.GONE);
+                buttonAction.setVisibility(View.GONE);
+                descriptionView.setVisibility(View.GONE);
+                titleView.setVisibility(View.GONE);
+                iconView.setVisibility(View.GONE);
+
+            }
+        });
+
+    }
+
+    public void forceLoadingTitle(String title) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                target.setVisibility(View.GONE);
+                setLoadingTitleState(title);
+                forceAnimation(stateView, target);
+
+            }
+        });
+    }
+
+    public void forceTitleMessageIcon(String title, String description, int resIcon) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                setTitleMessageIconState(title, description, resIcon);
+
+                forceAnimation(stateView, target);
+
+
+            }
+        });
+    }
+
+    public void forceTitleMessageAction(String title, String description, View.OnClickListener listener) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                setTitleMessageActionState(title, description, listener);
+
+                forceAnimation(stateView, target);
+
+
+            }
+        });
+    }
+
+    public void forceTitleMessageIconAction(String title, String description, int resIcon, View.OnClickListener listener) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                setTitleMessageIconActionState(title, description, resIcon, listener);
+                forceAnimation(stateView, target);
+            }
+        });
+    }
 
     private void setLoadingTitleState(String title) {
         descriptionView.setVisibility(View.GONE);
@@ -160,9 +225,13 @@ public class StateView {
         buttonAction.setOnClickListener(listener);
     }
 
+    private void forceAnimation(View toRevealView, View toHideView) {
+        toHideView.setVisibility(View.GONE);
+        toRevealView.setVisibility(View.VISIBLE);
+    }
+
     private void finalAnimation(View toRevealView, View toHideView) {
-        //toHideView.setVisibility(View.GONE);
-        //toRevealView.setVisibility(View.VISIBLE);
+
         // hacemos aparecer la vista a revelar animando alpha de 0 a 1
 
         if (toRevealView.getVisibility() != View.VISIBLE) {

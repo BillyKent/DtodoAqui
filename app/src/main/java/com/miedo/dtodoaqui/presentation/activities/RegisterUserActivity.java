@@ -115,6 +115,20 @@ public class RegisterUserActivity extends BaseActivity {
         // si algun campo esta vacio retorna
         if (!continueFlag) return false;
 
+        // Password muy Jhony
+        if (passwordEditText.getText().toString().length() < 6) {
+            passwordEditText.setError("La contraseña debe contener al menos 6 caracteres.");
+            focusedView = passwordEditText;
+            continueFlag = false;
+        }
+
+        // Caracteres vacios
+        if (passwordEditText.getText().toString().contains(" ")) {
+            passwordEditText.setError("La contraseña no puede contener caracteres vacíos");
+            focusedView = passwordEditText;
+            continueFlag = false;
+        }
+
         // Password diferentes
         if (!password.equals(passwordConfirmation)) {
             passwordConfirmEditText.setError("Contraseña incorrecta");

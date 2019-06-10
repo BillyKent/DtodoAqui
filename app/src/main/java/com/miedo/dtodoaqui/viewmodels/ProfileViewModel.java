@@ -34,6 +34,7 @@ public class ProfileViewModel extends ViewModel {
                 currentProfile = model.getProfile(jwtToken);
                 if (currentProfile != null) { // Successful request
                     if (currentProfile.getId() == null) { // 204
+                        currentProfile = null;
                         profileState.postValue(ProfileState.SIN_PERFIL);
                     } else { // 200
                         profileState.postValue(ProfileState.CON_PERFIL);

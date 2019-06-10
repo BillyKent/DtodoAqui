@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.adapters.ProfileInfoAdapter;
 import com.miedo.dtodoaqui.core.BaseFragment;
@@ -27,6 +30,8 @@ public class LoggedFragment extends BaseFragment {
     public static final String TAG = LoggedFragment.class.getSimpleName();
 
     ProfileViewModel viewModel;
+    AppBarLayout appBarLayout;
+    CollapsingToolbarLayout collapsingToolbarLayout;
     ArrayList<ProfileInfoAdapter.ProfileItem> items = new ArrayList<>();
     ListView listView;
     private ProfileInfoAdapter adapter;
@@ -38,6 +43,10 @@ public class LoggedFragment extends BaseFragment {
         viewModel = ViewModelProviders.of(requireActivity()).get(ProfileViewModel.class);
         View view = inflater.inflate(R.layout.fragment_logged_profile, container, false);
         listView = (ListView) view.findViewById(R.id.list_details);
+        appBarLayout = (AppBarLayout) view.findViewById(R.id.app_bar_layout);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setTitle("Perfil");
+
         adapter = new ProfileInfoAdapter(getContext(), items);
         listView.setAdapter(adapter);
         stateView = new StateView(view.findViewById(R.id.container));
@@ -59,18 +68,22 @@ public class LoggedFragment extends BaseFragment {
         }
 
         viewModel.getProfileState().observe(getViewLifecycleOwner(), profileState -> {
-            stateView.hideStateView();
+
             switch (profileState) {
                 case CON_PERFIL:
+                    getStateView().hideStateView();
                     loadItems(viewModel.getCurrentProfile());
                     adapter.notifyDataSetChanged();
                     break;
                 case SIN_PERFIL:
-                    stateView.showTitleMessageAction(
+                    appBarLayout.setExpanded(false, false);
+
+                    stateView.forceTitleMessageAction(
                             "Sin perfil",
                             "No encontramos un perfil asociado a tu cuenta," +
                                     "configura uno ahora mismo es fácil y rápido.",
                             v -> {
+                                ((Button) v).setText("Configurar");
                                 showMessage("GAAAA ABER");
                                 viewModel.obtenerPerfil(SessionManager.getInstance(getContext()).getCurrentSession().getJwt());
                                 stateView.showLoadingTitle("Buscando");
@@ -155,6 +168,8 @@ public class LoggedFragment extends BaseFragment {
     }
 
     void loadItems(ProfileTO profile) {
+        if (profile == null) return;
+
         items.clear();
         // nombre
         items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_account_box_black_24dp, "Nombre",
