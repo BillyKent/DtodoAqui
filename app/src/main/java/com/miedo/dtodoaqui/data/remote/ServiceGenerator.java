@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class ServiceGenerator {
-    private static final String API_URL_BASE = "https://dtodoaqui.xyz/";
+    private static final String API_URL_BASE = "http://35.226.8.87/";
 
     private static final OkHttpClient httpClient = new OkHttpClient.Builder()
             .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
