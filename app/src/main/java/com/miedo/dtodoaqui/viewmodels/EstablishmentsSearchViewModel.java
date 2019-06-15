@@ -19,7 +19,7 @@ public class EstablishmentsSearchViewModel extends ViewModel {
     }
 
     public void SearchEstablishments(final String keyword, final String location, final String category){
-        model.TestSearchEstablishments(keyword,location,category,data);
+        model.SearchEstablishments(keyword,location,category,data);
     }
 
     public LiveData<List<EstablishmentSearchTO>> getSearchData() {
