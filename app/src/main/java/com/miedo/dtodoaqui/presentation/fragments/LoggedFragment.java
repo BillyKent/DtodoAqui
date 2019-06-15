@@ -51,6 +51,44 @@ public class LoggedFragment extends BaseFragment {
         adapter = new ProfileInfoAdapter(getContext(), items);
         listView.setAdapter(adapter);
         stateView = new StateView(view.findViewById(R.id.container));
+
+        if (viewModel.isCurrentProfileActive()) { // si la cuenta activa no es null
+            showItems();
+        } else {
+            viewModel.obtenerPerfil(SessionManager.getInstance(requireContext()).getCurrentSession().getJwt());
+        }
+
+        viewModel.getProfileState().observe(getViewLifecycleOwner(), profileState -> {
+
+            switch (profileState) {
+                case OBTENIENDO:
+                    getStateView().showLoadingTitle("Obteniendo perfil");
+                    break;
+                case SIN_PERFIL:
+                    getStateView().showTitleMessageAction("No configuraste un perfil",
+                            "Configura uno ahora mismo es fácil y rápido",
+                            v -> {
+                                showMessage("GAAAAAA");
+                            }
+                    );
+                    break;
+                case CON_PERFIL:
+                    getStateView().hideStateView();
+                    showItems();
+                    break;
+
+                case ERROR_STATE:
+                    getStateView().showTitleMessageAction("Error",
+                            "Algo salió mal :s .",
+                            v -> {
+                                showMessage("Reintentado :v");
+                            });
+                    break;
+            }
+
+
+        });
+
         return view;
     }
 
@@ -166,27 +204,41 @@ public class LoggedFragment extends BaseFragment {
         //listView.setAdapter(adapter);
     }
 
-    void loadItems() {
+    void showItems() {
         ProfileTO profile = viewModel.getCurrentProfile();
         if (profile == null) return;
 
         items.clear();
+
+
         // nombre
-        items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_account_box_black_24dp, "Nombre",
-                profile.getFirstName() + " " + profile.getLastName()
-        ));
+        if (profile.getFirstName() != null && profile.getLastName() != null) {
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_account_box_black_24dp, "Nombre",
+                    profile.getFirstName() + " " + profile.getLastName()
+            ));
+        }
+
         // telefono
-        items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_phone_black_24dp, "Telefono",
-                profile.getPhone()
-        ));
+        if (profile.getPhone() != null) {
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_phone_black_24dp, "Telefono",
+                    profile.getPhone()
+            ));
+        }
+
         // direccion
-        items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_location_on_black_24dp, "Dirección",
-                profile.getAddress()
-        ));
+        if (profile.getAddress() != null) {
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_location_on_black_24dp, "Dirección",
+                    profile.getAddress()
+            ));
+        }
+
         // facebook
-        items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_facebook, "Facebook",
-                profile.getFacebookUrl()
-        ));
+        if (profile.getFacebookUrl() != null) {
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_facebook, "Facebook",
+                    profile.getFacebookUrl()
+            ));
+
+        }
 
     }
 

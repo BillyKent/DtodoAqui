@@ -77,8 +77,16 @@ public class ProfileViewModel extends ViewModel {
 
     }
 
+    public boolean isCurrentProfileActive() {
+        return currentProfile != null;
+    }
+
     public ProfileTO getCurrentProfile() {
         return currentProfile;
+    }
+
+    public MutableLiveData<ProfileState> getProfileState() {
+        return profileState;
     }
 
 }
