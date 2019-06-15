@@ -97,6 +97,19 @@ public class StateView {
         });
     }
 
+    public void showTitleMessageButtonAction(String title, String description, String buttonText, View.OnClickListener listener) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                setTitleMessageButtonActionState(title, description, buttonText,listener);
+
+                finalAnimation(stateView, target);
+
+
+            }
+        });
+    }
+
     public void showTitleMessageIconAction(String title, String description, int resIcon, View.OnClickListener listener) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
@@ -195,6 +208,22 @@ public class StateView {
         titleView.setText(title);
         descriptionView.setText(description);
         iconView.setImageResource(resIcon);
+    }
+
+    private void setTitleMessageButtonActionState(String title, String description, String buttonText, View.OnClickListener listener) {
+
+        progressBar.setVisibility(View.GONE);
+        iconView.setVisibility(View.GONE);
+
+        buttonAction.setVisibility(View.VISIBLE);
+        descriptionView.setVisibility(View.VISIBLE);
+        titleView.setVisibility(View.VISIBLE);
+
+        titleView.setText(title);
+        descriptionView.setText(description);
+        buttonAction.setText(buttonText);
+        buttonAction.setOnClickListener(listener);
+
     }
 
     private void setTitleMessageIconActionState(String title, String description, int resIcon, View.OnClickListener listener) {

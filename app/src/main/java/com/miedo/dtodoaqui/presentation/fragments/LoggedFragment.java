@@ -65,11 +65,13 @@ public class LoggedFragment extends BaseFragment {
                     if (getStateView() == null) {
                         Log.i(TAG, "stateview es nulo");
                     }
-                    //getStateView().showLoadingTitle("Obteniendo perfil");
+                    getStateView().forceLoadingTitle("Obteniendo perfil");
                     break;
                 case SIN_PERFIL:
-                    getStateView().showTitleMessageAction("No configuraste un perfil",
+                    getStateView().showTitleMessageButtonAction("No configuraste un perfil",
                             "Configura uno ahora mismo es fácil y rápido",
+                            "Configurar"
+                            ,
                             v -> {
                                 showMessage("GAAAAAA");
                             }
@@ -81,8 +83,10 @@ public class LoggedFragment extends BaseFragment {
                     break;
 
                 case ERROR_STATE:
-                    getStateView().showTitleMessageAction("Error",
+                    getStateView().showTitleMessageButtonAction("Error",
                             "Algo salió mal :s .",
+                            "Refrescar"
+                            ,
                             v -> {
                                 showMessage("Reintentado :v");
                             });
