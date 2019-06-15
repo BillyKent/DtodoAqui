@@ -34,6 +34,7 @@ public class LoggedFragment extends BaseFragment {
     CollapsingToolbarLayout collapsingToolbarLayout;
     ArrayList<ProfileInfoAdapter.ProfileItem> items = new ArrayList<>();
     ListView listView;
+    StateView stateView;
     private ProfileInfoAdapter adapter;
 
     @Override
@@ -54,13 +55,11 @@ public class LoggedFragment extends BaseFragment {
     }
 
 
-    StateView stateView;
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
 
-        if (viewModel.getCurrentProfile() == null) {
+        /*if (viewModel.getCurrentProfile() == null) {
             viewModel.obtenerPerfil(SessionManager.getInstance(getContext()).getCurrentSession().getJwt());
         } else {
             loadItems(viewModel.getCurrentProfile());
@@ -93,7 +92,7 @@ public class LoggedFragment extends BaseFragment {
 
             }
         });
-
+*/
 
         /*new Thread() {
             @Override
@@ -167,7 +166,8 @@ public class LoggedFragment extends BaseFragment {
         //listView.setAdapter(adapter);
     }
 
-    void loadItems(ProfileTO profile) {
+    void loadItems() {
+        ProfileTO profile = viewModel.getCurrentProfile();
         if (profile == null) return;
 
         items.clear();

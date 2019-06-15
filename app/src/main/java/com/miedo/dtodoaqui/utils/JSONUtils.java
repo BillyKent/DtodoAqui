@@ -73,14 +73,14 @@ public final class JSONUtils {
         try {
             JSONObject rpta = new JSONObject(response);
             retorno = new ProfileTO();
-            retorno.setId(rpta.getInt("id"));
-            retorno.setAddress(rpta.getString("address"));
-            retorno.setCountry(rpta.getString("country"));
-            retorno.setDescription(rpta.getString("description"));
-            retorno.setFacebookUrl(rpta.getString("facebook"));
-            retorno.setFirstName(rpta.getString("first_name"));
-            retorno.setLastName(rpta.getString("last_name"));
-            retorno.setPhone(rpta.getString("phone"));
+            retorno.setId(rpta.has("id") ? rpta.getInt("id") : null);
+            retorno.setAddress(rpta.has("address") ? rpta.getString("address") : null);
+            retorno.setCountry(rpta.has("country") ? rpta.getString("country") : null);
+            retorno.setDescription(rpta.has("description") ? rpta.getString("description") : null);
+            retorno.setFacebookUrl(rpta.has("facebook") ? rpta.getString("facebook") : null);
+            retorno.setFirstName(rpta.has("first_name") ? rpta.getString("first_name") : null);
+            retorno.setLastName(rpta.has("last_name") ? rpta.getString("last_name") : null);
+            retorno.setPhone(rpta.has("phone") ? rpta.getString("phone") : null);
 
         } catch (JSONException e) {
             e.printStackTrace();
