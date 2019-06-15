@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme">
-        <activity android:name=".presentation.activities.ModifyProfileActivity"></activity>
+        <activity android:name=".presentation.activities.ModifyProfileActivity"
+            android:theme="@style/ActionBarAppTheme"
+            ></activity>
         <activity
             android:name=".presentation.activities.EstablishmentActivity"
             android:configChanges="orientation"

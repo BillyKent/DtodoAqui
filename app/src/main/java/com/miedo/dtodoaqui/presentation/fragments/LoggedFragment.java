@@ -1,5 +1,6 @@
 package com.miedo.dtodoaqui.presentation.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -21,6 +22,7 @@ import com.miedo.dtodoaqui.core.BaseFragment;
 import com.miedo.dtodoaqui.core.StateView;
 import com.miedo.dtodoaqui.data.ProfileTO;
 import com.miedo.dtodoaqui.data.local.SessionManager;
+import com.miedo.dtodoaqui.presentation.activities.ModifyProfileActivity;
 import com.miedo.dtodoaqui.viewmodels.ProfileViewModel;
 
 import java.util.ArrayList;
@@ -29,6 +31,12 @@ import java.util.ArrayList;
 public class LoggedFragment extends BaseFragment {
 
     public static final String TAG = LoggedFragment.class.getSimpleName();
+
+    public static final int MODIFIY_PROFILE_REQUEST_CODE = 100;
+
+    public static final int MODIFY_OK = 40;
+    public static final int MODIFY_CANCEL = 30;
+
 
     ProfileViewModel viewModel;
     AppBarLayout appBarLayout;
@@ -73,7 +81,10 @@ public class LoggedFragment extends BaseFragment {
                             "Configurar"
                             ,
                             v -> {
-                                showMessage("GAAAAAA");
+
+                                Intent intent = new Intent(requireContext(), ModifyProfileActivity.class);
+                                startActivityForResult(intent, MODIFIY_PROFILE_REQUEST_CODE);
+                                
                             }
                     );
                     break;
