@@ -14,7 +14,6 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.miedo.dtodoaqui.R;
@@ -93,11 +92,7 @@ public class LoggedFragment extends BaseFragment {
                             case ERROR_STATE:
                                 showMessageError("Algo salió mal");
                                 break;
-
-
                         }
-
-
                     }
                 }
         );
