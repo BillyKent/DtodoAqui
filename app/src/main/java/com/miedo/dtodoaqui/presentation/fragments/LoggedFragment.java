@@ -2,6 +2,7 @@ package com.miedo.dtodoaqui.presentation.fragments;
 
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,6 @@ public class LoggedFragment extends BaseFragment {
     CollapsingToolbarLayout collapsingToolbarLayout;
     ArrayList<ProfileInfoAdapter.ProfileItem> items = new ArrayList<>();
     ListView listView;
-    StateView stateView;
     private ProfileInfoAdapter adapter;
 
     @Override
@@ -50,7 +50,7 @@ public class LoggedFragment extends BaseFragment {
 
         adapter = new ProfileInfoAdapter(getContext(), items);
         listView.setAdapter(adapter);
-        stateView = new StateView(view.findViewById(R.id.container));
+        setUpStateView(view.findViewById(R.id.container));
 
         if (viewModel.isCurrentProfileActive()) { // si la cuenta activa no es null
             showItems();
@@ -62,7 +62,10 @@ public class LoggedFragment extends BaseFragment {
 
             switch (profileState) {
                 case OBTENIENDO:
-                    getStateView().showLoadingTitle("Obteniendo perfil");
+                    if (getStateView() == null) {
+                        Log.i(TAG, "stateview es nulo");
+                    }
+                    //getStateView().showLoadingTitle("Obteniendo perfil");
                     break;
                 case SIN_PERFIL:
                     getStateView().showTitleMessageAction("No configuraste un perfil",
