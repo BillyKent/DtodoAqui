@@ -1,9 +1,16 @@
 package com.miedo.dtodoaqui.core;
 
 
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +43,13 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
+    public void hideInput() {
+
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+        );
+    }
+
     public void showMessageError(String message) {
         // aun por definir el color del snackbar para el error
         showSnackMessage(message, R.color.colorPrimaryDark);
@@ -59,8 +73,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
-    public void setUpStateView(View parent, View anotherView) {
-        stateView = new StateView(parent, anotherView);
+    public void setUpStateView(View anotherView) {
+        stateView = new StateView(anotherView);
     }
 
     public StateView getStateView() {

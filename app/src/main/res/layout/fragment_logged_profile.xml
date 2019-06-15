@@ -10,15 +10,17 @@
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:expanded="false"
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-
+            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="175dp"
             android:fitsSystemWindows="true"
             app:collapsedTitleTextAppearance="@android:color/transparent"
             app:contentScrim="@color/colorPrimary"
+
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snapMargins">
 
             <ImageView
@@ -42,6 +44,7 @@
 
 
     </com.google.android.material.appbar.AppBarLayout>
+
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -69,6 +72,7 @@
 
 
     </androidx.core.widget.NestedScrollView>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="160dp"

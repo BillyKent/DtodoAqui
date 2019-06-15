@@ -21,8 +21,6 @@ public class ProfileModel {
     public static final String TAG = ProfileModel.class.getSimpleName();
 
 
-    private MutableLiveData<ProfileViewModel.ProfileState> liveData;
-
     public ProfileModel() {
     }
 
@@ -44,12 +42,10 @@ public class ProfileModel {
             if (response.isSuccessful()) {
                 if (response.code() == 204) {
                     retorno = new ProfileTO();
-                    Log.i(TAG, "Codigo 204 al obtener el perfil ");
 
                 } else if (response.code() == 200) { // Devuelve el ProfileTO del perfil encontrado
                     String rpta = ((ResponseBody) response.body()).string();
                     retorno = JSONUtils.getProfileFromJSONString(rpta);
-                    Log.i(TAG,"Perfil encontrado : "+retorno);
                 }
 
             } else {

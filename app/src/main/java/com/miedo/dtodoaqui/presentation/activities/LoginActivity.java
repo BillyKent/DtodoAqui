@@ -1,10 +1,15 @@
 package com.miedo.dtodoaqui.presentation.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ScrollView;
 
 import com.google.android.gms.common.util.Strings;
 import com.google.android.material.textfield.TextInputEditText;
@@ -15,8 +20,11 @@ import com.miedo.dtodoaqui.data.local.SessionManager;
 import com.miedo.dtodoaqui.data.remote.DeTodoAquiAPI;
 import com.miedo.dtodoaqui.data.remote.ServiceGenerator;
 import com.miedo.dtodoaqui.presentation.fragments.UnloggedProfileFragment;
+import com.miedo.dtodoaqui.utils.ConnectionLiveData;
 import com.miedo.dtodoaqui.utils.JSONUtils;
 import com.miedo.dtodoaqui.utils.KeyboardUtils;
+import com.miedo.dtodoaqui.utils.NetworkUtils;
+import com.miedo.dtodoaqui.utils.ValidatorUtils;
 
 import java.io.IOException;
 
@@ -32,6 +40,9 @@ public class LoginActivity extends BaseActivity {
 
     public static final String TAG = LoginActivity.class.getSimpleName();
 
+    @BindView(R.id.container)
+    ScrollView scrollView;
+
     @BindView(R.id.usernameEditText)
     TextInputEditText usernameEditText;
 
@@ -43,15 +54,15 @@ public class LoginActivity extends BaseActivity {
 
     View focusedView;
 
+    ConnectionLiveData connectionLiveData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        View viewParent = findViewById(R.id.parent);
-        View container = findViewById(R.id.container);
-        setUpStateView(viewParent, container);
         ButterKnife.bind(this);
+
+        setUpStateView(scrollView);
 
         buttonLogin.setOnClickListener(v -> {
             KeyboardUtils.hideSoftInput(this);
@@ -62,16 +73,36 @@ public class LoginActivity extends BaseActivity {
             if (validateFields(username, password)) {
                 LoginTask loginTask = new LoginTask();
                 loginTask.execute(username, password);
-
             }
-
-
         });
 
+
+        connectionLiveData = new ConnectionLiveData(getApplicationContext());
+        connectionLiveData.observe(this, connected -> {
+            KeyboardUtils.hideSoftInput(this);
+            if (connected) {
+                getStateView().hideStateView();
+            } else {
+                getStateView().showTitleMessageIcon("SIN INTERNET", "No tienes conexión a internet.", R.drawable.ic_no_internet);
+                hideInput();
+            }
+        });
+
+        usernameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                scrollView.scrollTo(0, scrollView.getBottom());
+            }
+        });
+
+        hideInput();
+        buttonLogin.requestFocus();
     }
+
 
     private boolean validateFields(String username, String password) {
         boolean continueFlag = true;
+        // Campos vacíos
         if (Strings.isEmptyOrWhitespace(password)) {
             passwordEditText.setError(getString(R.string.empty_field_error));
             focusedView = passwordEditText;
@@ -83,13 +114,14 @@ public class LoginActivity extends BaseActivity {
             focusedView = usernameEditText;
             continueFlag = false;
         }
+
         return continueFlag;
     }
 
     private class LoginTask extends AsyncTask<String, Void, Boolean> {
         @Override
         protected void onPreExecute() {
-            getStateView().showLoadingWithTitle("Iniciando sesión como " + usernameEditText.getText().toString().trim());
+            getStateView().showLoadingTitle("Iniciando sesión como " + usernameEditText.getText().toString().trim());
         }
 
         @Override
@@ -138,7 +170,6 @@ public class LoginActivity extends BaseActivity {
                     SessionManager.getInstance(getApplicationContext()).startSession(user);
                     successful = true;
                 }
-
 
             } catch (IOException e) {
                 e.printStackTrace();

@@ -10,246 +10,252 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-
 import com.miedo.dtodoaqui.R;
 
-/**
- * Helper para la visualización de estados en pantalla
- */
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class StateView {
 
+    public View stateView;
 
-    public static final int SIN_INTERNET_STATE = 1;
-    public static final int SIN_RESULTADOS_BUSQUEDA_STATE = 2;
-    public static final int SIN_RESULTADOS_ESTABLECIMIENTOS_STATE = 3;
-    public static final int REGISTRANDO_USUARIO = 4;
+    @BindView(R.id.state_title)
+    TextView titleView;
+    @BindView(R.id.state_description)
+    TextView descriptionView;
+    @BindView(R.id.state_icon)
+    ImageView iconView;
+    @BindView(R.id.state_button)
+    Button buttonAction;
+    @BindView(R.id.state_loading_progress_bar)
+    ProgressBar progressBar;
 
-    private View stateView;
-    private View anotherView;
-    private TextView titleView;
-    private TextView descriptionView;
-    private ProgressBar progressBar;
-    private ImageView imageView;
-    private Button buttonAction;
+    private int shortAnimationDuration = 1500;
 
-    private int shortAnimationDuration = 2000;
+    private final View target;
 
-    public StateView(View viewParent, View anotherView) {
-        this.anotherView = anotherView;
-        stateView = viewParent.findViewById(R.id.state_view);
-        if (stateView != null) {
-
-            titleView = stateView.findViewById(R.id.state_title);
-            descriptionView = stateView.findViewById(R.id.state_description);
-            imageView = stateView.findViewById(R.id.state_icon);
-            buttonAction = stateView.findViewById(R.id.state_button);
-            progressBar = stateView.findViewById(R.id.state_loading_progress_bar);
-
-            hideStateView();
-        }
-        if (anotherView != null) {
-            shortAnimationDuration = anotherView.getContext().getResources().getInteger(android.R.integer.config_longAnimTime);
-        }
-    }
-
-    public void showLoadingWithTitle(int title) {
-
-        new Handler(Looper.getMainLooper())
-                .post(new Runnable() {
-                    @Override
-                    public void run() {
-                        // configuramos el state view
-                        titleView.setText(title);
-
-                        progressBar.setVisibility(View.VISIBLE);
-                        titleView.setVisibility(View.VISIBLE);
-                        descriptionView.setVisibility(View.GONE);
-                        imageView.setVisibility(View.GONE);
-                        buttonAction.setVisibility(View.GONE);
-
-                        finalAnimation(stateView, anotherView);
-
-                    }
-                });
-
-    }
-
-    public void showLoadingWithTitle(String title) {
-
-        new Handler(Looper.getMainLooper())
-                .post(new Runnable() {
-                    @Override
-                    public void run() {
-                        // configuramos el state view
-                        titleView.setText(title);
-
-                        progressBar.setVisibility(View.VISIBLE);
-                        titleView.setVisibility(View.VISIBLE);
-                        descriptionView.setVisibility(View.GONE);
-                        imageView.setVisibility(View.GONE);
-                        buttonAction.setVisibility(View.GONE);
-
-                        finalAnimation(stateView, anotherView);
-
-                    }
-                });
-
-    }
-
-
-    public void showLoading() {
-
-        new Handler(Looper.getMainLooper())
-                .post(new Runnable() {
-                    @Override
-                    public void run() {
-                        // configuramos el state view
-                        progressBar.setVisibility(View.VISIBLE);
-                        titleView.setVisibility(View.GONE);
-                        descriptionView.setVisibility(View.GONE);
-                        imageView.setVisibility(View.GONE);
-                        buttonAction.setVisibility(View.GONE);
-
-
-                        finalAnimation(stateView, anotherView);
-
-
-                    }
-                });
-
-
+    public StateView(View target) {
+        this.target = target;
+        this.stateView = ((View) target.getParent()).findViewById(R.id.state_view);
+        shortAnimationDuration = target.getContext().getResources().getInteger(android.R.integer.config_longAnimTime);
+        ButterKnife.bind(this, stateView);
     }
 
     public void hideStateView() {
 
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                finalAnimation(target, stateView);
 
-        new Handler(Looper.getMainLooper())
-                .post(new Runnable() {
-                    @Override
-                    public void run() {
-                        // configuramos el state view
-                        progressBar.setVisibility(View.GONE);
-                        titleView.setVisibility(View.GONE);
-                        descriptionView.setVisibility(View.GONE);
-                        imageView.setVisibility(View.GONE);
-                        buttonAction.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+                buttonAction.setVisibility(View.GONE);
+                descriptionView.setVisibility(View.GONE);
+                titleView.setVisibility(View.GONE);
+                iconView.setVisibility(View.GONE);
 
-                        finalAnimation(anotherView, stateView);
+            }
+        });
 
-                    }
-                });
     }
 
+    public void showLoadingTitle(String title) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                target.setVisibility(View.GONE);
+                setLoadingTitleState(title);
+                finalAnimation(stateView, target);
 
-    public void showState(int resTitle, int resDescription, int resIcon, View.OnClickListener listener) {
-        new Handler(Looper.getMainLooper())
-                .post(new Runnable() {
-                    @Override
-                    public void run() {
-                        stateView.setVisibility(View.GONE);
-                        progressBar.setVisibility(View.GONE);
-                        titleView.setText(resTitle);
-                        descriptionView.setText(resDescription);
-                        imageView.setImageResource(resIcon);
-                        buttonAction.setOnClickListener(listener);
-
-                        descriptionView.setVisibility(View.VISIBLE);
-                        titleView.setVisibility(View.VISIBLE);
-                        imageView.setVisibility(View.VISIBLE);
-                        buttonAction.setVisibility((listener != null) ? View.VISIBLE : View.GONE);
-
-
-                        finalAnimation(stateView, anotherView);
-                    }
-                });
+            }
+        });
     }
 
-    public void showActionState(String title, String description, View.OnClickListener listener) {
-        new Handler(Looper.getMainLooper())
-                .post(new Runnable() {
-                    @Override
-                    public void run() {
-                        stateView.setVisibility(View.GONE);
-                        titleView.setText(title);
-                        descriptionView.setText(description);
-                        buttonAction.setOnClickListener(listener);
+    public void showTitleMessageIcon(String title, String description, int resIcon) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                setTitleMessageIconState(title, description, resIcon);
+
+                finalAnimation(stateView, target);
 
 
-                        titleView.setVisibility(View.VISIBLE);
-                        descriptionView.setVisibility(View.VISIBLE);
-                        buttonAction.setVisibility(View.VISIBLE);
-                        imageView.setVisibility(View.GONE);
-                        progressBar.setVisibility(View.GONE);
-
-                        finalAnimation(stateView, anotherView);
-
-                    }
-                });
+            }
+        });
     }
 
-    public void showCustomState(int state) {
+    public void showTitleMessageAction(String title, String description, View.OnClickListener listener) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                setTitleMessageActionState(title, description, listener);
 
-        switch (state) {
+                finalAnimation(stateView, target);
 
-            case SIN_RESULTADOS_BUSQUEDA_STATE:
-                showState(R.string.sin_resultados_busqueda_title, R.string.sin_resultados_busqueda_descrip, R.drawable.ic_not_found, null);
-                break;
 
-            case SIN_RESULTADOS_ESTABLECIMIENTOS_STATE:
-                showState(R.string.sin_resultados_establecimientos_title, R.string.sin_resultados_establecimientos_descrip, R.drawable.ic_not_found,
-                        null);
-                break;
+            }
+        });
+    }
 
-            case SIN_INTERNET_STATE:
-                showState(R.string.sin_internet_title, R.string.sin_internet_descrip, R.drawable.ic_dead, null);
-                break;
-            case REGISTRANDO_USUARIO:
-                showLoadingWithTitle(R.string.registrando_usuario_title);
-        }
+    public void showTitleMessageIconAction(String title, String description, int resIcon, View.OnClickListener listener) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                setTitleMessageIconActionState(title, description, resIcon, listener);
+                finalAnimation(stateView, target);
 
+            }
+        });
+    }
+
+    public void forceHideStateView() {
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                forceAnimation(target, stateView);
+
+                progressBar.setVisibility(View.GONE);
+                buttonAction.setVisibility(View.GONE);
+                descriptionView.setVisibility(View.GONE);
+                titleView.setVisibility(View.GONE);
+                iconView.setVisibility(View.GONE);
+
+            }
+        });
+
+    }
+
+    public void forceLoadingTitle(String title) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                target.setVisibility(View.GONE);
+                setLoadingTitleState(title);
+                forceAnimation(stateView, target);
+
+            }
+        });
+    }
+
+    public void forceTitleMessageIcon(String title, String description, int resIcon) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                setTitleMessageIconState(title, description, resIcon);
+
+                forceAnimation(stateView, target);
+
+
+            }
+        });
+    }
+
+    public void forceTitleMessageAction(String title, String description, View.OnClickListener listener) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                setTitleMessageActionState(title, description, listener);
+
+                forceAnimation(stateView, target);
+
+
+            }
+        });
+    }
+
+    public void forceTitleMessageIconAction(String title, String description, int resIcon, View.OnClickListener listener) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                setTitleMessageIconActionState(title, description, resIcon, listener);
+                forceAnimation(stateView, target);
+            }
+        });
+    }
+
+    private void setLoadingTitleState(String title) {
+        descriptionView.setVisibility(View.GONE);
+        iconView.setVisibility(View.GONE);
+        buttonAction.setVisibility(View.GONE);
+
+        progressBar.setVisibility(View.VISIBLE);
+        titleView.setVisibility(View.VISIBLE);
+        titleView.setText(title);
+    }
+
+    private void setTitleMessageIconState(String title, String description, int resIcon) {
+        progressBar.setVisibility(View.GONE);
+        buttonAction.setVisibility(View.GONE);
+
+        descriptionView.setVisibility(View.VISIBLE);
+        titleView.setVisibility(View.VISIBLE);
+        iconView.setVisibility(View.VISIBLE);
+
+        titleView.setText(title);
+        descriptionView.setText(description);
+        iconView.setImageResource(resIcon);
+    }
+
+    private void setTitleMessageIconActionState(String title, String description, int resIcon, View.OnClickListener listener) {
+
+        progressBar.setVisibility(View.GONE);
+
+        buttonAction.setVisibility(View.VISIBLE);
+        descriptionView.setVisibility(View.VISIBLE);
+        titleView.setVisibility(View.VISIBLE);
+        iconView.setVisibility(View.VISIBLE);
+
+        titleView.setText(title);
+        descriptionView.setText(description);
+        iconView.setImageResource(resIcon);
+        buttonAction.setOnClickListener(listener);
+    }
+
+    private void setTitleMessageActionState(String title, String description, View.OnClickListener listener) {
+        progressBar.setVisibility(View.GONE);
+        iconView.setVisibility(View.GONE);
+
+        buttonAction.setVisibility(View.VISIBLE);
+        descriptionView.setVisibility(View.VISIBLE);
+        titleView.setVisibility(View.VISIBLE);
+
+        titleView.setText(title);
+        descriptionView.setText(description);
+        buttonAction.setOnClickListener(listener);
+    }
+
+    private void forceAnimation(View toRevealView, View toHideView) {
+        toHideView.setVisibility(View.GONE);
+        toRevealView.setVisibility(View.VISIBLE);
     }
 
     private void finalAnimation(View toRevealView, View toHideView) {
 
-        toRevealView.setAlpha(0f);
-        toRevealView.setVisibility(View.VISIBLE);
-        toRevealView.animate()
-                .alpha(1f)
-                .setDuration(shortAnimationDuration)
-                .setListener(null);
+        // hacemos aparecer la vista a revelar animando alpha de 0 a 1
 
-        // primero desaparecemos la otra vista
-        toHideView.setVisibility(View.VISIBLE);
-        toHideView.animate()
-                .alpha(0f)
-                .setDuration(shortAnimationDuration)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        toHideView.setVisibility(View.GONE);
-                    }
-                });
+        if (toRevealView.getVisibility() != View.VISIBLE) {
+            toRevealView.setAlpha(0f);
+            toRevealView.setVisibility(View.VISIBLE);
+            toRevealView.animate()
+                    .alpha(1f)
+                    .setDuration(shortAnimationDuration)
+                    .setListener(null);
+        }
+
+        if (toHideView.getVisibility() == View.VISIBLE) {
+            // hacemos desaparecer la vista a ocultar animando su alfa de 1 a 0
+            toHideView.setAlpha(1f);
+            toHideView.animate()
+                    .alpha(0f)
+                    .setDuration(shortAnimationDuration)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            toHideView.setVisibility(View.GONE);
+                        }
+                    });
+        }
     }
-
-    /**
-     stateView.setAlpha(0f);
-     stateView.setVisibility(View.VISIBLE);
-     stateView.animate()
-     .alpha(1f)
-     .setDuration(shortAnimationDuration)
-     .setListener(null);
-
-     // primero desaparecemos la otra vista
-     anotherView.setVisibility(View.VISIBLE);
-     anotherView.animate()
-     .alpha(0f)
-     .setDuration(shortAnimationDuration)
-     .setListener(new AnimatorListenerAdapter() {
-    @Override public void onAnimationEnd(Animator animation) {
-    anotherView.setVisibility(View.GONE);
-    }
-    });
-     */
-
 
 }

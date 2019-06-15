@@ -4,10 +4,10 @@ public class ProfileTO {
     private Integer id;
     private String firstName;
     private String lastName;
+    private String description;
     private String phone;
     private String country;
     private String address;
-    private String description;
     private String facebookUrl;
 
     public ProfileTO() {
