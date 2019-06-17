@@ -8,6 +8,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface DeTodoAquiAPI {
@@ -35,4 +36,12 @@ public interface DeTodoAquiAPI {
     // Actualizar profile
     @PUT("/api/my_profile")
     public Call<ResponseBody> updateProfile(@Header("Authorization") String bearer, @Body RequestBody body);
+
+    // Obtener categorías
+    @GET("/api/categories")
+    public Call<ResponseBody> getCategories();
+
+    @GET("/api/listings/{id}")
+    public Call<ResponseBody> getEstablishment(@Path("id") int id);
+
 }

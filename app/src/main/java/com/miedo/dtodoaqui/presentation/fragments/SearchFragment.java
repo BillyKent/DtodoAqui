@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -34,10 +35,13 @@ import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.adapters.EstablishmentSearchAdapter;
 import com.miedo.dtodoaqui.data.EstablishmentSearchTO;
 import com.miedo.dtodoaqui.data.EstablishmentTO;
+import com.miedo.dtodoaqui.model.CategoriesModel;
 import com.miedo.dtodoaqui.presentation.activities.EstablishmentActivity;
 import com.miedo.dtodoaqui.viewmodels.EstablishmentsSearchViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,7 +60,7 @@ public class SearchFragment extends Fragment{
 
     private EstablishmentsSearchViewModel viewModel;
 
-    private boolean colapsed = false;
+    private Map<Integer,String> categoriesMap = null;
 
 
     public SearchFragment() {
@@ -117,7 +121,45 @@ public class SearchFragment extends Fragment{
 
         establishmentsSearchResult.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
+        getCategories();
+
         return view;
+    }
+
+    private void getCategories(){
+        CategoriesModel categoriesModel = new CategoriesModel();
+        categoriesModel.GetCategories(new CategoriesModel.Callback<Map<Integer, String>>() {
+            @Override
+            public void onResult(Map<Integer, String> arg) {
+                categoriesMap = arg;
+                List<String> categories = new ArrayList();
+                for(Map.Entry<Integer,String> entry : arg.entrySet()){
+                    categories.add(entry.getValue());
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,categories);
+
+                categoriesSearchParam.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure() {
+                //Error
+            }
+        });
+    }
+
+    private int getCategoryId(String name){
+        int id = -1;
+        if(categoriesMap.containsValue(name)){
+            for(Map.Entry<Integer,String> entry : categoriesMap.entrySet()){
+                if(name.equals(entry.getValue())){
+                    id = entry.getKey();
+                    break;
+                }
+            }
+        }
+        return id;
     }
 
     @Override
