@@ -13,6 +13,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
+
+        <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox
+        </item>
     </style>
 
     <style name="EditTextRounded">
@@ -41,6 +44,7 @@
     <style name="TitleTextView">
         <item name="android:textSize">20dp</item>
     </style>
+
     <style name="SubTitleTextView">
         <item name="android:textSize">15dp</item>
     </style>

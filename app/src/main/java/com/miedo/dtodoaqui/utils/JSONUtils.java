@@ -1,11 +1,15 @@
 package com.miedo.dtodoaqui.utils;
 
+import android.util.Log;
+
 import com.miedo.dtodoaqui.data.ProfileTO;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public final class JSONUtils {
+
+    public static final String TAG = JSONUtils.class.getSimpleName();
 
     /**
      * Funcion que retorna un {@link JSONObject} para el registro de usuario.
@@ -67,20 +71,63 @@ public final class JSONUtils {
         return retorno;
     }
 
+
+    /**
+     * Retorna un objeto profile de la respuesta al momento de consultar profile
+     *
+     * @param response
+     * @return
+     */
     public static ProfileTO getProfileFromJSONString(String response) {
         ProfileTO retorno = null;
 
         try {
             JSONObject rpta = new JSONObject(response);
             retorno = new ProfileTO();
-            retorno.setId(rpta.has("id") ? rpta.getInt("id") : null);
-            retorno.setAddress(rpta.has("address") ? rpta.getString("address") : null);
-            retorno.setCountry(rpta.has("country") ? rpta.getString("country") : null);
-            retorno.setDescription(rpta.has("description") ? rpta.getString("description") : null);
-            retorno.setFacebookUrl(rpta.has("facebook") ? rpta.getString("facebook") : null);
-            retorno.setFirstName(rpta.has("first_name") ? rpta.getString("first_name") : null);
-            retorno.setLastName(rpta.has("last_name") ? rpta.getString("last_name") : null);
-            retorno.setPhone(rpta.has("phone") ? rpta.getString("phone") : null);
+
+            retorno.setId(rpta.getInt("id"));
+            retorno.setAddress(rpta.getString("address"));
+            retorno.setCountry(rpta.getString("country"));
+            retorno.setDescription(rpta.getString("description"));
+            retorno.setFacebookUrl(rpta.getString("facebook"));
+            retorno.setFirstName(rpta.getString("first_name"));
+            retorno.setLastName(rpta.getString("last_name"));
+            retorno.setPhone(rpta.getString("phone"));
+
+            Log.i(TAG, "Objeto ProfileTO parseado : " + retorno);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return retorno;
+    }
+
+    /**
+     * Obtiene el String para el request body de los endpoint para la creacion
+     * y actualizacion de profile.
+     *
+     * @param p perfil apra actualizar o crear
+     * @return String con el request body
+     */
+    public static String getProfileRequestBodyJSON(ProfileTO p) {
+        String retorno = "";
+
+        JSONObject body = new JSONObject();
+        JSONObject prof = new JSONObject();
+
+        try {
+            prof.put("first_name", p.getFirstName());
+            prof.put("last_name", p.getLastName());
+            prof.put("phone", p.getPhone());
+            prof.put("facebook", p.getFacebookUrl());
+            prof.put("description", p.getDescription());
+            prof.put("country", p.getCountry());
+            prof.put("address", p.getAddress());
+
+            body.put("profile", prof);
+
+            retorno = body.toString();
 
         } catch (JSONException e) {
             e.printStackTrace();
