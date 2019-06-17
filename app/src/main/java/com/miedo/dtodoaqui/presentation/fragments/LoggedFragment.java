@@ -84,6 +84,7 @@ public class LoggedFragment extends BaseFragment {
                             v -> {
 
                                 Intent intent = new Intent(requireContext(), ModifyProfileActivity.class);
+                                intent.putExtra("create", viewModel.getToCreate());
                                 startActivityForResult(intent, MODIFIY_PROFILE_REQUEST_CODE);
 
                             }
@@ -111,120 +112,20 @@ public class LoggedFragment extends BaseFragment {
         return view;
     }
 
-
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
-
-        /*if (viewModel.getCurrentProfile() == null) {
-            viewModel.obtenerPerfil(SessionManager.getInstance(getContext()).getCurrentSession().getJwt());
-        } else {
-            loadItems(viewModel.getCurrentProfile());
-            adapter.notifyDataSetChanged();
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == MODIFIY_PROFILE_REQUEST_CODE) {
+            if (resultCode == MODIFY_OK) {
+                viewModel.obtenerPerfil(SessionManager.getInstance(requireContext()).getCurrentSession().getJwt());
+            }
         }
 
-        viewModel.getProfileState().observe(getViewLifecycleOwner(), profileState -> {
 
-            switch (profileState) {
-                case CON_PERFIL:
-                    getStateView().hideStateView();
-                    loadItems(viewModel.getCurrentProfile());
-                    adapter.notifyDataSetChanged();
-                    break;
-                case SIN_PERFIL:
-                    appBarLayout.setExpanded(false, false);
-
-                    stateView.forceTitleMessageAction(
-                            "Sin perfil",
-                            "No encontramos un perfil asociado a tu cuenta," +
-                                    "configura uno ahora mismo es fácil y rápido.",
-                            v -> {
-                                ((Button) v).setText("Configurar");
-                                showMessage("GAAAA ABER");
-                                viewModel.obtenerPerfil(SessionManager.getInstance(getContext()).getCurrentSession().getJwt());
-                                stateView.showLoadingTitle("Buscando");
-                            }
-                    );
-                    break;
-
-            }
-        });
-*/
-
-        /*new Thread() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(2000);
-
-                    stateView.hideStateView();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }.start();*/
-
-
-        // configuracion del stateView
-        //setUpStateView(view, view.findViewById(R.id.container));
-
-        /*viewModel = ViewModelProviders.of(requireActivity()).get(ProfileViewModel.class);
-        adapter = new ProfileInfoAdapter(getContext(), items);
-        listView = (ListView) view.findViewById(R.id.listview_profile);
-        listView.setAdapter(adapter);
-
-
-        viewModel.getProfileState().observe(getViewLifecycleOwner(),
-                new Observer<ProfileViewModel.ProfileState>() {
-                    @Override
-                    public void onChanged(ProfileViewModel.ProfileState profileState) {
-                        switch (profileState) {
-                            case VERIFICANDO_PERFIL:
-                                //getStateView().showLoadingWithTitle("Verificando perfil");
-                                viewModel.verificarPerfil();
-                                break;
-                            case CON_PERFIL:
-                                loadItems(viewModel.getCurrentProfile());
-                                adapter.notifyDataSetChanged();
-                                //getStateView().hideStateView();
-                                break;
-                            case OBTENIENDO_PERFIL:
-                                //getStateView().showLoadingWithTitle("Obteniendo perfil");
-                                viewModel.obtenerPerfil(SessionManager.getInstance(getContext()).getCurrentSession().getJwt());
-                                break;
-
-                            case SIN_PERFIL:
-                                getStateView().showActionState(
-                                        "No tienes registrado un perfil de usuario.",
-                                        "Configura tu perfil, así podrás publicar reseñas y decirle al mundo quien eres.",
-                                        new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                showMessage("A ber");
-                                            }
-                                        }
-                                );
-                                break;
-
-                            case ERROR_STATE:
-                                showMessageError("Algo salió mal");
-                                break;
-
-
-                        }
-
-
-                    }
-                }
-        );
-*/
-
-        //listView.setAdapter(adapter);
     }
 
     void showItems() {
         ProfileTO profile = viewModel.getCurrentProfile();
+        Log.i(TAG, "Perfil a mostrar : " + profile);
         if (profile == null) return;
 
         items.clear();

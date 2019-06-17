@@ -1,26 +1,20 @@
 package com.miedo.dtodoaqui.presentation.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.core.BaseActivity;
 import com.miedo.dtodoaqui.data.ProfileTO;
 import com.miedo.dtodoaqui.data.local.SessionManager;
+import com.miedo.dtodoaqui.presentation.fragments.LoggedFragment;
 import com.miedo.dtodoaqui.viewmodels.ModifyProfileViewModel;
 
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -61,14 +55,28 @@ public class ModifyProfileActivity extends BaseActivity {
                 boolean create = getIntent().getBooleanExtra("create", false);
 
                 ProfileTO newProfile = createTransferObject();
-
-
-                if (create) {
-                    viewModel.createProfile(newProfile, create);
-                }
-
+                viewModel.createOrUpdateProfile(newProfile, create);
             }
 
+        });
+
+        viewModel.getCurrentState().observe(this, state -> {
+            switch (state) {
+                case CREATING:
+                    getStateView().showLoadingTitle("Creando perfil");
+                    break;
+                case UPDATING:
+                    getStateView().showLoadingTitle("Actualizando perfil");
+                    break;
+                case SUCCESSFUL:
+                    setResult(LoggedFragment.MODIFY_OK);
+                    finish();
+                    break;
+                case ERROR:
+                    getStateView().hideStateView();
+                    showToastMessage("Algo ocurrió mal");
+                    break;
+            }
         });
 
     }
@@ -77,7 +85,7 @@ public class ModifyProfileActivity extends BaseActivity {
         ProfileTO nuevo = new ProfileTO();
 
         for (int i = 0; i < editTextList.size(); i++) {
-            String fieldString = editTextList.get(i).toString().trim();
+            String fieldString = editTextList.get(i).getText().toString().trim();
             switch (i) {
                 case 0:
                     nuevo.setFirstName(fieldString);
@@ -124,6 +132,8 @@ public class ModifyProfileActivity extends BaseActivity {
         boolean continueFlag = true;
 
         for (int i = editTextList.size() - 1; i >= 0; i--) {
+            if (editTextList.get(i).getId() == R.id.facebookEditText) continue;
+
             if (editTextList.get(i).getText().toString().isEmpty()) {
                 editTextList.get(i).setError("Este campo no puede estar vacío");
                 continueFlag = false;

@@ -36,13 +36,12 @@ public class ModifyProfileViewModel extends ViewModel {
         this.jwt = jwt;
     }
 
-
-    public void updateProfile(ProfileTO profileTO) {
-
-
-    }
-
-    public void createProfile(ProfileTO profileTO, Boolean toCreate) {
+    public void createOrUpdateProfile(ProfileTO profileTO, Boolean toCreate) {
+        if (toCreate) {
+            currentState.setValue(ModifyProfileState.CREATING);
+        } else {
+            currentState.setValue(ModifyProfileState.UPDATING);
+        }
 
         // Creamos la instancia de la api
         DeTodoAquiAPI api = ServiceGenerator.createServiceScalar(DeTodoAquiAPI.class);
@@ -63,14 +62,15 @@ public class ModifyProfileViewModel extends ViewModel {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-
+                if (response.isSuccessful()) { // 201
+                    currentState.setValue(ModifyProfileState.SUCCESSFUL);
+                }
 
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                currentState.setValue(ModifyProfileState.ERROR);
             }
         });
 

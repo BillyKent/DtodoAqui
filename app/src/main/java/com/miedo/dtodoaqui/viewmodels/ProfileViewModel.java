@@ -26,6 +26,8 @@ public class ProfileViewModel extends ViewModel {
     private ProfileModel model;
     private ProfileTO currentProfile;
 
+    private Boolean toCreate = false;
+
     final MutableLiveData<ProfileState> profileState = new MutableLiveData<>();
 
     public enum ProfileState {
@@ -56,8 +58,10 @@ public class ProfileViewModel extends ViewModel {
                 try {
                     if (response.isSuccessful()) {
                         if (response.code() == 204) { // vacio
+                            toCreate = true;
                             profileState.setValue(ProfileState.SIN_PERFIL);
                         } else if (response.code() == 200) {
+                            toCreate = false;
                             currentProfile = JSONUtils.getProfileFromJSONString(response.body().string());
                             profileState.setValue(ProfileState.CON_PERFIL);
                         }
@@ -87,6 +91,10 @@ public class ProfileViewModel extends ViewModel {
 
     public MutableLiveData<ProfileState> getProfileState() {
         return profileState;
+    }
+
+    public Boolean getToCreate() {
+        return toCreate;
     }
 
 }
