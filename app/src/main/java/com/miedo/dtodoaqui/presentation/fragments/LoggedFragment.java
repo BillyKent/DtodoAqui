@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.gms.common.util.Strings;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.miedo.dtodoaqui.R;
@@ -84,7 +85,7 @@ public class LoggedFragment extends BaseFragment {
 
                                 Intent intent = new Intent(requireContext(), ModifyProfileActivity.class);
                                 startActivityForResult(intent, MODIFIY_PROFILE_REQUEST_CODE);
-                                
+
                             }
                     );
                     break;
@@ -230,28 +231,28 @@ public class LoggedFragment extends BaseFragment {
 
 
         // nombre
-        if (profile.getFirstName() != null && profile.getLastName() != null) {
+        if (!Strings.isEmptyOrWhitespace(profile.getFirstName()) && !Strings.isEmptyOrWhitespace(profile.getLastName())) {
             items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_account_box_black_24dp, "Nombre",
                     profile.getFirstName() + " " + profile.getLastName()
             ));
         }
 
         // telefono
-        if (profile.getPhone() != null) {
+        if (!Strings.isEmptyOrWhitespace(profile.getPhone())) {
             items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_phone_black_24dp, "Telefono",
                     profile.getPhone()
             ));
         }
 
         // direccion
-        if (profile.getAddress() != null) {
+        if (!Strings.isEmptyOrWhitespace(profile.getAddress())) {
             items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_location_on_black_24dp, "Dirección",
                     profile.getAddress()
             ));
         }
 
         // facebook
-        if (profile.getFacebookUrl() != null) {
+        if (!Strings.isEmptyOrWhitespace(profile.getFacebookUrl())) {
             items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_facebook, "Facebook",
                     profile.getFacebookUrl()
             ));
