@@ -87,6 +87,7 @@ public class LoggedFragment extends BaseFragment {
                                 intent.putExtra("create", viewModel.getToCreate());
                                 startActivityForResult(intent, MODIFIY_PROFILE_REQUEST_CODE);
 
+
                             }
                     );
                     break;
