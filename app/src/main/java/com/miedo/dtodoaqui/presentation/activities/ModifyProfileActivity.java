@@ -64,7 +64,7 @@ public class ModifyProfileActivity extends BaseActivity {
 
 
                 if (create) {
-                    viewModel.createProfile(newProfile);
+                    viewModel.createProfile(newProfile, create);
                 }
 
             }
