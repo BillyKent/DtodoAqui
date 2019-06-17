@@ -34,5 +34,9 @@
         android:id="@+id/establishment_dest"
         android:name="com.miedo.dtodoaqui.presentation.activities.EstablishmentActivity"
         android:label="activity_establishment"
-        tools:layout="@layout/activity_establishment" />
+        tools:layout="@layout/activity_establishment" >
+        <argument
+            android:name="establishment_id"
+            app:argType="integer" />
+    </activity>
 </navigation>

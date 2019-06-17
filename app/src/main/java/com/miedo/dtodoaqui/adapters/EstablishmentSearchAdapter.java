@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.data.EstablishmentSearchTO;
+import com.miedo.dtodoaqui.data.EstablishmentTO;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -24,21 +25,21 @@ import butterknife.ButterKnife;
 public class EstablishmentSearchAdapter extends RecyclerView.Adapter<EstablishmentSearchAdapter.ViewHolder> {
 
     public interface OnClickViewHolder {
-        public void clickViewHolder(EstablishmentSearchTO est);
+        public void clickViewHolder(EstablishmentTO est);
     }
 
     private final OnClickViewHolder listener;
-    private List<EstablishmentSearchTO> establishments;
+    private List<EstablishmentTO> establishments;
     private Context context;
 
-    public EstablishmentSearchAdapter(OnClickViewHolder listener, List<EstablishmentSearchTO> establishments, Context context) {
+    public EstablishmentSearchAdapter(OnClickViewHolder listener, List<EstablishmentTO> establishments, Context context) {
         this.listener = listener;
         this.establishments = establishments;
         this.context = context;
     }
 
     // actualiza el recyclerview
-    public void setData(List<EstablishmentSearchTO> newData) {
+    public void setData(List<EstablishmentTO> newData) {
         if (establishments != null) {
             EstablishmentUserDiffCallback postDiffCallback = new EstablishmentUserDiffCallback(establishments, newData);
             DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(postDiffCallback);
@@ -94,14 +95,14 @@ public class EstablishmentSearchAdapter extends RecyclerView.Adapter<Establishme
 
         }
 
-        void bind(final EstablishmentSearchTO est) {
+        void bind(final EstablishmentTO est) {
             if (est != null) {
 
                 nomEstTextView.setText(est.getName());
                 dirEstTextView.setText(est.getAddress());
                 resEstRatingBar.setRating(est.getRating());
 
-                Picasso.get().load(est.getUrlImage()).into(fotEstImageView);
+                Picasso.get().load(est.getSlug()).into(fotEstImageView);
 
                 mView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -119,9 +120,9 @@ public class EstablishmentSearchAdapter extends RecyclerView.Adapter<Establishme
      * */
     class EstablishmentUserDiffCallback extends DiffUtil.Callback {
 
-        private final List<EstablishmentSearchTO> oldItems, newItems;
+        private final List<EstablishmentTO> oldItems, newItems;
 
-        EstablishmentUserDiffCallback(List<EstablishmentSearchTO> oldItems, List<EstablishmentSearchTO> newItems) {
+        EstablishmentUserDiffCallback(List<EstablishmentTO> oldItems, List<EstablishmentTO> newItems) {
             this.oldItems = oldItems;
             this.newItems = newItems;
         }

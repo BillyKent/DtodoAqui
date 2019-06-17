@@ -33,6 +33,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.adapters.EstablishmentSearchAdapter;
 import com.miedo.dtodoaqui.data.EstablishmentSearchTO;
+import com.miedo.dtodoaqui.data.EstablishmentTO;
 import com.miedo.dtodoaqui.presentation.activities.EstablishmentActivity;
 import com.miedo.dtodoaqui.viewmodels.EstablishmentsSearchViewModel;
 
@@ -84,15 +85,15 @@ public class SearchFragment extends Fragment{
 
         establishmentsSearchResult = view.findViewById(R.id.establishmentsSearchRV);
 
-        viewModel.getSearchData().observe(this, new Observer<List<EstablishmentSearchTO>>() {
+        viewModel.getSearchData().observe(this, new Observer<List<EstablishmentTO>>() {
             @Override
-            public void onChanged(List<EstablishmentSearchTO> establishmentSearches) {
+            public void onChanged(List<EstablishmentTO> establishmentSearches) {
                 //progressSearchBar.setVisibility(View.GONE);
                 establishmentsSearchResult.setAdapter(new EstablishmentSearchAdapter(new EstablishmentSearchAdapter.OnClickViewHolder() {
                     @Override
-                    public void clickViewHolder(EstablishmentSearchTO est) {
+                    public void clickViewHolder(EstablishmentTO est) {
                         Intent intent = new Intent(requireContext(), EstablishmentActivity.class);
-                        intent.putExtra("establishmentId",est.getId());
+                        intent.putExtra("establishment_id",est.getId());
                         startActivity(intent);
 
                     }
