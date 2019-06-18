@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/refrest_option"
+        android:icon="@drawable/ic_refresh_black_24dp"
+        android:title="Actualizar"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/edit_option"
+        android:icon="@drawable/ic_pencil_edit"
+        android:title="Editar"
+        android:visible="true"
+
+        app:showAsAction="never" />
+
+</menu>

@@ -85,14 +85,14 @@ public final class JSONUtils {
             JSONObject rpta = new JSONObject(response);
             retorno = new ProfileTO();
 
-            retorno.setId(rpta.getInt("id"));
-            retorno.setAddress(rpta.getString("address"));
-            retorno.setCountry(rpta.getString("country"));
-            retorno.setDescription(rpta.getString("description"));
-            retorno.setFacebookUrl(rpta.getString("facebook"));
-            retorno.setFirstName(rpta.getString("first_name"));
-            retorno.setLastName(rpta.getString("last_name"));
-            retorno.setPhone(rpta.getString("phone"));
+            if (!rpta.isNull("id")) retorno.setId(rpta.getInt("id"));
+            if (!rpta.isNull("address")) retorno.setAddress(rpta.getString("address"));
+            if (!rpta.isNull("country")) retorno.setCountry(rpta.getString("country"));
+            if (!rpta.isNull("description")) retorno.setDescription(rpta.getString("description"));
+            if (!rpta.isNull("facebook")) retorno.setFacebookUrl(rpta.getString("facebook"));
+            if (!rpta.isNull("first_name")) retorno.setFirstName(rpta.getString("first_name"));
+            if (!rpta.isNull("last_name")) retorno.setLastName(rpta.getString("last_name"));
+            if (!rpta.isNull("phone")) retorno.setPhone(rpta.getString("phone"));
 
             Log.i(TAG, "Objeto ProfileTO parseado : " + retorno);
 
