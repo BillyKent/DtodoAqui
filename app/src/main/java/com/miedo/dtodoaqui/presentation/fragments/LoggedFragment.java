@@ -5,13 +5,16 @@ import android.os.Bundle;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.common.util.Strings;
@@ -20,9 +23,9 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.adapters.ProfileInfoAdapter;
 import com.miedo.dtodoaqui.core.BaseFragment;
-import com.miedo.dtodoaqui.core.StateView;
 import com.miedo.dtodoaqui.data.ProfileTO;
 import com.miedo.dtodoaqui.data.local.SessionManager;
+import com.miedo.dtodoaqui.presentation.activities.MainActivity;
 import com.miedo.dtodoaqui.presentation.activities.ModifyProfileActivity;
 import com.miedo.dtodoaqui.viewmodels.ProfileViewModel;
 
@@ -41,6 +44,7 @@ public class LoggedFragment extends BaseFragment {
 
     ProfileViewModel viewModel;
     AppBarLayout appBarLayout;
+    Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
     ArrayList<ProfileInfoAdapter.ProfileItem> items = new ArrayList<>();
     ListView listView;
@@ -52,10 +56,13 @@ public class LoggedFragment extends BaseFragment {
         // obtenemos el viewmodel
         viewModel = ViewModelProviders.of(requireActivity()).get(ProfileViewModel.class);
         View view = inflater.inflate(R.layout.fragment_logged_profile, container, false);
+        toolbar = (Toolbar) view.findViewById(R.id.profile_toolbar);
         listView = (ListView) view.findViewById(R.id.list_details);
         appBarLayout = (AppBarLayout) view.findViewById(R.id.app_bar_layout);
         collapsingToolbarLayout = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitle("Perfil");
+
+        setHasOptionsMenu(true);
 
         adapter = new ProfileInfoAdapter(getContext(), items);
         listView.setAdapter(adapter);
@@ -71,9 +78,6 @@ public class LoggedFragment extends BaseFragment {
 
             switch (profileState) {
                 case OBTENIENDO:
-                    if (getStateView() == null) {
-                        Log.i(TAG, "stateview es nulo");
-                    }
                     getStateView().forceLoadingTitle("Obteniendo perfil");
                     break;
                 case SIN_PERFIL:
@@ -110,6 +114,32 @@ public class LoggedFragment extends BaseFragment {
 
         });
 
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.edit_option:
+
+                    Intent intent = new Intent(requireContext(), ModifyProfileActivity.class);
+                    intent.putExtra("create", false);
+
+                    intent.putExtra("profile", viewModel.getCurrentProfile());
+                    startActivityForResult(intent, MODIFIY_PROFILE_REQUEST_CODE);
+
+
+                    return true;
+                case R.id.refresh_option:
+                    viewModel.obtenerPerfil(SessionManager.getInstance(requireContext()).getCurrentSession().getJwt());
+                    return true;
+
+
+                case R.id.signout_option:
+                    SessionManager.getInstance(requireContext()).closeSession();
+                    ((MainActivity) requireActivity()).navigateTo(R.id.profile_tab);
+                    return true;
+            }
+            return false;
+
+        });
+
         return view;
     }
 
@@ -117,12 +147,13 @@ public class LoggedFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == MODIFIY_PROFILE_REQUEST_CODE) {
             if (resultCode == MODIFY_OK) {
-                viewModel.obtenerPerfil(SessionManager.getInstance(requireContext()).getCurrentSession().getJwt());
+                viewModel.setCurrentProfile((ProfileTO) data.getSerializableExtra("newProfile"));
+                showItems();
+
             }
         }
-
-
     }
+
 
     void showItems() {
         ProfileTO profile = viewModel.getCurrentProfile();
@@ -160,7 +191,9 @@ public class LoggedFragment extends BaseFragment {
             ));
 
         }
+        adapter.notifyDataSetChanged();
 
     }
+
 
 }

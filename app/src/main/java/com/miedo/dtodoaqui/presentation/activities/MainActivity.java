@@ -42,7 +42,7 @@ public class MainActivity extends BaseActivity {
         // listener para la seleccion de tabs
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        SessionManager.getInstance(this).closeSession();
+        //SessionManager.getInstance(this).closeSession();
     }
 
 

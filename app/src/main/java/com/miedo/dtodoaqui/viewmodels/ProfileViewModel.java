@@ -97,5 +97,8 @@ public class ProfileViewModel extends ViewModel {
         return toCreate;
     }
 
+    public void setCurrentProfile(ProfileTO currentProfile) {
+        this.currentProfile = currentProfile;
+    }
 }
 

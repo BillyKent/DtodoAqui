@@ -2,6 +2,7 @@ package com.miedo.dtodoaqui.presentation.activities;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +35,8 @@ public class ModifyProfileActivity extends BaseActivity {
     @BindView(R.id.modificarButton)
     Button modifyButton;
 
+    ProfileTO newProfile;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +44,17 @@ public class ModifyProfileActivity extends BaseActivity {
         setContentView(R.layout.activity_modify_profile);
         setUpStateView(findViewById(R.id.container));
 
+        // Extra que se obtiene del intent al momento de llamar al activity
+        boolean create = getIntent().getBooleanExtra("create", false);
+
         // Bindamos las vistas
         ButterKnife.bind(this);
+
+        // Bindamos las vistas con los datos del profile si se quiere editar:
+        if (!create) {
+            modifyButton.setText("Actualizar Perfil");
+            BindFields();
+        }
 
         // Obtenemos el viewmodel y le seteamos el jwt
         viewModel = ViewModelProviders.of(this).get(ModifyProfileViewModel.class);
@@ -52,9 +64,8 @@ public class ModifyProfileActivity extends BaseActivity {
             clearErrorFields();
 
             if (validateFields()) {
-                boolean create = getIntent().getBooleanExtra("create", false);
 
-                ProfileTO newProfile = createTransferObject();
+                newProfile = createTransferObject();
                 viewModel.createOrUpdateProfile(newProfile, create);
             }
 
@@ -69,7 +80,9 @@ public class ModifyProfileActivity extends BaseActivity {
                     getStateView().showLoadingTitle("Actualizando perfil");
                     break;
                 case SUCCESSFUL:
-                    setResult(LoggedFragment.MODIFY_OK);
+                    Intent intent = new Intent();
+                    intent.putExtra("newProfile", newProfile);
+                    setResult(LoggedFragment.MODIFY_OK, intent);
                     finish();
                     break;
                 case ERROR:
@@ -78,6 +91,44 @@ public class ModifyProfileActivity extends BaseActivity {
                     break;
             }
         });
+
+    }
+
+    private void BindFields() {
+        Intent intent = getIntent();
+        ProfileTO profile = (ProfileTO) intent.getSerializableExtra("profile");
+        for (int i = 0; i < editTextList.size(); i++) {
+            TextInputEditText field = editTextList.get(i);
+            switch (i) {
+                case 0:
+                    field.setText(profile.getFirstName());
+                    break;
+                case 1:
+                    field.setText(profile.getLastName());
+                    break;
+
+                case 2:
+                    field.setText(profile.getDescription());
+                    break;
+
+                case 3:
+                    field.setText(profile.getPhone());
+                    break;
+
+                case 4:
+                    field.setText(profile.getCountry());
+                    break;
+
+                case 5:
+                    field.setText(profile.getAddress());
+                    break;
+
+                case 6:
+                    field.setText(profile.getFacebookUrl());
+                    break;
+
+            }
+        }
 
     }
 

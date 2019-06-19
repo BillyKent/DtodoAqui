@@ -1,6 +1,8 @@
 package com.miedo.dtodoaqui.data;
 
-public class ProfileTO {
+import java.io.Serializable;
+
+public class ProfileTO implements Serializable {
     private Integer id;
     private String firstName;
     private String lastName;

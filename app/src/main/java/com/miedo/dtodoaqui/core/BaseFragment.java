@@ -3,6 +3,8 @@ package com.miedo.dtodoaqui.core;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -83,6 +85,20 @@ public class BaseFragment extends Fragment {
     public void showMessage(String message) {
         showSnackMessage(message, com.google.android.material.R.color.error_color_material_light);
     }
+
+    public void showToastMessage(String message) {
+        new Handler(Looper.getMainLooper())
+                .post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+    }
+
 
     public void setUpStateView(View anotherView) {
         stateView = new StateView(anotherView);

@@ -20,13 +20,16 @@
 
         <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox
         </item>
+
     </style>
 
     <style name="TransparentText" parent="@android:style/TextAppearance">
         <item name="android:textColor">#00000000</item>
     </style>
-    <style name="GreyText" parent="@android:style/TextAppearance">
-        <item name="android:textColor">#666666</item>
+
+    <style name="WhiteText" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18dp</item>
     </style>
 
     <style name="EditTextRounded">

@@ -18,8 +18,10 @@
             android:layout_width="match_parent"
             android:layout_height="175dp"
             android:fitsSystemWindows="true"
+            app:collapsedTitleTextAppearance="@style/WhiteText"
             app:contentScrim="@color/colorPrimary"
             app:expandedTitleTextAppearance="@style/TransparentText"
+
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snapMargins"
             app:toolbarId="@id/profile_toolbar">
 
@@ -39,9 +41,10 @@
                 android:id="@+id/profile_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:menu="@menu/profile_menu"
+                android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                 app:layout_collapseMode="pin"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed" />
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:menu="@menu/profile_menu" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
 
