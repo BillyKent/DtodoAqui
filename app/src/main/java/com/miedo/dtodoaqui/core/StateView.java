@@ -48,11 +48,11 @@ public class StateView {
             public void run() {
                 finalAnimation(target, stateView);
 
-                progressBar.setVisibility(View.GONE);
+                /*progressBar.setVisibility(View.GONE);
                 buttonAction.setVisibility(View.GONE);
                 descriptionView.setVisibility(View.GONE);
                 titleView.setVisibility(View.GONE);
-                iconView.setVisibility(View.GONE);
+                iconView.setVisibility(View.GONE);*/
 
             }
         });

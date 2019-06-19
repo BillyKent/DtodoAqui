@@ -66,6 +66,10 @@ public class ProfileViewModel extends ViewModel {
                             profileState.setValue(ProfileState.CON_PERFIL);
                         }
 
+                    } else {
+                        if (response.code() == 404) {
+                            profileState.setValue(ProfileState.ERROR_STATE);
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -74,6 +78,7 @@ public class ProfileViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.i(TAG, "Mostrando error en logged xd");
                 profileState.setValue(ProfileState.ERROR_STATE);
             }
         });

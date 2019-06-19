@@ -41,7 +41,6 @@
                 android:id="@+id/profile_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:menu="@menu/profile_menu" />
