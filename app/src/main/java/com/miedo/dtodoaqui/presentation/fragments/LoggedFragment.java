@@ -103,7 +103,8 @@ public class LoggedFragment extends BaseFragment {
                     break;
 
                 case ERROR_STATE:
-
+                    items.clear();
+                    adapter.notifyDataSetChanged();
                     getStateView().showTitleMessageIcon(
                             "Error",
                             "Algo salió mal.",
