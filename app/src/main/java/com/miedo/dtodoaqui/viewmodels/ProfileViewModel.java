@@ -15,6 +15,8 @@ import com.miedo.dtodoaqui.utils.JSONUtils;
 
 import java.io.IOException;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,6 +25,7 @@ import retrofit2.Response;
 public class ProfileViewModel extends ViewModel {
     public static final String TAG = ProfileViewModel.class.getSimpleName();
 
+    private UserTO currentUser;
     private ProfileModel model;
     private ProfileTO currentProfile;
 
@@ -34,7 +37,8 @@ public class ProfileViewModel extends ViewModel {
         ERROR_STATE,
         OBTENIENDO,
         CON_PERFIL,
-        SIN_PERFIL
+        SIN_PERFIL,
+        INVALID_CREDENTIALS
     }
 
     public ProfileViewModel() {
@@ -42,13 +46,13 @@ public class ProfileViewModel extends ViewModel {
     }
 
 
-    public void obtenerPerfil(String jwtToken) {
+    public void obtenerPerfil() {
         profileState.setValue(ProfileState.OBTENIENDO);
 
         // Obtenemos la api
         DeTodoAquiAPI api = ServiceGenerator.createServiceScalar(DeTodoAquiAPI.class);
         // Creamos el header
-        String header = "Bearer " + jwtToken;
+        String header = "Bearer " + currentUser.getJwt();
         // Preparamos la peticion sincrona
         Call<ResponseBody> call = api.getProfile(header);
 
@@ -68,6 +72,8 @@ public class ProfileViewModel extends ViewModel {
 
                     } else {
                         if (response.code() == 404) {
+                            reloadToken();
+                        } else {
                             profileState.setValue(ProfileState.ERROR_STATE);
                         }
                     }
@@ -82,9 +88,42 @@ public class ProfileViewModel extends ViewModel {
                 profileState.setValue(ProfileState.ERROR_STATE);
             }
         });
+    }
 
+    public void reloadToken() {
+        // Obtenemos la api
+        DeTodoAquiAPI api = ServiceGenerator.createServiceScalar(DeTodoAquiAPI.class);
+        // Armamos un JSON en forma de string para el body de la peticion
+        String requestString = JSONUtils.getLoginRequestJSON(currentUser.getUsername(), currentUser.getPassword());
+        // Creamos el requestBody
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), requestString);
+        // Preparamos la peticion sincrona
+        Call<ResponseBody> call = api.loginUser(requestBody);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        String newToken = JSONUtils.getJWT(response.body().string());
+                        currentUser.setJwt(newToken);
+                        obtenerPerfil();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    profileState.setValue(ProfileState.INVALID_CREDENTIALS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                profileState.setValue(ProfileState.ERROR_STATE);
+            }
+        });
 
     }
+
 
     public boolean isCurrentProfileActive() {
         return currentProfile != null;
@@ -104,6 +143,14 @@ public class ProfileViewModel extends ViewModel {
 
     public void setCurrentProfile(ProfileTO currentProfile) {
         this.currentProfile = currentProfile;
+    }
+
+    public void setCurrentUser(UserTO currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public UserTO getCurrentUser() {
+        return currentUser;
     }
 }
 

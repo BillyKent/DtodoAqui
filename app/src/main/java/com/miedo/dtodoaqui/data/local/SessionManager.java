@@ -93,5 +93,11 @@ public class SessionManager {
         return preferences.getBoolean(IS_LOGGED, false);
     }
 
+    public void setJwtToken(String jwt) {
+        editor.putString(JWT_TOKEN, jwt);
+        currentUser.setJwt(jwt);
+        editor.commit();
+    }
+
 
 }

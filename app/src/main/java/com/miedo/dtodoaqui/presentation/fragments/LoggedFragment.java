@@ -62,6 +62,8 @@ public class LoggedFragment extends BaseFragment {
         collapsingToolbarLayout = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitle("Perfil");
 
+        viewModel.setCurrentUser(SessionManager.getInstance(requireContext()).getCurrentSession());
+
         setHasOptionsMenu(true);
 
         adapter = new ProfileInfoAdapter(getContext(), items);
@@ -71,7 +73,7 @@ public class LoggedFragment extends BaseFragment {
         if (viewModel.isCurrentProfileActive()) { // si la cuenta activa no es null
             showItems();
         } else {
-            viewModel.obtenerPerfil(SessionManager.getInstance(requireContext()).getCurrentSession().getJwt());
+            viewModel.obtenerPerfil();
         }
 
         viewModel.getProfileState().observe(getViewLifecycleOwner(), profileState -> {
@@ -101,13 +103,18 @@ public class LoggedFragment extends BaseFragment {
                     break;
 
                 case ERROR_STATE:
-                    getStateView().showTitleMessageButtonAction("Error",
-                            "Algo salió mal :s .",
-                            "Refrescar"
-                            ,
-                            v -> {
-                                showMessage("Reintentado :v");
-                            });
+
+                    getStateView().showTitleMessageIcon(
+                            "Error",
+                            "Algo salió mal.",
+                            R.drawable.perrito
+                    );
+                    break;
+
+                case INVALID_CREDENTIALS:
+                    showToastMessage("Usuario y contraseña no válidos");
+                    SessionManager.getInstance(requireContext()).closeSession();
+                    ((MainActivity) requireActivity()).navigateTo(R.id.profile_tab);
                     break;
             }
 
@@ -127,7 +134,7 @@ public class LoggedFragment extends BaseFragment {
 
                     return true;
                 case R.id.refresh_option:
-                    viewModel.obtenerPerfil(SessionManager.getInstance(requireContext()).getCurrentSession().getJwt());
+                    viewModel.obtenerPerfil();
                     return true;
 
 
@@ -157,6 +164,7 @@ public class LoggedFragment extends BaseFragment {
 
     void showItems() {
         ProfileTO profile = viewModel.getCurrentProfile();
+        SessionManager.getInstance(requireContext()).setJwtToken(viewModel.getCurrentUser().getJwt());
         Log.i(TAG, "Perfil a mostrar : " + profile);
         if (profile == null) return;
 
