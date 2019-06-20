@@ -1,5 +1,6 @@
 package com.miedo.dtodoaqui.presentation.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -11,9 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -42,6 +45,8 @@ public class LoggedFragment extends BaseFragment {
     public static final int MODIFY_CANCEL = 30;
 
 
+    TextView tv_edit, tv_logout, tv_establishments;
+
     ProfileViewModel viewModel;
     AppBarLayout appBarLayout;
     Toolbar toolbar;
@@ -61,6 +66,10 @@ public class LoggedFragment extends BaseFragment {
         appBarLayout = (AppBarLayout) view.findViewById(R.id.app_bar_layout);
         collapsingToolbarLayout = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitle("Perfil");
+
+        tv_edit = (TextView) view.findViewById(R.id.editarTextView);
+        tv_establishments = (TextView) view.findViewById(R.id.misEstableTextView);
+        tv_logout = (TextView) view.findViewById(R.id.cerrarSesionTextView);
 
         viewModel.setCurrentUser(SessionManager.getInstance(requireContext()).getCurrentSession());
 
@@ -124,27 +133,45 @@ public class LoggedFragment extends BaseFragment {
 
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
-                case R.id.edit_option:
 
-                    Intent intent = new Intent(requireContext(), ModifyProfileActivity.class);
-                    intent.putExtra("create", false);
-
-                    intent.putExtra("profile", viewModel.getCurrentProfile());
-                    startActivityForResult(intent, MODIFIY_PROFILE_REQUEST_CODE);
-
-
-                    return true;
                 case R.id.refresh_option:
                     viewModel.obtenerPerfil();
                     return true;
 
-
-                case R.id.signout_option:
-                    SessionManager.getInstance(requireContext()).closeSession();
-                    ((MainActivity) requireActivity()).navigateTo(R.id.profile_tab);
-                    return true;
             }
             return false;
+
+        });
+
+        tv_edit.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), ModifyProfileActivity.class);
+            intent.putExtra("create", false);
+
+            intent.putExtra("profile", viewModel.getCurrentProfile());
+            startActivityForResult(intent, MODIFIY_PROFILE_REQUEST_CODE);
+
+
+        });
+
+        tv_logout.setOnClickListener(v -> {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Cerrar sesión")
+                    .setCancelable(true)
+                    .setMessage("¿Seguro que desea cerrar sesión?")
+                    .setPositiveButton("Cerrar sesión", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SessionManager.getInstance(requireContext()).closeSession();
+                            ((MainActivity) requireActivity()).navigateTo(R.id.profile_tab);
+                        }
+                    })
+                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .show();
 
         });
 

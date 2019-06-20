@@ -11,18 +11,87 @@
     <ListView
         android:id="@+id/list_details"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="8dp"
         android:paddingLeft="8dp"
-        android:paddingRight="8dp"
 
+        android:paddingRight="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3"
         tools:listitem="@layout/cardview_profile_info">
 
     </ListView>
+
+    <TextView
+        android:id="@+id/misEstableTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawableTop="@drawable/store"
+        android:focusable="true"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:text="Mis Establecimientos"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/view3"
+        app:layout_constraintEnd_toStartOf="@+id/cerrarSesionTextView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/editarTextView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/editarTextView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawableTop="@drawable/edit"
+        android:focusable="true"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:text="Editar Perfil"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/view3"
+        app:layout_constraintEnd_toStartOf="@+id/misEstableTextView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/misEstableTextView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/cerrarSesionTextView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawableTop="@drawable/logout"
+        android:focusable="true"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:text="Cerrar Sesión"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/view3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/misEstableTextView"
+        app:layout_constraintTop_toTopOf="@+id/misEstableTextView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/misEstableTextView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
