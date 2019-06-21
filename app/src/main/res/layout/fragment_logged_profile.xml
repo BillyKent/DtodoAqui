@@ -1,94 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        app:expanded="false">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="175dp"
-            android:fitsSystemWindows="true"
-            app:collapsedTitleTextAppearance="@style/WhiteText"
-            app:contentScrim="@color/colorPrimary"
-            app:expandedTitleTextAppearance="@style/TransparentText"
-
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snapMargins"
-            app:toolbarId="@id/profile_toolbar">
-
-            <ImageView
-                android:id="@+id/iv_background"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:contentDescription="gaaaa"
-
-                android:scaleType="centerCrop"
-
-                app:layout_collapseMode="parallax"
-                app:srcCompat="@drawable/material_background"
-                tools:srcCompat="@drawable/material_background" />
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/profile_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:menu="@menu/profile_menu" />
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    tools:context=".presentation.fragments.ActivityFragment">
 
 
-    </com.google.android.material.appbar.AppBarLayout>
+    <include
+        layout="@layout/state_layout"
+        android:visibility="gone" />
 
+    <include layout="@layout/content_profile" />
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:fillViewport="true"
-        android:fitsSystemWindows="true"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <include
-                layout="@layout/content_profile"
-                android:visibility="visible" />
-
-            <include
-                layout="@layout/state_layout"
-                android:visibility="gone" />
-
-
-        </FrameLayout>
-
-
-    </androidx.core.widget.NestedScrollView>
-
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_marginBottom="80dp"
-        android:foreground="@drawable/logo_default"
-        android:scaleType="centerCrop"
-        android:visibility="visible"
-        app:backgroundTint="@android:color/transparent"
-        app:layout_anchor="@id/app_bar_layout"
-        app:layout_anchorGravity="center"
-        app:pressedTranslationZ="10dp" />
-
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>

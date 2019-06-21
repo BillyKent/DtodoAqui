@@ -143,6 +143,7 @@ public class ProfileViewModel extends ViewModel {
 
     public void setCurrentProfile(ProfileTO currentProfile) {
         this.currentProfile = currentProfile;
+        profileState.setValue(ProfileState.CON_PERFIL);
     }
 
     public void setCurrentUser(UserTO currentUser) {

@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".presentation.fragments.ActivityFragment">
 
-
     <include
         layout="@layout/state_layout"
         android:visibility="gone" />
@@ -16,6 +15,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="GAAAAAAAAA" />
-
 
 </FrameLayout>

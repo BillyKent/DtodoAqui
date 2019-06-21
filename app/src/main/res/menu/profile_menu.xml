@@ -8,5 +8,14 @@
         android:title="Actualizar"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/edit_option"
+        android:title="Editar perfil"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/logout_option"
+        android:title="Cerrar sesión"
+        app:showAsAction="never" />
+
 
 </menu>
