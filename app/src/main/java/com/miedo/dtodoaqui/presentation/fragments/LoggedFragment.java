@@ -1,6 +1,5 @@
 package com.miedo.dtodoaqui.presentation.fragments;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,9 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
@@ -19,7 +16,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.common.util.Strings;
 import com.miedo.dtodoaqui.R;
-import com.miedo.dtodoaqui.adapters.ProfileFakeInfoAdapter;
 import com.miedo.dtodoaqui.adapters.ProfileInfoAdapter;
 import com.miedo.dtodoaqui.core.BaseFragment;
 import com.miedo.dtodoaqui.data.ProfileTO;
@@ -50,8 +46,8 @@ public class LoggedFragment extends BaseFragment {
     public Toolbar toolbar;
 
     // Lista de items y el adapter del listview
-    private ArrayList<ProfileFakeInfoAdapter.ProfileItem> items = new ArrayList<>();
-    private ProfileFakeInfoAdapter adapter;
+    private ArrayList<ProfileInfoAdapter.ProfileItem> items = new ArrayList<>();
+    private ProfileInfoAdapter adapter;
 
     // Viewmodel
     private ProfileViewModel viewModel;
@@ -88,7 +84,7 @@ public class LoggedFragment extends BaseFragment {
         setUpStateView(view.findViewById(R.id.container));
 
         // Instanciamos y seteamos el adapter del listview
-        adapter = new ProfileFakeInfoAdapter(requireContext(), items);
+        adapter = new ProfileInfoAdapter(requireContext(), items);
         listView.setAdapter(adapter);
 
         if (viewModel.isCurrentProfileActive()) { // si la cuenta activa no es null
@@ -202,84 +198,84 @@ public class LoggedFragment extends BaseFragment {
         items.clear();
         // nombre
         if (!Strings.isEmptyOrWhitespace(profile.getFirstName()) && !Strings.isEmptyOrWhitespace(profile.getLastName())) {
-            items.add(new ProfileFakeInfoAdapter.ProfileItem(R.drawable.ic_account_box_black_24dp,
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_account_box_black_24dp,
                     profile.getFirstName() + " " + profile.getLastName()
             ));
         }
 
         // telefono
         if (!Strings.isEmptyOrWhitespace(profile.getPhone())) {
-            items.add(new ProfileFakeInfoAdapter.ProfileItem(R.drawable.ic_phone_black_24dp,
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_phone_black_24dp,
                     profile.getPhone()
             ));
         }
 
         // direccion
         if (!Strings.isEmptyOrWhitespace(profile.getAddress())) {
-            items.add(new ProfileFakeInfoAdapter.ProfileItem(R.drawable.ic_location_on_black_24dp,
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_location_on_black_24dp,
                     profile.getAddress()
             ));
         }
 
         // facebook
         if (!Strings.isEmptyOrWhitespace(profile.getFacebookUrl())) {
-            items.add(new ProfileFakeInfoAdapter.ProfileItem(R.drawable.ic_facebook,
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_facebook,
                     profile.getFacebookUrl()
             ));
 
         }
 
         if (!Strings.isEmptyOrWhitespace(profile.getFirstName()) && !Strings.isEmptyOrWhitespace(profile.getLastName())) {
-            items.add(new ProfileFakeInfoAdapter.ProfileItem(R.drawable.ic_account_box_black_24dp,
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_account_box_black_24dp,
                     profile.getFirstName() + " " + profile.getLastName() + profile.getFirstName() + " " + profile.getLastName() + profile.getFirstName() + " " + profile.getLastName()
             ));
         }
 
         // telefono
         if (!Strings.isEmptyOrWhitespace(profile.getPhone())) {
-            items.add(new ProfileFakeInfoAdapter.ProfileItem(R.drawable.ic_phone_black_24dp,
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_phone_black_24dp,
                     profile.getPhone()
             ));
         }
 
         // direccion
         if (!Strings.isEmptyOrWhitespace(profile.getAddress())) {
-            items.add(new ProfileFakeInfoAdapter.ProfileItem(R.drawable.ic_location_on_black_24dp,
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_location_on_black_24dp,
                     profile.getAddress()
             ));
         }
 
         // facebook
         if (!Strings.isEmptyOrWhitespace(profile.getFacebookUrl())) {
-            items.add(new ProfileFakeInfoAdapter.ProfileItem(R.drawable.ic_facebook,
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_facebook,
                     profile.getFacebookUrl()
             ));
 
         }
 
         if (!Strings.isEmptyOrWhitespace(profile.getFirstName()) && !Strings.isEmptyOrWhitespace(profile.getLastName())) {
-            items.add(new ProfileFakeInfoAdapter.ProfileItem(R.drawable.ic_account_box_black_24dp,
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_account_box_black_24dp,
                     profile.getFirstName() + " " + profile.getLastName()
             ));
         }
 
         // telefono
         if (!Strings.isEmptyOrWhitespace(profile.getPhone())) {
-            items.add(new ProfileFakeInfoAdapter.ProfileItem(R.drawable.ic_phone_black_24dp,
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_phone_black_24dp,
                     profile.getPhone()
             ));
         }
 
         // direccion
         if (!Strings.isEmptyOrWhitespace(profile.getAddress())) {
-            items.add(new ProfileFakeInfoAdapter.ProfileItem(R.drawable.ic_location_on_black_24dp,
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_location_on_black_24dp,
                     profile.getAddress()
             ));
         }
 
         // facebook
         if (!Strings.isEmptyOrWhitespace(profile.getFacebookUrl())) {
-            items.add(new ProfileFakeInfoAdapter.ProfileItem(R.drawable.ic_facebook,
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_facebook,
                     profile.getFacebookUrl()
             ));
 
