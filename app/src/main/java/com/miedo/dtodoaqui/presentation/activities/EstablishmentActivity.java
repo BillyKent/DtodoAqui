@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import com.miedo.dtodoaqui.viewmodels.EstablishmentViewModel;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoProvider;
 
+import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -32,20 +34,22 @@ public class EstablishmentActivity extends AppCompatActivity{
     private SupportMapFragment mapFragment;
     @BindView(R.id.establishmentCTL)
     CollapsingToolbarLayout establishmentToolbar;
-    @BindView(R.id.establishmentCategoryTV)
-    TextView establishmentCategory;
-    @BindView(R.id.establishmentVerifiedTV)
-    TextView establishmentVerified;
+    /*@BindView(R.id.establishmentCategoryTV)
+    TextView establishmentCategory;*/
+    /*@BindView(R.id.establishmentVerifiedTV)
+    TextView establishmentVerified;*/
     @BindView(R.id.establishmentDecriptionTV)
     TextView establishmentDescription;
     @BindView(R.id.establishmentOpeningHoursTV)
     TextView establishmentOpeningHours;
     @BindView(R.id.establishmentPriceTV)
     TextView establishmentPrice;
-    @BindView(R.id.establishmentAddressTV)
-    TextView establishmentAddress;
+    /*@BindView(R.id.establishmentAddressTV)
+    TextView establishmentAddress;*/
     @BindView(R.id.establishmentBackgroundIV)
     ImageView establishmentBackground;
+    @BindView(R.id.establishmentNameTV)
+    TextView establishmentName;
 
     private GoogleMap establishmentMap = null;
     private Marker establishmentMarker = null;
@@ -81,7 +85,7 @@ public class EstablishmentActivity extends AppCompatActivity{
                 @Override
                 public void onMapReady(GoogleMap googleMap) {
                     establishmentMap = googleMap;
-
+                    googleMap.getUiSettings().setAllGesturesEnabled(false);
                     establishmentMarker = establishmentMap.addMarker(new MarkerOptions().position(establishment.getLatLng()).title(establishment.getName()));
                     establishmentMap.moveCamera(CameraUpdateFactory.newLatLng(establishment.getLatLng()));
                 }
@@ -93,12 +97,14 @@ public class EstablishmentActivity extends AppCompatActivity{
 
         Picasso.get().load(establishment.getSlug()).into(establishmentBackground);
 
-        establishmentToolbar.setTitle(establishment.getName());
-        establishmentAddress.setText(establishment.getAddress());
-        establishmentCategory.setText(establishment.getCategory());
+        establishmentName.setText(establishment.getName());
+        //establishmentAddress.setText(establishment.getAddress());
+        //establishmentCategory.setText(establishment.getCategory());
         establishmentDescription.setText(establishment.getDescription());
         establishmentOpeningHours.setText(establishment.getOpeningHours());
         establishmentPrice.setText(establishment.getPrice());
-        establishmentVerified.setText(establishment.isVerified()?"Verificado":"No verificado");
+        establishmentName.setCompoundDrawablesWithIntrinsicBounds(0,0,establishment.isVerified()?R.drawable.ic_check_circle_black_24dp:R.drawable.ic_do_not_disturb_on_black_24dp,0);
+
+        //establishmentVerified.setText(establishment.isVerified()?"Verificado":"No verificado");
     }
 }
