@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_register_establishment_graph"
+    app:startDestination="@id/stepOneRE">
+
+    <fragment
+        android:id="@+id/stepOneRE"
+        android:name="com.miedo.dtodoaqui.presentation.fragments.StepOneRE"
+        android:label="fragment_step_one_re"
+        tools:layout="@layout/fragment_step_one_re" >
+        <action
+            android:id="@+id/action_stepOneRE_to_stepTwoRE"
+            app:destination="@id/stepTwoRE" />
+    </fragment>
+    <fragment
+        android:id="@+id/stepTwoRE"
+        android:name="com.miedo.dtodoaqui.presentation.fragments.StepTwoRE"
+        android:label="fragment_step_two_re"
+        tools:layout="@layout/fragment_step_two_re" >
+        <action
+            android:id="@+id/action_stepTwoRE_to_stepThreeRE"
+            app:destination="@id/stepThreeRE" />
+    </fragment>
+    <fragment
+        android:id="@+id/stepThreeRE"
+        android:name="com.miedo.dtodoaqui.presentation.fragments.StepThreeRE"
+        android:label="fragment_step_three_re"
+        tools:layout="@layout/fragment_step_three_re" >
+        <action
+            android:id="@+id/action_stepThreeRE_to_stepFourRE"
+            app:destination="@id/stepFourRE" />
+    </fragment>
+    <fragment
+        android:id="@+id/stepFourRE"
+        android:name="com.miedo.dtodoaqui.presentation.fragments.StepFourRE"
+        android:label="fragment_step_four_re"
+        tools:layout="@layout/fragment_step_four_re" />
+</navigation>

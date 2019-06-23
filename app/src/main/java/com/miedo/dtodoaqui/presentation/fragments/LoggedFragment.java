@@ -22,6 +22,7 @@ import com.miedo.dtodoaqui.data.ProfileTO;
 import com.miedo.dtodoaqui.data.local.SessionManager;
 import com.miedo.dtodoaqui.presentation.activities.MainActivity;
 import com.miedo.dtodoaqui.presentation.activities.ModifyProfileActivity;
+import com.miedo.dtodoaqui.presentation.activities.RegisterEstablishmentActivity;
 import com.miedo.dtodoaqui.viewmodels.ProfileViewModel;
 
 import java.util.ArrayList;
@@ -149,6 +150,12 @@ public class LoggedFragment extends BaseFragment {
 
                 case R.id.refresh_option:
                     viewModel.obtenerPerfil();
+                    return true;
+
+                case R.id.my_establishment_option:
+
+                    Intent intento = new Intent(requireContext(), RegisterEstablishmentActivity.class);
+                    startActivity(intento);
                     return true;
 
                 case R.id.edit_option:

@@ -41,6 +41,10 @@ public interface DeTodoAquiAPI {
     @GET("/api/categories")
     public Call<ResponseBody> getCategories();
 
+    // Obtener locations
+    @GET("/api/location")
+    public Call<ResponseBody> getLocations();
+
     @GET("/api/listings/{id}")
     public Call<ResponseBody> getEstablishment(@Path("id") int id);
 
