@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -12,34 +11,33 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.miedo.dtodoaqui.R;
-import com.miedo.dtodoaqui.data.EstablishmentTO;
-import com.squareup.picasso.Picasso;
+import com.miedo.dtodoaqui.data.EstablishmentReviewTO;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EstablishmentSearchAdapter extends RecyclerView.Adapter<EstablishmentSearchAdapter.ViewHolder> {
+public class EstablishmentReviewAdapter extends RecyclerView.Adapter<EstablishmentReviewAdapter.ViewHolder>  {
 
     public interface OnClickViewHolder {
-        public void clickViewHolder(EstablishmentTO est);
+        public void clickViewHolder(EstablishmentReviewTO est);
     }
 
     private final OnClickViewHolder listener;
-    private List<EstablishmentTO> establishments;
+    private List<EstablishmentReviewTO> establishments;
     private Context context;
 
-    public EstablishmentSearchAdapter(OnClickViewHolder listener, List<EstablishmentTO> establishments, Context context) {
+    public EstablishmentReviewAdapter(OnClickViewHolder listener, List<EstablishmentReviewTO> establishments, Context context) {
         this.listener = listener;
         this.establishments = establishments;
         this.context = context;
     }
 
     // actualiza el recyclerview
-    public void setData(List<EstablishmentTO> newData) {
+    public void setData(List<EstablishmentReviewTO> newData) {
         if (establishments != null) {
-            EstablishmentUserDiffCallback postDiffCallback = new EstablishmentUserDiffCallback(establishments, newData);
+            EstablishmentReviewDiffCallback postDiffCallback = new EstablishmentReviewDiffCallback(establishments, newData);
             DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(postDiffCallback);
 
             establishments.clear();
@@ -53,9 +51,9 @@ public class EstablishmentSearchAdapter extends RecyclerView.Adapter<Establishme
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EstablishmentReviewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(
-                parent.getContext()).inflate(R.layout.cardview_establishment_search, parent, false);
+                parent.getContext()).inflate(R.layout.cardview_establishment_review, parent, false);
         return new ViewHolder(view);
     }
 
@@ -75,14 +73,14 @@ public class EstablishmentSearchAdapter extends RecyclerView.Adapter<Establishme
     public class ViewHolder extends RecyclerView.ViewHolder {
         public View mView;
 
-        @BindView(R.id.nomEstTextView)
-        TextView nomEstTextView;
-        @BindView(R.id.dirEstTextView)
-        TextView dirEstTextView;
-        @BindView(R.id.fotEstImageView)
-        ImageView fotEstImageView;
+        @BindView(R.id.establishmentReviewUserNameTV)
+        TextView userName;
+        @BindView(R.id.establishmentReviewNameTV)
+        TextView name;
+        @BindView(R.id.establishmentReviewDescriptionTV)
+        TextView description;
         @BindView(R.id.establishmentReviewRB)
-        RatingBar resEstRatingBar;
+        RatingBar ratingBar;
 
 
         public ViewHolder(View view) {
@@ -93,14 +91,12 @@ public class EstablishmentSearchAdapter extends RecyclerView.Adapter<Establishme
 
         }
 
-        void bind(final EstablishmentTO est) {
+        void bind(final EstablishmentReviewTO est) {
             if (est != null) {
 
-                nomEstTextView.setText(est.getName());
-                dirEstTextView.setText(est.getAddress());
-                resEstRatingBar.setRating(est.getRating());
-
-                Picasso.get().load(est.getSlug()).into(fotEstImageView);
+                userName.setText(est.getUsername());
+                name.setText(est.getName());
+                description.setText(est.getDecription());
 
                 mView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -116,11 +112,11 @@ public class EstablishmentSearchAdapter extends RecyclerView.Adapter<Establishme
     /*
      * Clase de utilidad para optimizar la carga de datos en el recycler.
      * */
-    class EstablishmentUserDiffCallback extends DiffUtil.Callback {
+    class EstablishmentReviewDiffCallback extends DiffUtil.Callback {
 
-        private final List<EstablishmentTO> oldItems, newItems;
+        private final List<EstablishmentReviewTO> oldItems, newItems;
 
-        EstablishmentUserDiffCallback(List<EstablishmentTO> oldItems, List<EstablishmentTO> newItems) {
+        EstablishmentReviewDiffCallback(List<EstablishmentReviewTO> oldItems, List<EstablishmentReviewTO> newItems) {
             this.oldItems = oldItems;
             this.newItems = newItems;
         }

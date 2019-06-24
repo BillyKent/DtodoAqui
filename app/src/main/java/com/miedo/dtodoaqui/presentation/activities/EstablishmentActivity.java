@@ -3,8 +3,11 @@ package com.miedo.dtodoaqui.presentation.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,10 +21,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.miedo.dtodoaqui.R;
+import com.miedo.dtodoaqui.adapters.EstablishmentReviewAdapter;
+import com.miedo.dtodoaqui.data.EstablishmentReviewTO;
 import com.miedo.dtodoaqui.data.EstablishmentTO;
 import com.miedo.dtodoaqui.viewmodels.EstablishmentViewModel;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoProvider;
+
+import java.util.List;
 
 import butterknife.BindDimen;
 import butterknife.BindView;
@@ -51,6 +58,9 @@ public class EstablishmentActivity extends AppCompatActivity{
     @BindView(R.id.establishmentNameTV)
     TextView establishmentName;
 
+    @BindView(R.id.establishmentReviewsRV)
+    RecyclerView establishmentReviews;
+
     private GoogleMap establishmentMap = null;
     private Marker establishmentMarker = null;
 
@@ -72,10 +82,19 @@ public class EstablishmentActivity extends AppCompatActivity{
                 refreshEstablishment(establishmentTO);
             }
         });
+        viewModel.getReviews().observe(this, new Observer<List<EstablishmentReviewTO>>() {
+            @Override
+            public void onChanged(List<EstablishmentReviewTO> establishmentReviewTOS) {
+                refreshReviews(establishmentReviewTOS);
+            }
+        });
 
         //Configurar
         int id = getIntent().getExtras().getInt("establishment_id");
         viewModel.GetEstablishment(id);
+        viewModel.GetReviewsFromEstablishment(id);
+
+        establishmentReviews.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
     }
 
@@ -105,6 +124,16 @@ public class EstablishmentActivity extends AppCompatActivity{
         establishmentPrice.setText(establishment.getPrice());
         establishmentName.setCompoundDrawablesWithIntrinsicBounds(0,0,establishment.isVerified()?R.drawable.ic_check_circle_black_24dp:R.drawable.ic_do_not_disturb_on_black_24dp,0);
 
-        //establishmentVerified.setText(establishment.isVerified()?"Verificado":"No verificado");
+    }
+
+    private void refreshReviews(List<EstablishmentReviewTO> reviews){
+        EstablishmentReviewAdapter adapter = new EstablishmentReviewAdapter(new EstablishmentReviewAdapter.OnClickViewHolder() {
+            @Override
+            public void clickViewHolder(EstablishmentReviewTO est) {
+
+            }
+        },reviews,this);
+
+        establishmentReviews.setAdapter(adapter);
     }
 }

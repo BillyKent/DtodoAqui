@@ -48,4 +48,11 @@ public interface DeTodoAquiAPI {
     @GET("/api/listings/{id}")
     public Call<ResponseBody> getEstablishment(@Path("id") int id);
 
+    @GET("/api/listings/{id}/reviews")
+    public Call<ResponseBody> getEstablishmentReviews(@Path("id") int id);
+
+    // Obtener user idiota
+    @GET("/api/users/{id}")
+    public Call<ResponseBody> getUserWithId(@Path("id") int id);
+
 }

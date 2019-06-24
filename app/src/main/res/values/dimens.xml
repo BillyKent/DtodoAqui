@@ -3,4 +3,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="step_number_dim">35dp</dimen>
+    <dimen name="image_final_width">200dp</dimen>
+    <dimen name="image_width">0dp</dimen>
 </resources>

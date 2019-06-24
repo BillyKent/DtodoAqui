@@ -40,7 +40,7 @@
             android:layout_marginLeft="10dp"/>
 
         <RatingBar
-            android:id="@+id/resEstRatingBar"
+            android:id="@+id/establishmentReviewRB"
             style="@android:style/Widget.DeviceDefault.Light.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
