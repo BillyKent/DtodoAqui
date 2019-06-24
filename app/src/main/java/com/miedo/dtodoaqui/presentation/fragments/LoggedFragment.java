@@ -40,6 +40,11 @@ public class LoggedFragment extends BaseFragment {
     public static final int MODIFY_OK = 40;
     public static final int MODIFY_CANCEL = 30;
 
+    public static final int REGISTER_ESTABLISHMENT_REQUEST_CODE = 200;
+    public static final int REGISTER_ESTABLISHMENT_OK = 300;
+    public static final int REGISTER_ESTABLISHMENT_CANCELLED = 400;
+
+
     @BindView(R.id.listaxd)
     public ListView listView;
 

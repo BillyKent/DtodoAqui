@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".presentation.fragments.StepLoading">
 
-    <include layout="@layout/state_layout" />
+    <include
+        layout="@layout/state_layout"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/container"

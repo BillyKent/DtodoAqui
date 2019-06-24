@@ -59,15 +59,15 @@ public class RegisterEstablishmentViewModel extends ViewModel {
                     categories.add(entry.getValue());
                 }
                 if (categories.size() > 0) {
-
+                    registerState.setValue(RegisterState.READY_TO_REGISTER);
                 } else {
-
+                    registerState.setValue(RegisterState.ERROR_FETCHING);
                 }
             }
 
             @Override
             public void onFailure() {
-                //Error
+                registerState.setValue(RegisterState.ERROR_FETCHING);
             }
         });
 
@@ -75,5 +75,13 @@ public class RegisterEstablishmentViewModel extends ViewModel {
 
     public MutableLiveData<StepOneState> getStepOneState() {
         return stepOneState;
+    }
+
+    public MutableLiveData<RegisterState> getRegisterState() {
+        return registerState;
+    }
+
+    public List<String> getCategories() {
+        return categories;
     }
 }
