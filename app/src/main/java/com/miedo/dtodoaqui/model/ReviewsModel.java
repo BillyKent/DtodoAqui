@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -72,7 +73,8 @@ public class ReviewsModel {
                                     establishmentJsonObject.getInt("id"),
                                     String.valueOf(userId),
                                     establishmentJsonObject.getString("name"),
-                                    establishmentJsonObject.getString("description")
+                                    establishmentJsonObject.getString("description"),
+                                    -1
                     ));
                 }
             }
@@ -96,6 +98,10 @@ public class ReviewsModel {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private float getRating(int id){
+        return new Random().nextFloat() * 5.0f;
     }
 
     private String fetchUsernameResponse(ResponseBody response){
@@ -140,9 +146,40 @@ public class ReviewsModel {
                     review.setUsername(userIds.get(Integer.parseInt(review.getUsername())));
                 }
             }
+            new GetRatingTask(mutableReviews,reviews).execute();
+            //mutableReviews.setValue(reviews);
 
+            super.onPostExecute(aVoid);
+        }
+
+        @Override
+        protected void onCancelled() {
+            mutableReviews.setValue(null);
+            super.onCancelled();
+        }
+    }
+
+    private class GetRatingTask extends AsyncTask<Void, Void, Void>{
+
+        MutableLiveData<List<EstablishmentReviewTO>> mutableReviews = null;
+        List<EstablishmentReviewTO> reviews = null;
+
+        public GetRatingTask(MutableLiveData<List<EstablishmentReviewTO>> mutableReviews, List<EstablishmentReviewTO> reviews){
+            this.mutableReviews = mutableReviews;
+            this.reviews = reviews;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            for(EstablishmentReviewTO review : reviews){
+                review.setRating(getRating(review.getId()));
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
             mutableReviews.setValue(reviews);
-
             super.onPostExecute(aVoid);
         }
 

@@ -97,6 +97,7 @@ public class EstablishmentReviewAdapter extends RecyclerView.Adapter<Establishme
                 userName.setText(est.getUsername());
                 name.setText(est.getName());
                 description.setText(est.getDecription());
+                ratingBar.setRating(est.getRating());
 
                 mView.setOnClickListener(new View.OnClickListener() {
                     @Override

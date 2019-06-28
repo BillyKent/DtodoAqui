@@ -5,8 +5,9 @@ public class EstablishmentReviewTO {
     String username;
     String name;
     String decription;
+    float rating;
 
-    public EstablishmentReviewTO(int id, String username, String name, String decription) {
+    public EstablishmentReviewTO(int id, String username, String name, String decription, float rating) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -43,5 +44,13 @@ public class EstablishmentReviewTO {
 
     public void setDecription(String decription) {
         this.decription = decription;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 }
