@@ -97,4 +97,9 @@
         <item name="android:paddingEnd">8dp</item>
     </style>
 
+
+    <style name="estiloXD" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">18sp</item>
+    </style>
+
 </resources>
