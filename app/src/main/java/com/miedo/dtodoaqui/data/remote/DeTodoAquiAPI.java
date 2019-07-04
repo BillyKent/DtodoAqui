@@ -54,6 +54,9 @@ public interface DeTodoAquiAPI {
     @GET("/api/listings/{id}/reviews")
     public Call<ResponseBody> getEstablishmentReviews(@Path("id") int id);
 
+    @GET("/api/listings/{id}/reviews")
+    public Call<ResponseBody> postReview(@Body RequestBody body);
+
     // Obtener user idiota
     @GET("/api/users/{id}")
     public Call<ResponseBody> getUserWithId(@Path("id") int id);

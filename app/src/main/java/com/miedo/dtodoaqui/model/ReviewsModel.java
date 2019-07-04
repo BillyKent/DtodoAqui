@@ -8,6 +8,7 @@ import com.miedo.dtodoaqui.data.EstablishmentReviewTO;
 import com.miedo.dtodoaqui.data.ProfileTO;
 import com.miedo.dtodoaqui.data.remote.DeTodoAquiAPI;
 import com.miedo.dtodoaqui.data.remote.ServiceGenerator;
+import com.miedo.dtodoaqui.utils.JSONUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,6 +53,52 @@ public class ReviewsModel {
             }
         });
 
+    }
+
+    public void PostEstablishmentReview(String description, int establishmentId, String name, int userId, ReviewsModel.CallBack callBack){
+        DeTodoAquiAPI api = ServiceGenerator.createServiceScalar(DeTodoAquiAPI.class);
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"),
+                getProfileRequestBodyJSON(description,establishmentId,name,userId)
+        );
+
+
+        Call<ResponseBody> callEstablishment = api.postReview(requestBody);
+
+        callEstablishment.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                callBack.OnResult();
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callBack.OnFailed();
+            }
+        });
+    }
+
+    public String getProfileRequestBodyJSON(String description, int establishmentId, String name, int userId) {
+        String retorno = "";
+
+        JSONObject body = new JSONObject();
+        JSONObject prof = new JSONObject();
+
+        try {
+            prof.put("description", description);
+            prof.put("is_published", true);
+            prof.put("listing_id", establishmentId);
+            prof.put("name", name);
+            prof.put("user_id", userId);
+
+            body.put("review", prof);
+
+            retorno = body.toString();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return retorno;
     }
 
 
@@ -188,6 +237,11 @@ public class ReviewsModel {
             mutableReviews.setValue(null);
             super.onCancelled();
         }
+    }
+
+    public interface CallBack{
+        public void OnResult();
+        public void OnFailed();
     }
 
 }

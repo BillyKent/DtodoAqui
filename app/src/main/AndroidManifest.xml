@@ -31,6 +31,10 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".presentation.activities.PostReviewActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".presentation.activities.LoginActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"

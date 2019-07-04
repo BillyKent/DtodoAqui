@@ -6,11 +6,13 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,10 +22,12 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.adapters.EstablishmentReviewAdapter;
 import com.miedo.dtodoaqui.data.EstablishmentReviewTO;
 import com.miedo.dtodoaqui.data.EstablishmentTO;
+import com.miedo.dtodoaqui.data.local.SessionManager;
 import com.miedo.dtodoaqui.viewmodels.EstablishmentViewModel;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoProvider;
@@ -61,6 +65,9 @@ public class EstablishmentActivity extends AppCompatActivity{
     @BindView(R.id.establishmentReviewsRV)
     RecyclerView establishmentReviews;
 
+    @BindView(R.id.postReviewEstablishmentFAB)
+    FloatingActionButton publishFab;
+
     private GoogleMap establishmentMap = null;
     private Marker establishmentMarker = null;
 
@@ -96,6 +103,19 @@ public class EstablishmentActivity extends AppCompatActivity{
 
         establishmentReviews.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
+        publishFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(SessionManager.getInstance(getApplicationContext()).isUserLogged()){
+                    Intent intent = new Intent(getApplicationContext(), PostReviewActivity.class);
+                    intent.putExtra("establishment_id",id);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(EstablishmentActivity.this, "Debe iniciar sesión primero", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     private void refreshEstablishment(EstablishmentTO establishment){
@@ -106,7 +126,7 @@ public class EstablishmentActivity extends AppCompatActivity{
                     establishmentMap = googleMap;
                     googleMap.getUiSettings().setAllGesturesEnabled(false);
                     establishmentMarker = establishmentMap.addMarker(new MarkerOptions().position(establishment.getLatLng()).title(establishment.getName()));
-                    establishmentMap.moveCamera(CameraUpdateFactory.newLatLng(establishment.getLatLng()));
+                    establishmentMap.moveCamera(CameraUpdateFactory.newLatLngZoom(establishment.getLatLng(),15));
                 }
             });
         }else{
@@ -121,9 +141,19 @@ public class EstablishmentActivity extends AppCompatActivity{
         //establishmentCategory.setText(establishment.getCategory());
         establishmentDescription.setText(establishment.getDescription());
         establishmentOpeningHours.setText(establishment.getOpeningHours());
+        if(establishment.getPrice() != null && !establishment.getPrice().equals("null"))
         establishmentPrice.setText(establishment.getPrice());
+        else
+            establishmentPrice.setText("");
         establishmentName.setCompoundDrawablesWithIntrinsicBounds(0,0,establishment.isVerified()?R.drawable.ic_check_circle_black_24dp:R.drawable.ic_do_not_disturb_on_black_24dp,0);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int id = getIntent().getExtras().getInt("establishment_id");
+        viewModel.GetReviewsFromEstablishment(id);
     }
 
     private void refreshReviews(List<EstablishmentReviewTO> reviews){
