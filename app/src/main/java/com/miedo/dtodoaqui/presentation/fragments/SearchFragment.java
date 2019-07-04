@@ -102,6 +102,8 @@ public class SearchFragment extends Fragment{
                 //progressSearchBar.setVisibility(View.VISIBLE);
                 //Búsqueda
                 viewModel.SearchEstablishments(keywordSearchParam.getText().toString(),String.valueOf(locationMap.get((String)locationSearchParam.getSelectedItem())),String.valueOf(getCategoryId(categoriesSearchParam.getSelectedItem().toString())));
+
+                appBarLayout.setExpanded(false);
             }
         });
 

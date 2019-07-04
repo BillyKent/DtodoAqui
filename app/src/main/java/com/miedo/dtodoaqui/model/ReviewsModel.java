@@ -54,7 +54,7 @@ public class ReviewsModel {
 
 
     private List<EstablishmentReviewTO> fetchEstablishmentReviewsResponse(ResponseBody response){
-        List<EstablishmentReviewTO> reviews = null;
+        List<EstablishmentReviewTO> reviews = new ArrayList();
         try {
             JSONObject data = new JSONObject(response.string());
             JSONArray establishmentsArray = data.getJSONArray("data");

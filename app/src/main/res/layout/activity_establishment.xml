@@ -27,8 +27,7 @@
                 android:id="@+id/establishmentBackgroundIV"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:scaleType="center"
-                android:src="@color/colorAccent"/>
+                android:scaleType="center"/>
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
