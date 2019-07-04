@@ -144,7 +144,7 @@ public class UpdateProfilePhotoActivity extends BaseActivity {
 
                     if (bitmap != null) {
                         fotoReal = bitmap;
-                        fotoFake = BitmapUtils.getScaledDownBitmap(bitmap, 200, false);
+                        fotoFake = BitmapUtils.getScaledDownBitmap(bitmap, 300, false);
 
                         profile.setImageBitmap(fotoFake);
                         botonGuardar.setEnabled(true);
