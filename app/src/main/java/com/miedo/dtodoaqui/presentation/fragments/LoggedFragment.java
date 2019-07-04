@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -57,6 +58,9 @@ public class LoggedFragment extends BaseFragment {
 
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
+
+    @BindView(R.id.tv_nombre)
+    public TextView tv_nombre;
 
     @BindView(R.id.profile)
     public CircleImageView profileImage;
@@ -238,10 +242,16 @@ public class LoggedFragment extends BaseFragment {
 
         // nombre
         if (!Strings.isEmptyOrWhitespace(profile.getFirstName()) && !Strings.isEmptyOrWhitespace(profile.getLastName())) {
+            tv_nombre.setText(profile.getFirstName() + " " + profile.getLastName());
+        }
+
+        // descripcion
+        if (!Strings.isEmptyOrWhitespace(profile.getDescription())) {
             items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_account_box_black_24dp,
-                    profile.getFirstName() + " " + profile.getLastName()
+                    profile.getDescription()
             ));
         }
+
 
         // telefono
         if (!Strings.isEmptyOrWhitespace(profile.getPhone())) {
@@ -257,32 +267,12 @@ public class LoggedFragment extends BaseFragment {
             ));
         }
 
-        // facebook
-        if (!Strings.isEmptyOrWhitespace(profile.getFacebookUrl())) {
-            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_facebook,
-                    profile.getFacebookUrl()
+        // pais
+        if (!Strings.isEmptyOrWhitespace(profile.getCountry())) {
+            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_map_black_24dp,
+                    profile.getCountry()
             ));
 
-        }
-
-        if (!Strings.isEmptyOrWhitespace(profile.getFirstName()) && !Strings.isEmptyOrWhitespace(profile.getLastName())) {
-            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_account_box_black_24dp,
-                    profile.getFirstName() + " " + profile.getLastName() + profile.getFirstName() + " " + profile.getLastName() + profile.getFirstName() + " " + profile.getLastName()
-            ));
-        }
-
-        // telefono
-        if (!Strings.isEmptyOrWhitespace(profile.getPhone())) {
-            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_phone_black_24dp,
-                    profile.getPhone()
-            ));
-        }
-
-        // direccion
-        if (!Strings.isEmptyOrWhitespace(profile.getAddress())) {
-            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_location_on_black_24dp,
-                    profile.getAddress()
-            ));
         }
 
         // facebook
@@ -293,33 +283,6 @@ public class LoggedFragment extends BaseFragment {
 
         }
 
-        if (!Strings.isEmptyOrWhitespace(profile.getFirstName()) && !Strings.isEmptyOrWhitespace(profile.getLastName())) {
-            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_account_box_black_24dp,
-                    profile.getFirstName() + " " + profile.getLastName()
-            ));
-        }
-
-        // telefono
-        if (!Strings.isEmptyOrWhitespace(profile.getPhone())) {
-            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_phone_black_24dp,
-                    profile.getPhone()
-            ));
-        }
-
-        // direccion
-        if (!Strings.isEmptyOrWhitespace(profile.getAddress())) {
-            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_location_on_black_24dp,
-                    profile.getAddress()
-            ));
-        }
-
-        // facebook
-        if (!Strings.isEmptyOrWhitespace(profile.getFacebookUrl())) {
-            items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_facebook,
-                    profile.getFacebookUrl()
-            ));
-
-        }
         adapter.notifyDataSetChanged();
 
     }
