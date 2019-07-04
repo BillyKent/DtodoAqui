@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.miedo.dtodoaqui.R;
@@ -32,7 +35,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StepOneRE extends Fragment implements AdapterView.OnItemSelectedListener {
+public class StepOneRE extends BaseFragment implements View.OnClickListener {
 
     private static final String TAG = StepOneRE.class.getSimpleName();
 
@@ -43,120 +46,70 @@ public class StepOneRE extends Fragment implements AdapterView.OnItemSelectedLis
     @BindView(R.id.et_nombre)
     public TextInputEditText et_nombre;
 
-    private Spinner spinner;
+    @BindView(R.id.spinner_category)
+    public TextView spinner;
+
+    @BindView(R.id.nextButton)
+    public Button nextButton;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_step_one_re, container, false);
         ButterKnife.bind(this, view);
-        spinner = (Spinner) view.findViewById(R.id.spinner_category);
         viewModel = ViewModelProviders.of(this).get(RegisterEstablishmentViewModel.class);
 
-
-        /*spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                showToastMessage(((TextView) view).getText().toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
+        spinner.setOnClickListener(this);
 
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        addItemsToSpinner();
-    }
 
-    private void addItemsToSpinner() {
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, viewModel.getCategories());
-        // spinner.setAdapter(adapter);
+        viewModel.getRegisterState().setValue(RegisterEstablishmentViewModel.RegisterState.NORMAL);
+        final NavController navController = NavHostFragment.findNavController(this);
 
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, viewModel.getCategories());
-
-        /*ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(),
-                R.array.planets_array, android.R.layout.simple_spinner_item);*/
-        // Specify the layout to use when the list of choices appears
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setOnItemSelectedListener(this);
-
+        viewModel.getRegisterState().observe(getViewLifecycleOwner(),
+                registerState -> {
+                    switch (registerState) {
+                        case NEXT_STEP:
+                            navController.navigate(R.id.next_action);
+                            break;
+                    }
+                });
+        nextButton.setOnClickListener(v -> {
+            viewModel.getRegisterState().setValue(RegisterEstablishmentViewModel.RegisterState.NEXT_STEP);
+        });
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    public void onClick(View v) {
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(requireContext());
+        builderSingle.setIcon(R.drawable.ic_store_black_24dp);
+        builderSingle.setTitle("Seleccionar categoría");
 
-    }
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(requireContext(), R.layout.checked_text_item,
+                viewModel.getCategories()
+        );
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
 
-    }
-
-    // metodo del Step para verificar si hay error
-    /*@Nullable
-    @Override
-    public VerificationError verifyStep() {
-        et_nombre.setError(null);
-
-        String nombre = et_nombre.getText().toString();
-        VerificationError ve = null;
-        if (nombre.isEmpty()) {
-            ve = new VerificationError(NOMBRE_VACIO_ERROR);
-        } else {
-            boolean selected = false;
-            for (boolean b : seleccionados) {
-                if (b) selected = true;
+        builderSingle.setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
-            if (!selected) {
-                ve = new VerificationError(CATEGORIAS_ERROR);
+        });
+
+        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                viewModel.setCategoryId(viewModel.getIndices().get(which));
+                spinner.setText(viewModel.getCategories().get(which));
             }
-        }
-
-        if (ve == null) {
-            updateData();
-        }
-
-        return ve;
-    }
-
-    @Override
-    public void onSelected() {
-        Log.i(TAG, "onSelected");
-        updateItemsSelected();
+        });
+        builderSingle.show();
     }
 
 
-    // metodo para actuar despues de hayada la interfaz
-    @Override
-    public void onError(@NonNull VerificationError error) {
-        if (error.getErrorMessage().equals(NOMBRE_VACIO_ERROR)) {
-            et_nombre.setError("El nombre no puede estar vacío");
-            et_nombre.requestFocus();
-        } else if (error.getErrorMessage().equals(CATEGORIAS_ERROR)) {
-            Toast.makeText(getContext(), "Selecciona al menos una categoría", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    public void updateData() {
-
-        Bundle bundle = new Bundle();
-
-        bundle.putString("nombre", et_nombre.getText().toString().trim());
-        //bundle.putBooleanArray("categorias", seleccionados);
-
-        // FAKE
-        ((RegisterEstablishmentActivity) getActivity()).loadData(bundle, RegisterEstablishmentActivity.STEP_ONE);
-
-
-    }*/
 }

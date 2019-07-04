@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.common.util.Strings;
 import com.miedo.dtodoaqui.R;
@@ -58,6 +60,8 @@ public class LoggedFragment extends BaseFragment {
     // Viewmodel
     private ProfileViewModel viewModel;
 
+    NavController navController;
+
     public LoggedFragment() {
         // Required empty public constructor
     }
@@ -81,6 +85,8 @@ public class LoggedFragment extends BaseFragment {
         // Obtenemos el viewmodel y le asignamos el usuario de la sesion actual
         viewModel = ViewModelProviders.of(requireActivity()).get(ProfileViewModel.class);
         viewModel.setCurrentUser(SessionManager.getInstance(requireContext()).getCurrentSession());
+
+        navController = NavHostFragment.findNavController(this);
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_logged_profile, container, false);
@@ -159,8 +165,7 @@ public class LoggedFragment extends BaseFragment {
 
                 case R.id.my_establishment_option:
 
-                    Intent intento = new Intent(requireContext(), RegisterEstablishmentActivity.class);
-                    startActivity(intento);
+                    navController.navigate (R.id.register_establishment_action) ;
                     return true;
 
                 case R.id.edit_option:

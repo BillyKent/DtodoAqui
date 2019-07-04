@@ -20,7 +20,7 @@ import retrofit2.Response;
 
 public class CategoriesModel {
 
-    public void GetCategories(Callback<Map<Integer,String>> callback){
+    public void GetCategories(Callback<Map<Integer, String>> callback) {
         // Creamos la instancia de la api
         DeTodoAquiAPI api = ServiceGenerator.createServiceScalar(DeTodoAquiAPI.class);
 
@@ -32,6 +32,7 @@ public class CategoriesModel {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 callback.onResult(fetchCategoriesResponse(response.body()));
             }
+
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 callback.onFailure();
@@ -39,7 +40,7 @@ public class CategoriesModel {
         });
     }
 
-    private Map<Integer,String> fetchCategoriesResponse(ResponseBody response) {
+    private Map<Integer, String> fetchCategoriesResponse(ResponseBody response) {
         Map<Integer, String> categories = null;
         try {
             JSONObject data = new JSONObject(response.string());
@@ -50,8 +51,11 @@ public class CategoriesModel {
 
                 for (int i = 0; i < categoriesArray.length(); i++) {
                     JSONObject categoryJsonObject = (JSONObject) categoriesArray.get(i);
+
+                    String categoria = categoryJsonObject.getString("name");
+                    categoria = categoria.substring(0, 1).toUpperCase() + categoria.substring(1);
                     if (!categories.containsKey(categoryJsonObject.getInt("id"))) {
-                        categories.put(categoryJsonObject.getInt("id"), categoryJsonObject.getString("name"));
+                        categories.put(categoryJsonObject.getInt("id"), categoria);
                     }
                 }
             }
@@ -63,8 +67,9 @@ public class CategoriesModel {
         return categories;
     }
 
-    public interface Callback<T>{
+    public interface Callback<T> {
         public void onResult(T arg);
+
         public void onFailure();
     }
 }

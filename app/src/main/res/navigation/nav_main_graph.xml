@@ -28,7 +28,14 @@
         android:id="@+id/logged_dest"
         android:name="com.miedo.dtodoaqui.presentation.fragments.LoggedFragment"
         android:label="fragment_logged_profile"
-        tools:layout="@layout/fragment_logged_profile" />
+        tools:layout="@layout/fragment_logged_profile" >
+        <action
+            android:id="@+id/register_establishment_action"
+            app:destination="@id/registerEstablishmentActivity"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/logged_dest"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <activity
         android:id="@+id/establishment_dest"
@@ -39,4 +46,9 @@
             android:name="establishment_id"
             app:argType="integer" />
     </activity>
+    <activity
+        android:id="@+id/registerEstablishmentActivity"
+        android:name="com.miedo.dtodoaqui.presentation.activities.RegisterEstablishmentActivity"
+        android:label="activity_register_establishment"
+        tools:layout="@layout/activity_register_establishment" />
 </navigation>

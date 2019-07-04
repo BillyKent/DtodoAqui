@@ -1,5 +1,7 @@
 package com.miedo.dtodoaqui.presentation.activities;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -10,6 +12,7 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.core.BaseActivity;
@@ -41,6 +44,17 @@ public class MainActivity extends BaseActivity {
 
         // listener para la seleccion de tabs
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        if (!Places.isInitialized()) {
+            try {
+                ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+                Bundle bundle = ai.metaData;
+                String apiKey = bundle.getString("com.google.android.geo.API_KEY");
+                Places.initialize(getApplicationContext(),apiKey );
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
 
         //SessionManager.getInstance(this).closeSession();
     }
