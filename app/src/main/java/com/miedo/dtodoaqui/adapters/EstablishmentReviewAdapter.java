@@ -107,7 +107,6 @@ public class EstablishmentReviewAdapter extends RecyclerView.Adapter<Establishme
                 });
             }
         }
-
     }
 
     /*

@@ -23,7 +23,7 @@ public interface DeTodoAquiAPI {
 
     // Buscar establecimientos
     @GET("/api/search")
-    public Call<ResponseBody> searchEstablishments(@Query("keyword") String keyword, @Query("location") String location, @Query("category") String category);
+    public Call<ResponseBody> searchEstablishments(@Query("keyword") String keyword, @Query("location") String location, @Query("categories") String category);
 
     //  Obtener profile
     @GET("/api/my_profile")

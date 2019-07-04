@@ -1,57 +1,45 @@
 package com.miedo.dtodoaqui.presentation.fragments;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.adapters.EstablishmentSearchAdapter;
-import com.miedo.dtodoaqui.data.EstablishmentSearchTO;
 import com.miedo.dtodoaqui.data.EstablishmentTO;
 import com.miedo.dtodoaqui.model.CategoriesModel;
+import com.miedo.dtodoaqui.model.LocationsModel;
 import com.miedo.dtodoaqui.presentation.activities.EstablishmentActivity;
 import com.miedo.dtodoaqui.viewmodels.EstablishmentsSearchViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 public class SearchFragment extends Fragment{
 
     AppBarLayout appBarLayout;
     EditText keywordSearchParam;
-    EditText locationSearchParam;
+    Spinner locationSearchParam;
     Spinner categoriesSearchParam;
     Button searchButton;
     //ProgressBar progressSearchBar;
@@ -61,7 +49,7 @@ public class SearchFragment extends Fragment{
     private EstablishmentsSearchViewModel viewModel;
 
     private Map<Integer,String> categoriesMap = null;
-
+    private Map<String,Integer> locationMap = null;
 
     public SearchFragment() {
     }
@@ -81,7 +69,7 @@ public class SearchFragment extends Fragment{
         appBarLayout = view.findViewById(R.id.searchAppBarLayout);
         ConstraintLayout searchLayout = appBarLayout.findViewById(R.id.searchLayout);
         keywordSearchParam = searchLayout.findViewById(R.id.keywordSearchET);
-        locationSearchParam = searchLayout.findViewById(R.id.locationSearchET);
+        locationSearchParam = searchLayout.findViewById(R.id.locationSearchSP);
         categoriesSearchParam = searchLayout.findViewById(R.id.categoriesSearchSP);
         searchButton = searchLayout.findViewById(R.id.searchSearchBT);
 
@@ -113,7 +101,7 @@ public class SearchFragment extends Fragment{
                 establishmentsSearchResult.setAdapter(null);
                 //progressSearchBar.setVisibility(View.VISIBLE);
                 //Búsqueda
-                viewModel.SearchEstablishments(keywordSearchParam.getText().toString(),locationSearchParam.getText().toString(),categoriesSearchParam.getSelectedItem().toString());
+                viewModel.SearchEstablishments(keywordSearchParam.getText().toString(),String.valueOf(locationMap.get((String)locationSearchParam.getSelectedItem())),String.valueOf(getCategoryId(categoriesSearchParam.getSelectedItem().toString())));
             }
         });
 
@@ -122,6 +110,7 @@ public class SearchFragment extends Fragment{
         establishmentsSearchResult.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
         getCategories();
+        getLocatios();
 
         return view;
     }
@@ -149,6 +138,28 @@ public class SearchFragment extends Fragment{
         });
     }
 
+    private void getLocatios(){
+        LocationsModel locationsModel= new LocationsModel();
+        locationsModel.getLocations(new LocationsModel.Callback<HashMap<String, Integer>>() {
+            @Override
+            public void onResult(HashMap<String, Integer> arg) {
+                locationMap = arg;
+                List<String> locations = new ArrayList();
+                for(Map.Entry<String, Integer> entry : arg.entrySet()){
+                    locations.add(entry.getKey());
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,locations);
+
+                locationSearchParam.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure() {
+                //Error
+            }
+        });
+    }
     private int getCategoryId(String name){
         int id = -1;
         if(categoriesMap.containsValue(name)){
