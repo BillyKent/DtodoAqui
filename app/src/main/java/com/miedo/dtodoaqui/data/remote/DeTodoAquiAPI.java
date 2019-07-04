@@ -48,11 +48,18 @@ public interface DeTodoAquiAPI {
     @GET("/api/listings/{id}")
     public Call<ResponseBody> getEstablishment(@Path("id") int id);
 
+    @POST("/api/listings")
+    public Call<ResponseBody> registerEstablishment(@Body RequestBody body);
+
     @GET("/api/listings/{id}/reviews")
     public Call<ResponseBody> getEstablishmentReviews(@Path("id") int id);
 
     // Obtener user idiota
     @GET("/api/users/{id}")
     public Call<ResponseBody> getUserWithId(@Path("id") int id);
+
+    // Subir imagen pal profile
+    @POST("/api/upload_image")
+    public Call<ResponseBody> uploadImage(@Header("Authorization") String bearer, @Body RequestBody body);
 
 }

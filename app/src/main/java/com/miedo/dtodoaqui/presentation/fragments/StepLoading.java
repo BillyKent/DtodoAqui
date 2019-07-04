@@ -53,6 +53,22 @@ public class StepLoading extends BaseFragment {
                 case READY_TO_REGISTER:
                     navController.navigate(R.id.ready_action);
                     break;
+
+                case TO_REGISTER:
+                    viewModel.registerEstablishment();
+                    viewModel.getRegisterState().setValue(RegisterEstablishmentViewModel.RegisterState.REGISTERING);
+                    break;
+                case REGISTERING:
+                    getStateView().forceLoadingTitle("Registrando establecimiento");
+                    break;
+                case REGISTER_SUCCESS:
+                    showToastMessage("Establecimiento registrado correctamente");
+                    requireActivity().finish();
+                    break;
+                case ERROR_REGISTERING:
+                    getStateView().forceTitleMessageIcon("Error al registrar establecimiento", "Algo salió mal", R.drawable.perrito);
+                    break;
+
             }
 
         });

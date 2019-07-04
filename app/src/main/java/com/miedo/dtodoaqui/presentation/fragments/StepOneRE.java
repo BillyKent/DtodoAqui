@@ -46,6 +46,10 @@ public class StepOneRE extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.et_nombre)
     public TextInputEditText et_nombre;
 
+
+    @BindView(R.id.et_descripcion)
+    public TextInputEditText et_descripcion;
+
     @BindView(R.id.spinner_category)
     public TextView spinner;
 
@@ -57,7 +61,7 @@ public class StepOneRE extends BaseFragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_step_one_re, container, false);
         ButterKnife.bind(this, view);
-        viewModel = ViewModelProviders.of(this).get(RegisterEstablishmentViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(RegisterEstablishmentViewModel.class);
 
         spinner.setOnClickListener(this);
 
@@ -79,7 +83,18 @@ public class StepOneRE extends BaseFragment implements View.OnClickListener {
                     }
                 });
         nextButton.setOnClickListener(v -> {
-            viewModel.getRegisterState().setValue(RegisterEstablishmentViewModel.RegisterState.NEXT_STEP);
+            viewModel.getEstablishment().setName(et_nombre.getText().toString().trim());
+            viewModel.getEstablishment().setDescription(et_descripcion.getText().toString().trim());
+            viewModel.getEstablishment().setSlug("imagenSubida");
+
+            if (validateFields()) {
+
+
+                viewModel.getRegisterState().setValue(RegisterEstablishmentViewModel.RegisterState.NEXT_STEP);
+            } else {
+                showToastMessage("Campos inválidos");
+            }
+
         });
     }
 
@@ -104,11 +119,16 @@ public class StepOneRE extends BaseFragment implements View.OnClickListener {
         builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                viewModel.setCategoryId(viewModel.getIndices().get(which));
+
+                viewModel.getEstablishment().setCategoryId(viewModel.getIndices().get(which));
                 spinner.setText(viewModel.getCategories().get(which));
             }
         });
         builderSingle.show();
+    }
+
+    private boolean validateFields() {
+        return viewModel.validarPrimerPaso();
     }
 
 

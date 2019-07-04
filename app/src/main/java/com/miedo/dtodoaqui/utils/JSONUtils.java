@@ -3,6 +3,7 @@ package com.miedo.dtodoaqui.utils;
 import android.util.Log;
 
 import com.miedo.dtodoaqui.data.ProfileTO;
+import com.miedo.dtodoaqui.data.EstablishmentCreateTO;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -134,6 +135,40 @@ public final class JSONUtils {
         }
 
         return retorno;
+    }
+
+
+
+    public static String getEstablishmentCreateRequestBodyJSON(EstablishmentCreateTO establishment) {
+
+        String retorno = "";
+
+        JSONObject body = new JSONObject();
+        JSONObject listing = new JSONObject();
+
+        try {
+            listing.put("name", establishment.getName());
+            listing.put("address", establishment.getAddress());
+            listing.put("category_id", establishment.getCategoryId());
+            listing.put("location_id", establishment.getLocationId());
+            listing.put("slug", establishment.getSlug());
+            listing.put("description", establishment.getDescription());
+            listing.put("latitude", establishment.getLatitude());
+            listing.put("longitude", establishment.getLongitude());
+            listing.put("opening_hours", establishment.getOpeningHours());
+            listing.put("user_id", establishment.getUserId());
+
+            body.put("listings", listing);
+
+            retorno = body.toString();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return retorno;
+
+
     }
 
 

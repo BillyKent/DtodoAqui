@@ -24,24 +24,6 @@
         android:label="fragment_step_two_re"
         tools:layout="@layout/fragment_step_two_re" >
         <action
-            android:id="@+id/next_action"
-            app:destination="@id/stepThreeRE" />
-    </fragment>
-    <fragment
-        android:id="@+id/stepThreeRE"
-        android:name="com.miedo.dtodoaqui.presentation.fragments.StepThreeRE"
-        android:label="fragment_step_three_re"
-        tools:layout="@layout/fragment_step_three_re" >
-        <action
-            android:id="@+id/next_action"
-            app:destination="@id/stepFourRE" />
-    </fragment>
-    <fragment
-        android:id="@+id/stepFourRE"
-        android:name="com.miedo.dtodoaqui.presentation.fragments.StepFourRE"
-        android:label="fragment_step_four_re"
-        tools:layout="@layout/fragment_step_four_re" >
-        <action
             android:id="@+id/register_action"
             app:destination="@id/stepLoading" />
     </fragment>

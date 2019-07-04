@@ -11,7 +11,7 @@
         android:id="@+id/my_establishment_option"
         android:icon="@drawable/ic_store_black_24dp"
         android:iconTint="@android:color/white"
-        android:title="Mis establecimientos"
+        android:title="Registrar establecimiento"
         app:showAsAction="never" />
 
     <item

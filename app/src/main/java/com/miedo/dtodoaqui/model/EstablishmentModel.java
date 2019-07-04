@@ -26,11 +26,11 @@ public class EstablishmentModel {
 
     CategoriesModel categoriesModel;
 
-    public EstablishmentModel(){
+    public EstablishmentModel() {
         categoriesModel = new CategoriesModel();
     }
 
-    public void Get(int id, MutableLiveData<EstablishmentTO> establishment){
+    public void Get(int id, MutableLiveData<EstablishmentTO> establishment) {
         DeTodoAquiAPI api = ServiceGenerator.createServiceScalar(DeTodoAquiAPI.class);
         Call<ResponseBody> callEstablishment = api.getEstablishment(id);
 
@@ -40,14 +40,16 @@ public class EstablishmentModel {
                 callEstablishment.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        establishment.setValue(fetchEstablishmentResponse(response.body(),arg));
+                        establishment.setValue(fetchEstablishmentResponse(response.body(), arg));
                     }
+
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         establishment.setValue(null);
                     }
                 });
             }
+
             @Override
             public void onFailure() {
                 establishment.setValue(null);
@@ -55,10 +57,10 @@ public class EstablishmentModel {
         });
     }
 
-    public void Search(String keyword, String location, String category, MutableLiveData<List<EstablishmentTO>> data){
+    public void Search(String keyword, String location, String category, MutableLiveData<List<EstablishmentTO>> data) {
         // Creamos la instancia de la api
         DeTodoAquiAPI api = ServiceGenerator.createServiceScalar(DeTodoAquiAPI.class);
-        Call<ResponseBody> callEstablishments = api.searchEstablishments(keyword,location,category);
+        Call<ResponseBody> callEstablishments = api.searchEstablishments(keyword, location, category);
 
         categoriesModel.GetCategories(new CategoriesModel.Callback<Map<Integer, String>>() {
             @Override
@@ -76,6 +78,7 @@ public class EstablishmentModel {
                     }
                 });
             }
+
             @Override
             public void onFailure() {
                 data.setValue(null);
@@ -84,28 +87,28 @@ public class EstablishmentModel {
     }
 
 
-    private List<EstablishmentTO> fetchSearchResponse(ResponseBody response, Map<Integer,String> categories){
+    private List<EstablishmentTO> fetchSearchResponse(ResponseBody response, Map<Integer, String> categories) {
         List<EstablishmentTO> establishments = null;
         try {
             JSONObject data = new JSONObject(response.string());
             JSONArray establishmentsArray = data.getJSONArray("data");
-            if(establishmentsArray.length() > 0){
+            if (establishmentsArray.length() > 0) {
                 establishments = new ArrayList();
 
-                for(int i = 0; i< establishmentsArray.length(); i++){
+                for (int i = 0; i < establishmentsArray.length(); i++) {
                     JSONObject establishmentJsonObject = (JSONObject) establishmentsArray.get(i);
                     establishments.add(new EstablishmentTO(establishmentJsonObject.getInt("id"),
                             establishmentJsonObject.getString("name"),
                             establishmentJsonObject.getString("address"),
-                            categories.containsKey(establishmentJsonObject.getInt("category_id"))?categories.get(establishmentJsonObject.getInt("category_id")):"Sin categoría",
+                            categories.containsKey(establishmentJsonObject.getInt("category_id")) ? categories.get(establishmentJsonObject.getInt("category_id")) : "Sin categoría",
                             establishmentJsonObject.getString("description"),
-                            new LatLng(establishmentJsonObject.getDouble("latitude"),establishmentJsonObject.getDouble("longitude")),
+                            new LatLng(establishmentJsonObject.getDouble("latitude"), establishmentJsonObject.getDouble("longitude")),
                             establishmentJsonObject.getBoolean("is_verified"),
                             establishmentJsonObject.getString("opening_hours"),
                             establishmentJsonObject.getString("price"),
                             establishmentJsonObject.getString("slug"),
                             5
-                            ));
+                    ));
                 }
             }
 
@@ -116,18 +119,19 @@ public class EstablishmentModel {
         }
         return establishments;
     }
-    private EstablishmentTO fetchEstablishmentResponse(ResponseBody response, Map<Integer, String> categories){
+
+    private EstablishmentTO fetchEstablishmentResponse(ResponseBody response, Map<Integer, String> categories) {
         EstablishmentTO establishment = null;
         try {
             JSONObject data = new JSONObject(response.string());
             JSONObject establishmentJsonObject = data.getJSONObject("data");
-            if(establishmentJsonObject != null){
+            if (establishmentJsonObject != null) {
                 establishment = new EstablishmentTO(establishmentJsonObject.getInt("id"),
                         establishmentJsonObject.getString("name"),
                         establishmentJsonObject.getString("address"),
-                        categories.containsKey(establishmentJsonObject.getInt("category_id"))?categories.get(establishmentJsonObject.getInt("category_id")):"Sin categoría",
+                        categories.containsKey(establishmentJsonObject.getInt("category_id")) ? categories.get(establishmentJsonObject.getInt("category_id")) : "Sin categoría",
                         establishmentJsonObject.getString("description"),
-                        new LatLng(establishmentJsonObject.getDouble("latitude"),establishmentJsonObject.getDouble("longitude")),
+                        new LatLng(establishmentJsonObject.getDouble("latitude"), establishmentJsonObject.getDouble("longitude")),
                         establishmentJsonObject.getBoolean("is_verified"),
                         establishmentJsonObject.getString("opening_hours"),
                         establishmentJsonObject.getString("price"),
@@ -142,4 +146,10 @@ public class EstablishmentModel {
         }
         return establishment;
     }
+
+    private void createEstablishment() {
+
+
+    }
+
 }
