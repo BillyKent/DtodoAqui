@@ -27,11 +27,13 @@ import com.miedo.dtodoaqui.presentation.activities.ModifyProfileActivity;
 import com.miedo.dtodoaqui.presentation.activities.RegisterEstablishmentActivity;
 import com.miedo.dtodoaqui.presentation.activities.UpdateProfilePhotoActivity;
 import com.miedo.dtodoaqui.viewmodels.ProfileViewModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class LoggedFragment extends BaseFragment {
@@ -56,6 +58,9 @@ public class LoggedFragment extends BaseFragment {
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
 
+    @BindView(R.id.profile)
+    public CircleImageView profileImage;
+
     // Lista de items y el adapter del listview
     private ArrayList<ProfileInfoAdapter.ProfileItem> items = new ArrayList<>();
     private ProfileInfoAdapter adapter;
@@ -77,6 +82,12 @@ public class LoggedFragment extends BaseFragment {
                 viewModel.setCurrentProfile((ProfileTO) data.getSerializableExtra("newProfile"));
                 showItems();
 
+            }
+        }
+
+        if (requestCode == UPDATE_PHOTO_REQUEST_CODE) {
+            if (resultCode == UPDATE_PHOTO_OK) {
+                viewModel.obtenerPerfil();
             }
         }
     }
@@ -219,9 +230,12 @@ public class LoggedFragment extends BaseFragment {
         ProfileTO profile = viewModel.getCurrentProfile();
         SessionManager.getInstance(requireContext()).setJwtToken(viewModel.getCurrentUser().getJwt());
         Log.i(TAG, "Perfil a mostrar : " + profile);
-
         if (profile == null) return;
         items.clear();
+        if (profile.getAvatarName() != null && profile.getAvatarName() != "empty.png") {
+            Picasso.get().load("http://35.226.8.87/" + profile.getAvatarName()).into(profileImage);
+        }
+
         // nombre
         if (!Strings.isEmptyOrWhitespace(profile.getFirstName()) && !Strings.isEmptyOrWhitespace(profile.getLastName())) {
             items.add(new ProfileInfoAdapter.ProfileItem(R.drawable.ic_account_box_black_24dp,

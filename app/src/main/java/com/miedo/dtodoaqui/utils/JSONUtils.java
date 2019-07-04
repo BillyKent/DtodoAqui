@@ -87,6 +87,7 @@ public final class JSONUtils {
             retorno = new ProfileTO();
 
             if (!rpta.isNull("id")) retorno.setId(rpta.getInt("id"));
+            if (!rpta.isNull("avatar_name")) retorno.setAvatarName(rpta.getString("avatar_name"));
             if (!rpta.isNull("address")) retorno.setAddress(rpta.getString("address"));
             if (!rpta.isNull("country")) retorno.setCountry(rpta.getString("country"));
             if (!rpta.isNull("description")) retorno.setDescription(rpta.getString("description"));
@@ -119,6 +120,7 @@ public final class JSONUtils {
 
         try {
             prof.put("first_name", p.getFirstName());
+            prof.put("avatar_name", p.getAvatarName());
             prof.put("last_name", p.getLastName());
             prof.put("phone", p.getPhone());
             prof.put("facebook", p.getFacebookUrl());
@@ -136,7 +138,6 @@ public final class JSONUtils {
 
         return retorno;
     }
-
 
 
     public static String getEstablishmentCreateRequestBodyJSON(EstablishmentCreateTO establishment) {
@@ -170,6 +171,5 @@ public final class JSONUtils {
 
 
     }
-
 
 }

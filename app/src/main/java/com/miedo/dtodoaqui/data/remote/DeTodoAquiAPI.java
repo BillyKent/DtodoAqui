@@ -62,4 +62,8 @@ public interface DeTodoAquiAPI {
     @POST("/api/upload_image")
     public Call<ResponseBody> uploadImage(@Header("Authorization") String bearer, @Body RequestBody body);
 
+
+
+
+
 }

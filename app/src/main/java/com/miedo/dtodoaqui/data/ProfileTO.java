@@ -5,25 +5,16 @@ import java.io.Serializable;
 public class ProfileTO implements Serializable {
     private Integer id;
     private String firstName;
+    private String avatarName;
     private String lastName;
     private String description;
     private String phone;
     private String country;
     private String address;
+
     private String facebookUrl;
 
     public ProfileTO() {
-    }
-
-    public ProfileTO(Integer id, String firstName, String lastName, String phone, String country, String address, String description, String facebookUrl) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.country = country;
-        this.address = address;
-        this.description = description;
-        this.facebookUrl = facebookUrl;
     }
 
     public Integer getId() {
@@ -90,16 +81,25 @@ public class ProfileTO implements Serializable {
         this.facebookUrl = facebookUrl;
     }
 
+    public String getAvatarName() {
+        return avatarName;
+    }
+
+    public void setAvatarName(String avatarName) {
+        this.avatarName = avatarName;
+    }
+
     @Override
     public String toString() {
         return "ProfileTO{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
+                ", avatarName='" + avatarName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", description='" + description + '\'' +
                 ", phone='" + phone + '\'' +
                 ", country='" + country + '\'' +
                 ", address='" + address + '\'' +
-                ", description='" + description + '\'' +
                 ", facebookUrl='" + facebookUrl + '\'' +
                 '}';
     }
