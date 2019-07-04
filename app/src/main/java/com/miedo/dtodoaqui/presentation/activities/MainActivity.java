@@ -77,9 +77,9 @@ public class MainActivity extends BaseActivity {
                 case R.id.search_dest:
                     navView.getMenu().findItem(R.id.search_tab).setChecked(true);
                     break;
-                case R.id.activity_dest:
+                /*case R.id.activity_dest:
                     navView.getMenu().findItem(R.id.activity_tab).setChecked(true);
-                    break;
+                    break;*/
                 case R.id.logged_dest:
                 case R.id.unlogged_dest:
                     // Si se navega al perfil se debe marcar el tab Profile
@@ -109,9 +109,9 @@ public class MainActivity extends BaseActivity {
             case R.id.search_tab:
                 dest = R.id.search_dest;
                 break;
-            case R.id.activity_tab:
+            /*case R.id.activity_tab:
                 dest = R.id.activity_dest;
-                break;
+                break;*/
         }
         if (dest != -1) {
             navController.navigate(dest, null, navOptions);

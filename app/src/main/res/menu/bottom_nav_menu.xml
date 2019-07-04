@@ -11,9 +11,9 @@
         android:icon="@drawable/ic_search_black_24dp"
         android:title="@string/title_search" />
 
-    <item
+    <!--item
         android:id="@+id/activity_tab"
         android:icon="@drawable/ic_timeline_black_24dp"
-        android:title="@string/title_activity" />
+        android:title="@string/title_activity" /-->
 
 </menu>
