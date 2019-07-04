@@ -25,6 +25,7 @@ import com.miedo.dtodoaqui.data.local.SessionManager;
 import com.miedo.dtodoaqui.presentation.activities.MainActivity;
 import com.miedo.dtodoaqui.presentation.activities.ModifyProfileActivity;
 import com.miedo.dtodoaqui.presentation.activities.RegisterEstablishmentActivity;
+import com.miedo.dtodoaqui.presentation.activities.UpdateProfilePhotoActivity;
 import com.miedo.dtodoaqui.viewmodels.ProfileViewModel;
 
 import java.util.ArrayList;
@@ -46,6 +47,8 @@ public class LoggedFragment extends BaseFragment {
     public static final int REGISTER_ESTABLISHMENT_OK = 300;
     public static final int REGISTER_ESTABLISHMENT_CANCELLED = 400;
 
+    public static final int UPDATE_PHOTO_REQUEST_CODE = 55;
+    public static final int UPDATE_PHOTO_OK = 65;
 
     @BindView(R.id.listaxd)
     public ListView listView;
@@ -165,7 +168,13 @@ public class LoggedFragment extends BaseFragment {
 
                 case R.id.my_establishment_option:
 
-                    navController.navigate (R.id.register_establishment_action) ;
+                    navController.navigate(R.id.register_establishment_action);
+                    return true;
+
+                case R.id.edit_photo_option:
+                    Intent intento = new Intent(requireContext(), UpdateProfilePhotoActivity.class);
+                    intento.putExtra("profile", viewModel.getCurrentProfile());
+                    startActivityForResult(intento, UPDATE_PHOTO_REQUEST_CODE);
                     return true;
 
                 case R.id.edit_option:

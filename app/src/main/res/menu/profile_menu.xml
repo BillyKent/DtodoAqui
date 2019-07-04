@@ -15,6 +15,13 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/edit_photo_option"
+        android:title="Actualizar Foto"
+        app:showAsAction="never"
+
+        />
+
+    <item
         android:id="@+id/edit_option"
         android:title="Editar perfil"
         app:showAsAction="never" />
