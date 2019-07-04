@@ -50,7 +50,7 @@ public class LocationsModel {
 
                 retorno.put(
                         data.getJSONObject(i).getString("name"),
-                        data.getJSONObject(i).getInt("user_id")
+                        data.getJSONObject(i).getInt("id")
                 );
             }
 
