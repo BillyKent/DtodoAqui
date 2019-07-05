@@ -29,6 +29,8 @@ public class ProfileViewModel extends ViewModel {
     private ProfileModel model;
     private ProfileTO currentProfile;
 
+    private String userID;
+
     private Boolean toCreate = false;
 
     final MutableLiveData<ProfileState> profileState = new MutableLiveData<>();
@@ -67,6 +69,8 @@ public class ProfileViewModel extends ViewModel {
                         } else if (response.code() == 200) {
                             toCreate = false;
                             currentProfile = JSONUtils.getProfileFromJSONString(response.body().string());
+                            userID = JSONUtils.getUserIDFromJSON(response.body().string());
+
                             profileState.setValue(ProfileState.CON_PERFIL);
                         }
 
@@ -152,6 +156,10 @@ public class ProfileViewModel extends ViewModel {
 
     public UserTO getCurrentUser() {
         return currentUser;
+    }
+
+    public String getUserID() {
+        return userID;
     }
 }
 

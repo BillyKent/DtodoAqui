@@ -233,6 +233,10 @@ public class LoggedFragment extends BaseFragment {
     void showItems() {
         ProfileTO profile = viewModel.getCurrentProfile();
         SessionManager.getInstance(requireContext()).setJwtToken(viewModel.getCurrentUser().getJwt());
+        if(viewModel.getCurrentProfile()!=null){
+
+            SessionManager.getInstance(requireContext()).setUserID(viewModel.getCurrentProfile().getUserId());
+        }
         Log.i(TAG, "Perfil a mostrar : " + profile);
         if (profile == null) return;
         items.clear();

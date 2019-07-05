@@ -18,6 +18,7 @@ import com.miedo.dtodoaqui.data.local.SessionManager;
 import com.miedo.dtodoaqui.model.ReviewsModel;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class PostReviewActivity extends BaseActivity {
 
@@ -39,7 +40,7 @@ public class PostReviewActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_review);
-
+        ButterKnife.bind(this);
 
         //toolbar.setTitle("Publica una reseña");
         setSupportActionBar(toolbar);
@@ -47,18 +48,18 @@ public class PostReviewActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        int userId = Integer.parseInt(SessionManager.getInstance(getApplicationContext()).getCurrentSession().getId());
+        int userId = Integer.parseInt(SessionManager.getInstance(getApplicationContext()).getCurrentSession().getId().trim());
         int establishmentId = getIntent().getExtras().getInt("establishment_id");
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean publish = true;
-                if(!et_titulo.getText().toString().isEmpty()){
+                if(et_titulo.getText().toString().isEmpty()){
                     et_titulo.setError("Debe ingresar un título");
                     publish = false;
                 }
-                if(!et_descripcion.getText().toString().isEmpty()){
+                if(et_descripcion.getText().toString().isEmpty()){
                     et_descripcion.setError("Debe ingresar una descripción");
                     publish = false;
                 }

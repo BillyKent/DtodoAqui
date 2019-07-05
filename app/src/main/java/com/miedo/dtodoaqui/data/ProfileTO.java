@@ -8,6 +8,7 @@ public class ProfileTO implements Serializable {
     private String avatarName;
     private String lastName;
     private String description;
+    private String userId;
     private String phone;
     private String country;
     private String address;
@@ -89,6 +90,14 @@ public class ProfileTO implements Serializable {
         this.avatarName = avatarName;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
         return "ProfileTO{" +
@@ -97,6 +106,7 @@ public class ProfileTO implements Serializable {
                 ", avatarName='" + avatarName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", description='" + description + '\'' +
+                ", userId='" + userId + '\'' +
                 ", phone='" + phone + '\'' +
                 ", country='" + country + '\'' +
                 ", address='" + address + '\'' +

@@ -92,6 +92,7 @@ public final class JSONUtils {
             if (!rpta.isNull("country")) retorno.setCountry(rpta.getString("country"));
             if (!rpta.isNull("description")) retorno.setDescription(rpta.getString("description"));
             if (!rpta.isNull("facebook")) retorno.setFacebookUrl(rpta.getString("facebook"));
+            if (!rpta.isNull("user_id")) retorno.setUserId(rpta.getInt("user_id") + "");
             if (!rpta.isNull("first_name")) retorno.setFirstName(rpta.getString("first_name"));
             if (!rpta.isNull("last_name")) retorno.setLastName(rpta.getString("last_name"));
             if (!rpta.isNull("phone")) retorno.setPhone(rpta.getString("phone"));
@@ -172,4 +173,19 @@ public final class JSONUtils {
 
     }
 
+    public static String getUserIDFromJSON(String response) {
+        String retorno = "";
+        try {
+            JSONObject rpta = new JSONObject(response);
+
+            retorno += rpta.getInt("user_id");
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return retorno;
+
+    }
 }

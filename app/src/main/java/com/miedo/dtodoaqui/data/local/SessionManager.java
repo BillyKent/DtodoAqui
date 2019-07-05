@@ -15,6 +15,7 @@ public class SessionManager {
     public static final String IS_LOGGED = "user_login";
     public static final String USER_NAME = "user_name";
     public static final String USER_PASSWORD = "user_pass";
+    public static final String USER_ID = "user_id";
     public static final String JWT_TOKEN = "jwt_token";
 
     // Singleton
@@ -49,6 +50,7 @@ public class SessionManager {
         editor.putBoolean(IS_LOGGED, true);
         editor.putString(USER_NAME, user.getUsername());
         editor.putString(USER_PASSWORD, user.getPassword());
+        editor.putString(USER_ID, user.getId());
         editor.putString(JWT_TOKEN, user.getJwt());
         editor.commit();
         currentUser = user;
@@ -63,6 +65,7 @@ public class SessionManager {
         editor.remove(USER_NAME);
         editor.remove(USER_PASSWORD);
         editor.remove(JWT_TOKEN);
+        editor.remove(USER_ID);
         editor.commit();
         currentUser = null;
     }
@@ -80,6 +83,7 @@ public class SessionManager {
         currentUser = new UserTO();
         currentUser.setUsername(preferences.getString(USER_NAME, ""));
         currentUser.setPassword(preferences.getString(USER_PASSWORD, ""));
+        currentUser.setId(preferences.getString(USER_ID, ""));
         currentUser.setJwt(preferences.getString(JWT_TOKEN, ""));
         return currentUser;
     }
@@ -96,6 +100,12 @@ public class SessionManager {
     public void setJwtToken(String jwt) {
         editor.putString(JWT_TOKEN, jwt);
         currentUser.setJwt(jwt);
+        editor.commit();
+    }
+
+    public void setUserID(String id) {
+        editor.putString(USER_ID, id);
+        currentUser.setId(id);
         editor.commit();
     }
 
