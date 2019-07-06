@@ -187,14 +187,13 @@
 
     </androidx.cardview.widget.CardView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.leinardi.android.speeddial.SpeedDialView
         android:id="@+id/postReviewEstablishmentFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
         app:backgroundTint="@color/colorPrimary"
         app:layout_anchor="@+id/establishmentContainer"
         app:layout_anchorGravity="bottom|right"
-        app:srcCompat="@drawable/ic_star_black_24dp" />
+        app:sdMainFabClosedSrc="@drawable/ic_add_black_24dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

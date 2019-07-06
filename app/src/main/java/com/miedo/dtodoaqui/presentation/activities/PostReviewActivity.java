@@ -22,8 +22,6 @@ import butterknife.ButterKnife;
 
 public class PostReviewActivity extends BaseActivity {
 
-    @BindView(R.id.my_toolbar)
-    public Toolbar toolbar;
 
     @BindView(R.id.et_titulo)
     public TextInputEditText et_titulo;
@@ -43,7 +41,7 @@ public class PostReviewActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         //toolbar.setTitle("Publica una reseña");
-        setSupportActionBar(toolbar);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }

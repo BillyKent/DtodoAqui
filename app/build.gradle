@@ -76,5 +76,6 @@ dependencies {
     // Libreria para imageview circular
     implementation 'de.hdodenhof:circleimageview:3.0.0'
 
-
+    // Floatingbutton Menu
+    implementation "com.leinardi.android:speed-dial:2.0.1"
 }

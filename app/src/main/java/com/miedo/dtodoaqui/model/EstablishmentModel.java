@@ -107,8 +107,7 @@ public class EstablishmentModel {
                             establishmentJsonObject.getString("opening_hours"),
                             establishmentJsonObject.getString("price"),
                             "http://35.226.8.87/images/"+establishmentJsonObject.getString("slug"),
-                            /*(float)
-                                    establishmentJsonObject.getDouble("rating")*/5.0f
+                            (float) establishmentJsonObject.getDouble("rating")
                     ));
                 }
             }

@@ -1,5 +1,6 @@
 package com.miedo.dtodoaqui.presentation.activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -7,8 +8,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,8 +27,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.leinardi.android.speeddial.SpeedDialActionItem;
+import com.leinardi.android.speeddial.SpeedDialView;
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.adapters.EstablishmentReviewAdapter;
+import com.miedo.dtodoaqui.customviews.PostReviewDialog;
 import com.miedo.dtodoaqui.data.EstablishmentReviewTO;
 import com.miedo.dtodoaqui.data.EstablishmentTO;
 import com.miedo.dtodoaqui.data.local.SessionManager;
@@ -66,7 +73,7 @@ public class EstablishmentActivity extends AppCompatActivity{
     RecyclerView establishmentReviews;
 
     @BindView(R.id.postReviewEstablishmentFAB)
-    FloatingActionButton publishFab;
+    SpeedDialView publishFab;
 
     private GoogleMap establishmentMap = null;
     private Marker establishmentMarker = null;
@@ -103,7 +110,55 @@ public class EstablishmentActivity extends AppCompatActivity{
 
         establishmentReviews.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
-        publishFab.setOnClickListener(new View.OnClickListener() {
+        publishFab.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_establishment_review, R.drawable.ic_review_black_24dp)
+                        .setLabel("Reseñar")
+                        .create()
+        );
+        publishFab.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_establishment_rating, R.drawable.ic_star_black_24dp)
+                        .setLabel("Calificar")
+                        .create()
+        );
+        publishFab.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_establishment_report, R.drawable.ic_report_black_24dp)
+                        .setLabel("Reportar")
+                        .create()
+        );
+        publishFab.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
+            @Override
+            public boolean onActionSelected(SpeedDialActionItem actionItem) {
+                if(SessionManager.getInstance(getApplicationContext()).isUserLogged()){
+                    switch (actionItem.getId()) {
+                        case R.id.fab_establishment_review:{
+                            /*Intent intent = new Intent(getApplicationContext(), PostReviewActivity.class);
+                            intent.putExtra("establishment_id",id);
+                            startActivity(intent);*/
+                            /*AlertDialog.Builder mBuilder = new AlertDialog.Builder(EstablishmentActivity.this);
+                            View mView = getLayoutInflater().inflate(R.layout.activity_post_review, null);
+                            mBuilder.setView(mView);
+                            AlertDialog dialog = mBuilder.create();*/
+                            PostReviewDialog dialog = new PostReviewDialog(EstablishmentActivity.this);
+                            dialog.show();
+                            break;
+                        }
+                        case R.id.fab_establishment_rating:{
+
+                            break;
+                        }
+                        case R.id.fab_establishment_report:{
+
+                            break;
+                        }
+                    }
+                }else{
+                    Toast.makeText(EstablishmentActivity.this, "Debe iniciar sesión primero", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
+
+       /* publishFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(SessionManager.getInstance(getApplicationContext()).isUserLogged()){
@@ -114,7 +169,7 @@ public class EstablishmentActivity extends AppCompatActivity{
                     Toast.makeText(EstablishmentActivity.this, "Debe iniciar sesión primero", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });*/
 
     }
 

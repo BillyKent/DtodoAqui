@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/fab_establishment_review"
+        android:title="Reseñar"
+        android:icon="@drawable/ic_review_black_24dp"
+        />
+    <item
+        android:id="@+id/fab_establishment_rating"
+        android:title="Calificar"
+        android:icon="@drawable/ic_star_black_24dp"
+        />
+    <item
+        android:id="@+id/fab_establishment_report"
+        android:title="Reportar"
+        android:icon="@drawable/ic_report_black_24dp"
+        />
+</menu>
