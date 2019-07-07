@@ -21,7 +21,7 @@ import com.miedo.dtodoaqui.utils.CallbackUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ClaimEstablishmentDialog extends Dialog {
+public class PostClaimDialog extends Dialog {
 
     @BindView(R.id.establishment_claim_message_et)
     EditText messageParm;
@@ -33,19 +33,19 @@ public class ClaimEstablishmentDialog extends Dialog {
     private int establishmentId;
     private int userId;
 
-    public ClaimEstablishmentDialog(@NonNull Context context, int establishmentId, int userId) {
+    public PostClaimDialog(@NonNull Context context, int establishmentId, int userId) {
         super(context);
         this.establishmentId = establishmentId;
         this.userId = userId;
     }
 
-    public ClaimEstablishmentDialog(@NonNull Context context, int themeResId, int establishmentId, int userId) {
+    public PostClaimDialog(@NonNull Context context, int themeResId, int establishmentId, int userId) {
         super(context, themeResId);
         this.establishmentId = establishmentId;
         this.userId = userId;
     }
 
-    protected ClaimEstablishmentDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener, int establishmentId, int userId) {
+    protected PostClaimDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener, int establishmentId, int userId) {
         super(context, cancelable, cancelListener);
         this.establishmentId = establishmentId;
         this.userId = userId;

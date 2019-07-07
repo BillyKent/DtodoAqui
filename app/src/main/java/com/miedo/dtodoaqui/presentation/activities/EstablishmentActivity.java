@@ -29,7 +29,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
-import com.miedo.dtodoaqui.CustomViews.ClaimEstablishmentDialog;
 import com.miedo.dtodoaqui.CustomViews.PostRatingDialog;
 import com.miedo.dtodoaqui.CustomViews.PostReportDialog;
 import com.miedo.dtodoaqui.R;
@@ -166,8 +165,9 @@ public class EstablishmentActivity extends BaseActivity {
                             break;
                         }
                         case R.id.fab_establishment_claim:{
-                            ClaimEstablishmentDialog dialog = new ClaimEstablishmentDialog(EstablishmentActivity.this, id, Integer.parseInt(SessionManager.getInstance(getApplicationContext()).getCurrentSession().getId().trim()));
-                            dialog.show();
+                            Intent intent = new Intent(EstablishmentActivity.this, PostReviewDialog.class);
+                            intent.putExtra("establishment_id", id);
+                            startActivity(intent);
                             break;
                         }
                     }
