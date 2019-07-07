@@ -33,7 +33,8 @@
 
         <activity
             android:name=".presentation.activities.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps"
+            android:theme="@style/ActionBarAppTheme" />
         <activity android:name=".presentation.activities.UpdateProfilePhotoActivity" />
         <activity
             android:name=".presentation.activities.RegisterEstablishmentActivity"
