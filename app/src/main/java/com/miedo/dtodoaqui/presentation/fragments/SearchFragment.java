@@ -89,7 +89,13 @@ public class SearchFragment extends BaseFragment {
             @Override
             public void onChanged(List<EstablishmentTO> establishmentSearches) {
 
-                getStateView().forceHideStateView();
+                if(establishmentSearches == null || establishmentSearches.size() == 0){
+                    getStateView().forceTitleMessageIcon("No hay establecimientos.","No se encontraron establecimientos en tu búsqueda, por favor trata nuevamente.",R.drawable.ic_dead);
+                }else{
+                    getStateView().forceHideStateView();
+                }
+
+
 
                 establishmentsSearchResult.setAdapter(new EstablishmentSearchAdapter(new EstablishmentSearchAdapter.OnClickViewHolder() {
                     @Override
