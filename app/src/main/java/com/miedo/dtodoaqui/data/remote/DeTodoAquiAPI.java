@@ -57,6 +57,12 @@ public interface DeTodoAquiAPI {
     @POST("/api/reviews")
     public Call<ResponseBody> postReview(@Body RequestBody body);
 
+    @POST("/api/ratings")
+    public Call<ResponseBody> postRating(@Body RequestBody body);
+
+    @POST("/api/reports")
+    public Call<ResponseBody> postReport(@Body RequestBody body);
+
     // Obtener user idiota
     @GET("/api/users/{id}")
     public Call<ResponseBody> getUserWithId(@Path("id") int id);
@@ -64,6 +70,8 @@ public interface DeTodoAquiAPI {
     // Subir imagen pal profile
     @POST("/api/upload_image")
     public Call<ResponseBody> uploadImage(@Header("Authorization") String bearer, @Body RequestBody body);
+
+
 
 
 

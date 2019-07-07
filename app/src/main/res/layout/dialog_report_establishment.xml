@@ -13,23 +13,7 @@
         android:background="@color/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:title="Escribir Reseña" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout14"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_titulo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Título"
-            android:maxLength="20" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:title="Escribir Denuncia" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout12"
@@ -39,30 +23,29 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:counterEnabled="true"
-        app:counterMaxLength="200"
+        app:counterMaxLength="250"
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_descripcion"
+            android:id="@+id/establishment_report_message_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="top|left"
-            android:hint="Descripción"
-            android:lines="3"
-            android:maxLines="5"
-            android:minLines="3"
+            android:hint="Mensaje"
             android:inputType="textMultiLine"
-            android:maxLength="200"/>
+            android:lines="3"
+            android:maxLength="250"
+            android:minLines="3" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/enviarResenaBtn"
+        android:id="@+id/establishment_rating_post_btn"
         android:layout_width="200dp"
         android:layout_height="60dp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="ENVIAR RESEÑA"
+        android:text="ENVIAR DENUNCIA"
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

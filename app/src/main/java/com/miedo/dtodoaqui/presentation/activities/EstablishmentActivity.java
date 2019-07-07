@@ -29,6 +29,8 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
+import com.miedo.dtodoaqui.CustomViews.PostRatingDialog;
+import com.miedo.dtodoaqui.CustomViews.PostReportDialog;
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.adapters.EstablishmentReviewAdapter;
 import com.miedo.dtodoaqui.customviews.PostReviewDialog;
@@ -131,23 +133,18 @@ public class EstablishmentActivity extends AppCompatActivity{
                 if(SessionManager.getInstance(getApplicationContext()).isUserLogged()){
                     switch (actionItem.getId()) {
                         case R.id.fab_establishment_review:{
-                            /*Intent intent = new Intent(getApplicationContext(), PostReviewActivity.class);
-                            intent.putExtra("establishment_id",id);
-                            startActivity(intent);*/
-                            /*AlertDialog.Builder mBuilder = new AlertDialog.Builder(EstablishmentActivity.this);
-                            View mView = getLayoutInflater().inflate(R.layout.activity_post_review, null);
-                            mBuilder.setView(mView);
-                            AlertDialog dialog = mBuilder.create();*/
-                            PostReviewDialog dialog = new PostReviewDialog(EstablishmentActivity.this);
+                            PostReviewDialog dialog = new PostReviewDialog(EstablishmentActivity.this, id, Integer.parseInt(SessionManager.getInstance(getApplicationContext()).getCurrentSession().getId().trim()));
                             dialog.show();
                             break;
                         }
                         case R.id.fab_establishment_rating:{
-
+                            PostRatingDialog dialog = new PostRatingDialog(EstablishmentActivity.this, id, Integer.parseInt(SessionManager.getInstance(getApplicationContext()).getCurrentSession().getId().trim()), 5);
+                            dialog.show();
                             break;
                         }
                         case R.id.fab_establishment_report:{
-
+                            PostReportDialog dialog = new PostReportDialog(EstablishmentActivity.this, id, Integer.parseInt(SessionManager.getInstance(getApplicationContext()).getCurrentSession().getId().trim()));
+                            dialog.show();
                             break;
                         }
                     }

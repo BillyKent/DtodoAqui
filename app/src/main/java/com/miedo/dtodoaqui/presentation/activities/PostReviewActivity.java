@@ -1,8 +1,5 @@
 package com.miedo.dtodoaqui.presentation.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,10 +23,10 @@ public class PostReviewActivity extends BaseActivity {
     @BindView(R.id.et_titulo)
     public TextInputEditText et_titulo;
 
-    @BindView(R.id.et_descripcion)
+    @BindView(R.id.establishment_report_message_et)
     public TextInputEditText et_descripcion;
 
-    @BindView(R.id.enviarResenaBtn)
+    @BindView(R.id.establishment_rating_post_btn)
     MaterialButton button;
 
     ReviewsModel reviewsModel = new ReviewsModel();
@@ -37,7 +34,7 @@ public class PostReviewActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_review);
+        setContentView(R.layout.dialog_review_establishment);
         ButterKnife.bind(this);
 
         //toolbar.setTitle("Publica una reseña");

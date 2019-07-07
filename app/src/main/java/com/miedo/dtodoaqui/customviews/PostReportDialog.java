@@ -1,10 +1,11 @@
-package com.miedo.dtodoaqui.customviews;
+package com.miedo.dtodoaqui.CustomViews;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -12,41 +13,38 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
 import com.miedo.dtodoaqui.R;
-import com.miedo.dtodoaqui.model.ReviewsModel;
+import com.miedo.dtodoaqui.data.ReportTO;
+import com.miedo.dtodoaqui.model.ReportsModel;
+import com.miedo.dtodoaqui.utils.CallbackUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PostReviewDialog extends Dialog {
-
-    @BindView(R.id.et_titulo)
-    public TextInputEditText et_titulo;
+public class PostReportDialog extends Dialog{
 
     @BindView(R.id.establishment_report_message_et)
-    public TextInputEditText et_descripcion;
-
+    EditText messageParm;
     @BindView(R.id.establishment_rating_post_btn)
-    MaterialButton button;
+    MaterialButton postBtn;
 
-    ReviewsModel reviewsModel = new ReviewsModel();
+    ReportsModel reportsModel = new ReportsModel();
 
     private int establishmentId;
     private int userId;
-    public PostReviewDialog(@NonNull Context context, int establishmentId, int userId) {
+    public PostReportDialog(@NonNull Context context, int establishmentId, int userId) {
         super(context);
         this.establishmentId = establishmentId;
         this.userId = userId;
     }
 
-    public PostReviewDialog(@NonNull Context context, int themeResId, int establishmentId, int userId) {
+    public PostReportDialog(@NonNull Context context, int themeResId, int establishmentId, int userId) {
         super(context, themeResId);
         this.establishmentId = establishmentId;
         this.userId = userId;
     }
 
-    protected PostReviewDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener, int establishmentId, int userId) {
+    protected PostReportDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener, int establishmentId, int userId) {
         super(context, cancelable, cancelListener);
         this.establishmentId = establishmentId;
         this.userId = userId;
@@ -57,38 +55,36 @@ public class PostReviewDialog extends Dialog {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_review_establishment);
+        setContentView(R.layout.dialog_report_establishment);
 
         Window window = getWindow();
         window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         ButterKnife.bind(this);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        postBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean publish = true;
-                if(et_titulo.getText().toString().isEmpty()){
-                    et_titulo.setError("Debe ingresar un título");
+                if(messageParm.getText().toString().isEmpty()){
+                    messageParm.setError("Debe ingresar un mensaje");
                     publish = false;
                 }
-                if(et_descripcion.getText().toString().isEmpty()){
-                    et_descripcion.setError("Debe ingresar una descripción");
-                    publish = false;
-                }
+
                 if(publish){
-                    reviewsModel.PostEstablishmentReview(et_descripcion.getText().toString(), establishmentId, et_titulo.getText().toString(), userId
-                            , new ReviewsModel.CallBack() {
+                    reportsModel.PostReport(new ReportTO(0,false, establishmentId,messageParm.getText().toString(), userId)
+                            , new CallbackUtils.SimpleCallback<ReportTO>() {
                                 @Override
-                                public void OnResult() {
-                                    Toast.makeText(getContext(), "Reseña publicada con éxito", Toast.LENGTH_SHORT).show();
+                                public void OnResult(ReportTO reportTO) {
+                                    Toast.makeText(getContext(), "Denuncia publicada con éxito", Toast.LENGTH_SHORT).show();
                                     dismiss();
                                 }
 
                                 @Override
-                                public void OnFailed() {
-                                    Toast.makeText(getContext(), "No se pudo publicar su reseña", Toast.LENGTH_SHORT).show();
+                                public void OnFailure(String response) {
+                                    Toast.makeText(getContext(), "No se pudo publicar su denuncia", Toast.LENGTH_SHORT).show();
                                 }
+
                             });
                 }
             }

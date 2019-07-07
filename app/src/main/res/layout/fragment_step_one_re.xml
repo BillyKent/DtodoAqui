@@ -150,7 +150,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView8">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_descripcion"
+                android:id="@+id/establishment_report_message_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Descripción"

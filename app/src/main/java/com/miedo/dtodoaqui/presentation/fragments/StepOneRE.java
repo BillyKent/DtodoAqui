@@ -1,25 +1,17 @@
 package com.miedo.dtodoaqui.presentation.fragments;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -28,9 +20,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.core.BaseFragment;
 import com.miedo.dtodoaqui.viewmodels.RegisterEstablishmentViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,7 +36,7 @@ public class StepOneRE extends BaseFragment implements View.OnClickListener {
     public TextInputEditText et_nombre;
 
 
-    @BindView(R.id.et_descripcion)
+    @BindView(R.id.establishment_report_message_et)
     public TextInputEditText et_descripcion;
 
     @BindView(R.id.spinner_category)
