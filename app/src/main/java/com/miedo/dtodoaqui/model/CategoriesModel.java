@@ -41,7 +41,7 @@ public class CategoriesModel {
     }
 
     private Map<Integer, String> fetchCategoriesResponse(ResponseBody response) {
-        Map<Integer, String> categories = null;
+        Map<Integer, String> categories = new HashMap<>();
         try {
             JSONObject data = new JSONObject(response.string());
             JSONArray categoriesArray = data.getJSONArray("data");

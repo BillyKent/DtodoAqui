@@ -7,36 +7,16 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/establishment_postreview_tb"
+        android:id="@+id/toolbar2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:title="Escribir Reseña" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout14"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:counterEnabled="true"
-        app:counterMaxLength="60">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/establishment_postreview_title_et"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Título"
-            android:maxLength="60" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:title="Solicitar Titularidad" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout12"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -47,27 +27,26 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/establishment_postreview_message_et"
+            android:id="@+id/establishment_claim_message_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="top|left"
-            android:hint="Descripción"
-            android:lines="3"
-            android:minLines="3"
+            android:hint="Mensaje"
             android:inputType="textMultiLine"
-            android:maxLength="250"/>
+            android:lines="3"
+            android:maxLength="250"
+            android:minLines="3" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/establishment_uploadimages_btn"
+        android:id="@+id/establishment_claim_btn"
         android:layout_width="200dp"
         android:layout_height="60dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="SUBIR IMÁGENES"
+        android:text="ENVIAR SOLICITUD"
         app:cornerRadius="50dp"
-        android:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

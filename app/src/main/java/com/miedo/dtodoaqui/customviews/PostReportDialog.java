@@ -25,7 +25,7 @@ public class PostReportDialog extends Dialog{
 
     @BindView(R.id.establishment_report_message_et)
     EditText messageParm;
-    @BindView(R.id.establishment_rating_post_btn)
+    @BindView(R.id.establishment_report_btn)
     MaterialButton postBtn;
 
     ReportsModel reportsModel = new ReportsModel();

@@ -14,7 +14,6 @@ import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -126,7 +125,7 @@ public class SearchFragment extends BaseFragment {
         establishmentsSearchResult.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
         getCategories();
-        getLocatios();
+        getLocations();
 
         return view;
     }
@@ -138,6 +137,7 @@ public class SearchFragment extends BaseFragment {
             public void onResult(Map<Integer, String> arg) {
                 categoriesMap = arg;
                 List<String> categories = new ArrayList();
+                categories.add("Seleccione una categoría");
                 for(Map.Entry<Integer,String> entry : arg.entrySet()){
                     categories.add(entry.getValue());
                 }
@@ -154,13 +154,14 @@ public class SearchFragment extends BaseFragment {
         });
     }
 
-    private void getLocatios(){
+    private void getLocations(){
         LocationsModel locationsModel= new LocationsModel();
         locationsModel.getLocations(new LocationsModel.Callback<HashMap<String, Integer>>() {
             @Override
             public void onResult(HashMap<String, Integer> arg) {
                 locationMap = arg;
                 List<String> locations = new ArrayList();
+                locations.add("Seleccione un distrito");
                 for(Map.Entry<String, Integer> entry : arg.entrySet()){
                     locations.add(entry.getKey());
                 }

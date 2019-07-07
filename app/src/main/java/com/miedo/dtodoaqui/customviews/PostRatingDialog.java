@@ -22,7 +22,7 @@ public class PostRatingDialog extends Dialog {
 
     @BindView(R.id.establishment_rating_rating_rb)
     RatingBar messageParm;
-    @BindView(R.id.establishment_rating_post_btn)
+    @BindView(R.id.establishment_rating_btn)
     MaterialButton postBtn;
 
     RatingsModel ratingsModel = new RatingsModel();
