@@ -29,7 +29,6 @@ public class RegisterEstablishmentViewModel extends ViewModel {
     private List<String> categories = new ArrayList<>();
     private final EstablishmentCreateTO establishment = new EstablishmentCreateTO();
     CategoriesModel categoriesModel = new CategoriesModel();
-    EstablishmentModel establishmentModel = new EstablishmentModel();
     LocationsModel locationsModel = new LocationsModel();
 
     private List<Integer> indicesLocations = new ArrayList<>();

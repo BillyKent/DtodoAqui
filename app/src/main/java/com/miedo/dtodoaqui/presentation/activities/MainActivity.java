@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.NavOptions;
@@ -17,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.core.BaseActivity;
 import com.miedo.dtodoaqui.data.local.SessionManager;
+import com.miedo.dtodoaqui.viewmodels.ProfileViewModel;
 
 
 public class MainActivity extends BaseActivity {
@@ -50,9 +52,18 @@ public class MainActivity extends BaseActivity {
                 ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
                 Bundle bundle = ai.metaData;
                 String apiKey = bundle.getString("com.google.android.geo.API_KEY");
-                Places.initialize(getApplicationContext(),apiKey );
+                Places.initialize(getApplicationContext(), apiKey);
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
+            }
+        }
+
+        ProfileViewModel profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
+        SessionManager sm = SessionManager.getInstance(this);
+        if (sm.isUserLogged()) {
+            if (sm.getCurrentSession().getJwt() == null) {
+                profileViewModel.setCurrentUser(sm.getCurrentSession());
+                profileViewModel.obtenerPerfil();
             }
         }
 

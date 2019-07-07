@@ -24,6 +24,7 @@ import com.miedo.dtodoaqui.core.BaseFragment;
 import com.miedo.dtodoaqui.data.ProfileTO;
 import com.miedo.dtodoaqui.data.local.SessionManager;
 import com.miedo.dtodoaqui.presentation.activities.MainActivity;
+import com.miedo.dtodoaqui.presentation.activities.MapsActivity;
 import com.miedo.dtodoaqui.presentation.activities.ModifyProfileActivity;
 import com.miedo.dtodoaqui.presentation.activities.RegisterEstablishmentActivity;
 import com.miedo.dtodoaqui.presentation.activities.UpdateProfilePhotoActivity;
@@ -220,6 +221,12 @@ public class LoggedFragment extends BaseFragment {
 
                     return true;
 
+                case R.id.maps_option:
+                    Intent intente = new Intent(requireContext(), MapsActivity.class);
+                    startActivity(intente);
+
+                    return true;
+
             }
             return false;
 
@@ -233,8 +240,7 @@ public class LoggedFragment extends BaseFragment {
     void showItems() {
         ProfileTO profile = viewModel.getCurrentProfile();
         SessionManager.getInstance(requireContext()).setJwtToken(viewModel.getCurrentUser().getJwt());
-        if(viewModel.getCurrentProfile()!=null){
-
+        if (viewModel.getCurrentProfile() != null) {
             SessionManager.getInstance(requireContext()).setUserID(viewModel.getCurrentProfile().getUserId());
         }
         Log.i(TAG, "Perfil a mostrar : " + profile);

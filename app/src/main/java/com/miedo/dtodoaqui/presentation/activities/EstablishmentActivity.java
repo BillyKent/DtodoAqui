@@ -87,7 +87,11 @@ public class EstablishmentActivity extends BaseActivity {
         setContentView(R.layout.activity_establishment);
         ButterKnife.bind(this);
 
-        //Mapa del establecimiento
+        setUpStateView(findViewById(R.id.establishment_container));
+        //Test
+        getStateView().forceLoadingTitle("Cargando datos del establecimiento");
+
+       //Mapa del establecimiento
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
 
@@ -107,10 +111,6 @@ public class EstablishmentActivity extends BaseActivity {
             }
         });
 
-        //Test
-        setUpStateView(findViewById(R.id.establishment_container));
-
-        getStateView().forceLoadingTitle("Cargando datos del establecimiento");
 
         //Configurar
         int id = getIntent().getExtras().getInt("establishment_id");
