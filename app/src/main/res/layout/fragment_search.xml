@@ -125,7 +125,11 @@
             android:layout_height="match_parent">
 
             <include
+                android:id="@+id/search_establishment_container"
                 layout="@layout/content_search_establishments"
+                android:visibility="gone" />
+            <include
+                layout="@layout/state_layout"
                 android:visibility="visible" />
 
         </FrameLayout>

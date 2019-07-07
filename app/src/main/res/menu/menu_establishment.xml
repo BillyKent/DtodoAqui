@@ -15,4 +15,9 @@
         android:title="Reportar"
         android:icon="@drawable/ic_report_black_24dp"
         />
+    <item
+        android:id="@+id/fab_establishment_claim"
+        android:title="Reclamar titularidad"
+        android:icon="@drawable/ic_check_circle_black_24dp"
+        />
 </menu>

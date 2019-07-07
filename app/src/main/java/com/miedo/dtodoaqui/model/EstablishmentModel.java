@@ -136,7 +136,7 @@ public class EstablishmentModel {
                         establishmentJsonObject.getString("opening_hours"),
                         establishmentJsonObject.getString("price"),
                         establishmentJsonObject.getString("slug"),
-                        5
+                        (float) establishmentJsonObject.getDouble("rating")
                 );
             }
         } catch (JSONException e) {

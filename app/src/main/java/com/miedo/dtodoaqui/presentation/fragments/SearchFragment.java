@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.adapters.EstablishmentSearchAdapter;
+import com.miedo.dtodoaqui.core.BaseFragment;
 import com.miedo.dtodoaqui.data.EstablishmentTO;
 import com.miedo.dtodoaqui.model.CategoriesModel;
 import com.miedo.dtodoaqui.model.LocationsModel;
@@ -35,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class SearchFragment extends Fragment{
+public class SearchFragment extends BaseFragment {
 
     AppBarLayout appBarLayout;
     EditText keywordSearchParam;
@@ -77,10 +78,19 @@ public class SearchFragment extends Fragment{
 
         establishmentsSearchResult = view.findViewById(R.id.establishmentsSearchRV);
 
+        //Test
+        appBarLayout.setExpanded(false);
+
+        setUpStateView(view.findViewById(R.id.search_establishment_container));
+        getStateView().forceTitleMessageIcon("¡Empieza a buscar aqui!", "Bienvenido a DTODOAQUI, desliza hacia abajo para empezar a buscar.",R.drawable.ic_search_black_24dp);
+        //---
+
         viewModel.getSearchData().observe(this, new Observer<List<EstablishmentTO>>() {
             @Override
             public void onChanged(List<EstablishmentTO> establishmentSearches) {
-                //progressSearchBar.setVisibility(View.GONE);
+
+                getStateView().forceHideStateView();
+
                 establishmentsSearchResult.setAdapter(new EstablishmentSearchAdapter(new EstablishmentSearchAdapter.OnClickViewHolder() {
                     @Override
                     public void clickViewHolder(EstablishmentTO est) {
@@ -99,11 +109,9 @@ public class SearchFragment extends Fragment{
             public void onClick(View v) {
                 hideKeyboard();
                 establishmentsSearchResult.setAdapter(null);
-                //progressSearchBar.setVisibility(View.VISIBLE);
-                //Búsqueda
                 viewModel.SearchEstablishments(keywordSearchParam.getText().toString(),String.valueOf(locationMap.get((String)locationSearchParam.getSelectedItem())),String.valueOf(getCategoryId(categoriesSearchParam.getSelectedItem().toString())));
-
                 appBarLayout.setExpanded(false);
+                getStateView().forceLoadingTitle("Buscando establecimientos");
             }
         });
 

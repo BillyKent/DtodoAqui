@@ -33,6 +33,7 @@ import com.miedo.dtodoaqui.CustomViews.PostRatingDialog;
 import com.miedo.dtodoaqui.CustomViews.PostReportDialog;
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.adapters.EstablishmentReviewAdapter;
+import com.miedo.dtodoaqui.core.BaseActivity;
 import com.miedo.dtodoaqui.customviews.PostReviewDialog;
 import com.miedo.dtodoaqui.data.EstablishmentReviewTO;
 import com.miedo.dtodoaqui.data.EstablishmentTO;
@@ -47,7 +48,7 @@ import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EstablishmentActivity extends AppCompatActivity{
+public class EstablishmentActivity extends BaseActivity {
 
     private EstablishmentViewModel viewModel;
 
@@ -95,6 +96,7 @@ public class EstablishmentActivity extends AppCompatActivity{
         viewModel.getEstablishment().observe(this, new Observer<EstablishmentTO>() {
             @Override
             public void onChanged(EstablishmentTO establishmentTO) {
+                getStateView().forceHideStateView();
                 refreshEstablishment(establishmentTO);
             }
         });
@@ -104,6 +106,11 @@ public class EstablishmentActivity extends AppCompatActivity{
                 refreshReviews(establishmentReviewTOS);
             }
         });
+
+        //Test
+        setUpStateView(findViewById(R.id.establishment_container));
+
+        getStateView().forceLoadingTitle("Cargando datos del establecimiento");
 
         //Configurar
         int id = getIntent().getExtras().getInt("establishment_id");
@@ -127,6 +134,12 @@ public class EstablishmentActivity extends AppCompatActivity{
                         .setLabel("Reportar")
                         .create()
         );
+
+        publishFab.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_establishment_claim, R.drawable.ic_check_circle_black_24dp)
+                        .setLabel("Reclamar titularidad")
+                        .create()
+        );
         publishFab.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
             @Override
             public boolean onActionSelected(SpeedDialActionItem actionItem) {
@@ -145,6 +158,10 @@ public class EstablishmentActivity extends AppCompatActivity{
                         case R.id.fab_establishment_report:{
                             PostReportDialog dialog = new PostReportDialog(EstablishmentActivity.this, id, Integer.parseInt(SessionManager.getInstance(getApplicationContext()).getCurrentSession().getId().trim()));
                             dialog.show();
+                            break;
+                        }
+                        case R.id.fab_establishment_claim:{
+
                             break;
                         }
                     }
