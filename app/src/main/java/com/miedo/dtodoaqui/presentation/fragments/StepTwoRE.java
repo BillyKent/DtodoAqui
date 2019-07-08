@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -35,6 +37,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -53,6 +58,10 @@ public class StepTwoRE extends BaseFragment implements OnMapReadyCallback, Googl
     // Auxiliares
     private double currentZoom;
 
+    // Binds
+    @BindView(R.id.bt_continuar)
+    public Button botonContinuar;
+
     public StepTwoRE() {
         // Required empty public constructor
     }
@@ -63,6 +72,8 @@ public class StepTwoRE extends BaseFragment implements OnMapReadyCallback, Googl
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_step_two_re, container, false);
+        ButterKnife.bind(this, view);
+        viewModel = ViewModelProviders.of(requireActivity()).get(RegisterEstablishmentViewModel.class);
 
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -76,6 +87,15 @@ public class StepTwoRE extends BaseFragment implements OnMapReadyCallback, Googl
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         viewModel.getRegisterState().setValue(RegisterEstablishmentViewModel.RegisterState.NORMAL);
         final NavController navController = NavHostFragment.findNavController(this);
+
+        botonContinuar.setOnClickListener(v -> {
+            if (viewModel.validarSegundoPaso()) {
+                viewModel.getRegisterState().setValue(RegisterEstablishmentViewModel.RegisterState.NEXT_STEP);
+            } else {
+                showMessage("Ocurrio un error");
+            }
+
+        });
 
         viewModel.getRegisterState().observe(getViewLifecycleOwner(),
                 registerState -> {
@@ -114,6 +134,15 @@ public class StepTwoRE extends BaseFragment implements OnMapReadyCallback, Googl
         autocompleteFragment.setTypeFilter(TypeFilter.ADDRESS);
         autocompleteFragment.setOnPlaceSelectedListener(this);
 
+        autocompleteFragment.getView().findViewById(R.id.places_autocomplete_clear_button).setOnClickListener(
+                v -> {
+                    autocompleteFragment.setText("");
+                    viewModel.getEstablishment().setLatitude(null);
+                    viewModel.getEstablishment().setLongitude(null);
+                    viewModel.getEstablishment().setAddress(null);
+                    botonContinuar.setEnabled(false);
+                }
+        );
 
     }
 
@@ -126,7 +155,6 @@ public class StepTwoRE extends BaseFragment implements OnMapReadyCallback, Googl
 
     @Override
     public void onError(@NonNull Status status) {
-
     }
 
     // Google Maps
@@ -142,6 +170,10 @@ public class StepTwoRE extends BaseFragment implements OnMapReadyCallback, Googl
             String cityName = addresses.get(0).getAddressLine(0);
             autocompleteFragment.setText(cityName);
 
+            viewModel.getEstablishment().setAddress(cityName);
+            viewModel.getEstablishment().setLatitude(point.latitude + "");
+            viewModel.getEstablishment().setLongitude(point.longitude + "");
+            botonContinuar.setEnabled(true);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.core.BaseFragment;
+import com.miedo.dtodoaqui.data.local.SessionManager;
 import com.miedo.dtodoaqui.viewmodels.RegisterEstablishmentViewModel;
 
 import butterknife.BindView;
@@ -65,8 +66,6 @@ public class StepThreeRE extends BaseFragment implements View.OnClickListener {
         viewModel = ViewModelProviders.of(requireActivity()).get(RegisterEstablishmentViewModel.class);
 
         spinner_location.setOnClickListener(this);
-
-
         return view;
 
     }
@@ -81,6 +80,8 @@ public class StepThreeRE extends BaseFragment implements View.OnClickListener {
                 registerState -> {
                     switch (registerState) {
                         case TO_REGISTER:
+                            viewModel.getEstablishment().setUserId(SessionManager.getInstance(requireContext()).getCurrentSession()
+                                    .getId());
                             navController.navigate(R.id.register_action);
                             break;
 
@@ -89,7 +90,7 @@ public class StepThreeRE extends BaseFragment implements View.OnClickListener {
 
         registerButton.setOnClickListener(v -> {
             viewModel.getEstablishment().setOpeningHours(et_horario.getText().toString().trim());
-            if (validateFields()) {
+            if (viewModel.validarTercerPaso()) {
                 viewModel.getRegisterState().setValue(RegisterEstablishmentViewModel.RegisterState.TO_REGISTER);
             } else {
                 showMessage("Campos inválidos.");
@@ -99,9 +100,6 @@ public class StepThreeRE extends BaseFragment implements View.OnClickListener {
 
     }
 
-    private boolean validateFields() {
-        return viewModel.validarSegundoPaso();
-    }
 
     @Override
     public void onClick(View v) {
