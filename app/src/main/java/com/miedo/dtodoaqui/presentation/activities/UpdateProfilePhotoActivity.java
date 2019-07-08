@@ -214,6 +214,7 @@ public class UpdateProfilePhotoActivity extends BaseActivity {
 
                     } else {
                         showMessageError("Ocurrio un error");
+                        botonGuardar.setEnabled(true);
                     }
 
                 }

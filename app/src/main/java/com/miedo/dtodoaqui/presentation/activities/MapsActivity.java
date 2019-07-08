@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener,GoogleMap.OnCameraMoveListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveListener {
 
     private GoogleMap mMap;
     private AutocompleteSupportFragment autocompleteFragment;
@@ -115,8 +115,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         currentZoom = mMap.getCameraPosition().zoom;
 
 
-
-
     }
 
 
@@ -146,7 +144,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             e.printStackTrace();
         }
     }
-
 
 
     private double currentZoom;

@@ -7,9 +7,10 @@ import com.miedo.dtodoaqui.data.remote.DeTodoAquiAPI;
 import com.miedo.dtodoaqui.data.EstablishmentCreateTO;
 import com.miedo.dtodoaqui.data.remote.ServiceGenerator;
 import com.miedo.dtodoaqui.model.CategoriesModel;
-import com.miedo.dtodoaqui.model.EstablishmentModel;
 import com.miedo.dtodoaqui.model.LocationsModel;
-import com.miedo.dtodoaqui.utils.JSONUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,9 +28,10 @@ public class RegisterEstablishmentViewModel extends ViewModel {
 
     private List<Integer> indices = new ArrayList<>();
     private List<String> categories = new ArrayList<>();
-    private final EstablishmentCreateTO establishment = new EstablishmentCreateTO();
     CategoriesModel categoriesModel = new CategoriesModel();
     LocationsModel locationsModel = new LocationsModel();
+
+    private final EstablishmentCreateTO establishment = new EstablishmentCreateTO();
 
     private List<Integer> indicesLocations = new ArrayList<>();
     private List<String> locationsNombres = new ArrayList<>();
@@ -110,7 +112,7 @@ public class RegisterEstablishmentViewModel extends ViewModel {
     public void registerEstablishment() {
 
         registerState.setValue(RegisterState.TO_REGISTER);
-        String requestBodyString = JSONUtils.getEstablishmentCreateRequestBodyJSON(establishment);
+        String requestBodyString = buildRequestBody(establishment);
 
         // Creamos el RequestBody para la peticion
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), requestBodyString);
@@ -145,11 +147,46 @@ public class RegisterEstablishmentViewModel extends ViewModel {
     }
 
     public boolean validarSegundoPaso() {
-        return  establishment.getLatitude() != null &&
+        return establishment.getLatitude() != null &&
                 establishment.getLongitude() != null &&
-                establishment.getAddress() != null &&
-                !establishment.getOpeningHours().isEmpty() &&
+                establishment.getAddress() != null;
+    }
+
+    public boolean validarTercerPaso() {
+        return establishment.getOpeningHours() != null &&
                 establishment.getLocationId() != null;
+    }
+
+    private String buildRequestBody(EstablishmentCreateTO establishment) {
+
+        String retorno = "";
+
+        JSONObject body = new JSONObject();
+        JSONObject listing = new JSONObject();
+
+        try {
+            listing.put("name", establishment.getName());
+            listing.put("address", establishment.getAddress());
+            listing.put("category_id", establishment.getCategoryId());
+            listing.put("location_id", establishment.getLocationId());
+            listing.put("slug", establishment.getSlug());
+            listing.put("description", establishment.getDescription());
+            listing.put("latitude", establishment.getLatitude());
+            listing.put("longitude", establishment.getLongitude());
+            listing.put("opening_hours", establishment.getOpeningHours());
+            listing.put("user_id", establishment.getUserId());
+
+            body.put("listings", listing);
+
+            retorno = body.toString();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return retorno;
+
+
     }
 
     public MutableLiveData<RegisterState> getRegisterState() {

@@ -12,17 +12,17 @@
         tools:layout="@layout/fragment_step_one_re" >
         <action
             android:id="@+id/next_action"
+            app:destination="@id/stepThreeFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:destination="@id/stepTwoRE" />
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/stepTwoRE"
-        android:name="com.miedo.dtodoaqui.presentation.fragments.StepTwoRE"
+        android:name="com.miedo.dtodoaqui.presentation.fragments.StepThreeRE"
         android:label="fragment_step_two_re"
-        tools:layout="@layout/fragment_step_two_re" >
+        tools:layout="@layout/fragment_step_three_re" >
         <action
             android:id="@+id/register_action"
             app:destination="@id/stepLoading" />
@@ -35,5 +35,14 @@
         <action
             android:id="@+id/ready_action"
             app:destination="@id/stepOneRE" />
+    </fragment>
+    <fragment
+        android:id="@+id/stepThreeFragment"
+        android:name="com.miedo.dtodoaqui.presentation.fragments.StepTwoRE"
+        android:label="fragment_step_three"
+        tools:layout="@layout/fragment_step_two_re" >
+        <action
+            android:id="@+id/next_action"
+            app:destination="@id/stepTwoRE" />
     </fragment>
 </navigation>
