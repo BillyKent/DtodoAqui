@@ -37,7 +37,7 @@ public interface DeTodoAquiAPI {
     @PUT("/api/my_profile")
     public Call<ResponseBody> updateProfile(@Header("Authorization") String bearer, @Body RequestBody body);
 
-    // Obtener categorÃ­as
+    // Obtener categorías
     @GET("/api/categories")
     public Call<ResponseBody> getCategories();
 
@@ -73,11 +73,5 @@ public interface DeTodoAquiAPI {
     // Subir imagen pal profile
     @POST("/api/upload_image")
     public Call<ResponseBody> uploadImage(@Header("Authorization") String bearer, @Body RequestBody body);
-
-
-
-
-
-
 
 }

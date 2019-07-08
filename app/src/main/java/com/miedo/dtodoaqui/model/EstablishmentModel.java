@@ -7,6 +7,7 @@ import com.miedo.dtodoaqui.data.EstablishmentSearchTO;
 import com.miedo.dtodoaqui.data.EstablishmentTO;
 import com.miedo.dtodoaqui.data.remote.DeTodoAquiAPI;
 import com.miedo.dtodoaqui.data.remote.ServiceGenerator;
+import com.miedo.dtodoaqui.utils.CallbackUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,9 +35,9 @@ public class EstablishmentModel {
         DeTodoAquiAPI api = ServiceGenerator.createServiceScalar(DeTodoAquiAPI.class);
         Call<ResponseBody> callEstablishment = api.getEstablishment(id);
 
-        categoriesModel.GetCategories(new CategoriesModel.Callback<Map<Integer, String>>() {
+        categoriesModel.GetCategories(new CallbackUtils.SimpleCallback<Map<String, Integer>>() {
             @Override
-            public void onResult(Map<Integer, String> arg) {
+            public void OnResult(Map<String, Integer> arg) {
                 callEstablishment.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -51,7 +52,7 @@ public class EstablishmentModel {
             }
 
             @Override
-            public void onFailure() {
+            public void OnFailure(String response) {
                 establishment.setValue(null);
             }
         });
@@ -62,9 +63,9 @@ public class EstablishmentModel {
         DeTodoAquiAPI api = ServiceGenerator.createServiceScalar(DeTodoAquiAPI.class);
         Call<ResponseBody> callEstablishments = api.searchEstablishments(keyword, location, category);
 
-        categoriesModel.GetCategories(new CategoriesModel.Callback<Map<Integer, String>>() {
+        categoriesModel.GetCategories(new CallbackUtils.SimpleCallback<Map<String, Integer>>() {
             @Override
-            public void onResult(Map<Integer, String> arg) {
+            public void OnResult(Map<String, Integer> arg) {
                 callEstablishments.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -80,15 +81,15 @@ public class EstablishmentModel {
             }
 
             @Override
-            public void onFailure() {
+            public void OnFailure(String response) {
                 data.setValue(null);
             }
         });
     }
 
 
-    private List<EstablishmentTO> fetchSearchResponse(ResponseBody response, Map<Integer, String> categories) {
-        List<EstablishmentTO> establishments = null;
+    private List<EstablishmentTO> fetchSearchResponse(ResponseBody response, Map<String, Integer> categories) {
+        List<EstablishmentTO> establishments = new ArrayList<>();
         try {
             JSONObject data = new JSONObject(response.string());
             JSONArray establishmentsArray = data.getJSONArray("data");
@@ -100,7 +101,7 @@ public class EstablishmentModel {
                     establishments.add(new EstablishmentTO(establishmentJsonObject.getInt("id"),
                             establishmentJsonObject.getString("name"),
                             establishmentJsonObject.getString("address"),
-                            categories.containsKey(establishmentJsonObject.getInt("category_id")) ? categories.get(establishmentJsonObject.getInt("category_id")) : "Sin categoría",
+                            getCategoryName(establishmentJsonObject.getInt("category_id"), categories),
                             establishmentJsonObject.getString("description"),
                             new LatLng(establishmentJsonObject.getDouble("latitude"), establishmentJsonObject.getDouble("longitude")),
                             establishmentJsonObject.getBoolean("is_verified"),
@@ -116,11 +117,13 @@ public class EstablishmentModel {
             e.printStackTrace();
         } catch (IOException e1) {
             e1.printStackTrace();
+        } catch(NullPointerException e2){
+            e2.printStackTrace();
         }
         return establishments;
     }
 
-    private EstablishmentTO fetchEstablishmentResponse(ResponseBody response, Map<Integer, String> categories) {
+    private EstablishmentTO fetchEstablishmentResponse(ResponseBody response, Map<String, Integer> categories) {
         EstablishmentTO establishment = null;
         try {
             JSONObject data = new JSONObject(response.string());
@@ -129,7 +132,7 @@ public class EstablishmentModel {
                 establishment = new EstablishmentTO(establishmentJsonObject.getInt("id"),
                         establishmentJsonObject.getString("name"),
                         establishmentJsonObject.getString("address"),
-                        categories.containsKey(establishmentJsonObject.getInt("category_id")) ? categories.get(establishmentJsonObject.getInt("category_id")) : "Sin categoría",
+                        getCategoryName(establishmentJsonObject.getInt("category_id"), categories),
                         establishmentJsonObject.getString("description"),
                         new LatLng(establishmentJsonObject.getDouble("latitude"), establishmentJsonObject.getDouble("longitude")),
                         establishmentJsonObject.getBoolean("is_verified"),
@@ -145,6 +148,17 @@ public class EstablishmentModel {
             e1.printStackTrace();
         }
         return establishment;
+    }
+
+    private String getCategoryName(int id, Map<String, Integer> categories){
+        String name = "Sin categoría";
+        for (Map.Entry<String, Integer> entry : categories.entrySet()) {
+            if (entry.getValue().equals(id)) {
+                name = entry.getKey();
+                break;
+            }
+        }
+        return name;
     }
 
     private void createEstablishment() {

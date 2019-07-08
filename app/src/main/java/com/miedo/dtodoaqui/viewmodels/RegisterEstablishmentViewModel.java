@@ -8,6 +8,7 @@ import com.miedo.dtodoaqui.data.EstablishmentCreateTO;
 import com.miedo.dtodoaqui.data.remote.ServiceGenerator;
 import com.miedo.dtodoaqui.model.CategoriesModel;
 import com.miedo.dtodoaqui.model.LocationsModel;
+import com.miedo.dtodoaqui.utils.CallbackUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,14 +59,14 @@ public class RegisterEstablishmentViewModel extends ViewModel {
 
     // ------------------------------------- Fetch data ----------------------------------------------
     public void fetchCategories() {
-        categoriesModel.GetCategories(new CategoriesModel.Callback<Map<Integer, String>>() {
+        categoriesModel.GetCategories(new CallbackUtils.SimpleCallback<Map<String, Integer>>() {
             @Override
-            public void onResult(Map<Integer, String> arg) {
+            public void OnResult(Map<String, Integer> arg) {
                 categories.clear();
                 indices.clear();
-                for (Map.Entry<Integer, String> entry : arg.entrySet()) {
-                    categories.add(entry.getValue());
-                    indices.add(entry.getKey());
+                for (Map.Entry<String, Integer> entry : arg.entrySet()) {
+                    categories.add(entry.getKey());
+                    indices.add(entry.getValue());
                 }
                 if (categories.size() > 0) {
                     fetchLocations();
@@ -75,7 +76,7 @@ public class RegisterEstablishmentViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure() {
+            public void OnFailure(String response) {
                 registerState.setValue(RegisterState.ERROR_FETCHING);
             }
         });

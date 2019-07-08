@@ -3,6 +3,7 @@ package com.miedo.dtodoaqui.model;
 import com.miedo.dtodoaqui.data.EstablishmentSearchTO;
 import com.miedo.dtodoaqui.data.remote.DeTodoAquiAPI;
 import com.miedo.dtodoaqui.data.remote.ServiceGenerator;
+import com.miedo.dtodoaqui.utils.CallbackUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +21,7 @@ import retrofit2.Response;
 
 public class CategoriesModel {
 
-    public void GetCategories(Callback<Map<Integer, String>> callback) {
+    public void GetCategories(CallbackUtils.SimpleCallback<Map<String, Integer>> callback) {
         // Creamos la instancia de la api
         DeTodoAquiAPI api = ServiceGenerator.createServiceScalar(DeTodoAquiAPI.class);
 
@@ -30,18 +31,18 @@ public class CategoriesModel {
         callCategories.enqueue(new retrofit2.Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                callback.onResult(fetchCategoriesResponse(response.body()));
+                callback.OnResult(fetchCategoriesResponse(response.body()));
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                callback.onFailure();
+                callback.OnFailure("Error");
             }
         });
     }
 
-    private Map<Integer, String> fetchCategoriesResponse(ResponseBody response) {
-        Map<Integer, String> categories = new HashMap<>();
+    private Map<String, Integer> fetchCategoriesResponse(ResponseBody response) {
+        Map<String, Integer> categories = new HashMap<>();
         try {
             JSONObject data = new JSONObject(response.string());
             JSONArray categoriesArray = data.getJSONArray("data");
@@ -52,10 +53,11 @@ public class CategoriesModel {
                 for (int i = 0; i < categoriesArray.length(); i++) {
                     JSONObject categoryJsonObject = (JSONObject) categoriesArray.get(i);
 
-                    String categoria = categoryJsonObject.getString("name");
-                    categoria = categoria.substring(0, 1).toUpperCase() + categoria.substring(1);
-                    if (!categories.containsKey(categoryJsonObject.getInt("id"))) {
-                        categories.put(categoryJsonObject.getInt("id"), categoria);
+                    Integer categoryId = categoryJsonObject.getInt("id");
+                    String categoryName = categoryJsonObject.getString("name");
+                    categoryName = categoryName.substring(0, 1).toUpperCase() + categoryName.substring(1);
+                    if (!categories.containsKey(categoryName)) {
+                        categories.put(categoryName, categoryId);
                     }
                 }
             }
@@ -67,9 +69,4 @@ public class CategoriesModel {
         return categories;
     }
 
-    public interface Callback<T> {
-        public void onResult(T arg);
-
-        public void onFailure();
-    }
 }

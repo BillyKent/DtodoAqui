@@ -27,6 +27,7 @@ import com.miedo.dtodoaqui.data.EstablishmentTO;
 import com.miedo.dtodoaqui.model.CategoriesModel;
 import com.miedo.dtodoaqui.model.LocationsModel;
 import com.miedo.dtodoaqui.presentation.activities.EstablishmentActivity;
+import com.miedo.dtodoaqui.utils.CallbackUtils;
 import com.miedo.dtodoaqui.viewmodels.EstablishmentsSearchViewModel;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class SearchFragment extends BaseFragment {
 
     private EstablishmentsSearchViewModel viewModel;
 
-    private Map<Integer,String> categoriesMap = null;
+    private Map<String,Integer> categoriesMap = null;
     private Map<String,Integer> locationMap = null;
 
     public SearchFragment() {
@@ -114,7 +115,11 @@ public class SearchFragment extends BaseFragment {
             public void onClick(View v) {
                 hideKeyboard();
                 establishmentsSearchResult.setAdapter(null);
-                viewModel.SearchEstablishments(keywordSearchParam.getText().toString(),String.valueOf(locationMap.get((String)locationSearchParam.getSelectedItem())),String.valueOf(getCategoryId(categoriesSearchParam.getSelectedItem().toString())));
+                String location = String.valueOf(locationMap.get((String)locationSearchParam.getSelectedItem()));
+                String category = String.valueOf(categoriesMap.get((String)categoriesSearchParam.getSelectedItem()));
+                location = location.equals("-1")?"":location;
+                category = category.equals("-1")?"":category;
+                viewModel.SearchEstablishments(keywordSearchParam.getText().toString(),location,category);
                 appBarLayout.setExpanded(false);
                 getStateView().forceLoadingTitle("Buscando establecimientos");
             }
@@ -132,14 +137,14 @@ public class SearchFragment extends BaseFragment {
 
     private void getCategories(){
         CategoriesModel categoriesModel = new CategoriesModel();
-        categoriesModel.GetCategories(new CategoriesModel.Callback<Map<Integer, String>>() {
+        categoriesModel.GetCategories(new CallbackUtils.SimpleCallback<Map<String, Integer>>() {
             @Override
-            public void onResult(Map<Integer, String> arg) {
+            public void OnResult(Map<String, Integer> arg) {
                 categoriesMap = arg;
                 List<String> categories = new ArrayList();
                 categories.add("Seleccione una categoría");
-                for(Map.Entry<Integer,String> entry : arg.entrySet()){
-                    categories.add(entry.getValue());
+                for(Map.Entry<String,Integer> entry : arg.entrySet()){
+                    categories.add(entry.getKey());
                 }
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,categories);
@@ -148,9 +153,10 @@ public class SearchFragment extends BaseFragment {
             }
 
             @Override
-            public void onFailure() {
+            public void OnFailure(String response) {
                 //Error
             }
+
         });
     }
 
@@ -176,18 +182,6 @@ public class SearchFragment extends BaseFragment {
                 //Error
             }
         });
-    }
-    private int getCategoryId(String name){
-        int id = -1;
-        if(categoriesMap.containsValue(name)){
-            for(Map.Entry<Integer,String> entry : categoriesMap.entrySet()){
-                if(name.equals(entry.getValue())){
-                    id = entry.getKey();
-                    break;
-                }
-            }
-        }
-        return id;
     }
 
     @Override
