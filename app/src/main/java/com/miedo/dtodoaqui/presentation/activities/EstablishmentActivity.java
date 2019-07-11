@@ -29,12 +29,13 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
+import com.miedo.dtodoaqui.CustomViews.PostClaimDialog;
 import com.miedo.dtodoaqui.CustomViews.PostRatingDialog;
 import com.miedo.dtodoaqui.CustomViews.PostReportDialog;
+import com.miedo.dtodoaqui.CustomViews.PostReviewDialog;
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.adapters.EstablishmentReviewAdapter;
 import com.miedo.dtodoaqui.core.BaseActivity;
-import com.miedo.dtodoaqui.customviews.PostReviewDialog;
 import com.miedo.dtodoaqui.data.EstablishmentReviewTO;
 import com.miedo.dtodoaqui.data.EstablishmentTO;
 import com.miedo.dtodoaqui.data.local.SessionManager;
@@ -150,6 +151,7 @@ public class EstablishmentActivity extends BaseActivity {
                             dialog.show();*/
 
                             Intent intent = new Intent(EstablishmentActivity.this, PostReviewDialog.class);
+                            intent.putExtra("establishment_id", id);
                             startActivity(intent);
 
                             break;
@@ -165,9 +167,8 @@ public class EstablishmentActivity extends BaseActivity {
                             break;
                         }
                         case R.id.fab_establishment_claim:{
-                            Intent intent = new Intent(EstablishmentActivity.this, PostReviewDialog.class);
-                            intent.putExtra("establishment_id", id);
-                            startActivity(intent);
+                            PostClaimDialog dialog = new PostClaimDialog(EstablishmentActivity.this, id, Integer.parseInt(SessionManager.getInstance(getApplicationContext()).getCurrentSession().getId().trim()));
+                            dialog.show();
                             break;
                         }
                     }

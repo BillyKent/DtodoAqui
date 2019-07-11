@@ -66,12 +66,15 @@ public interface DeTodoAquiAPI {
     @POST("/api/claims")
     public Call<ResponseBody> postClaim(@Body RequestBody body);
 
-    // Obtener user idiota
     @GET("/api/users/{id}")
     public Call<ResponseBody> getUserWithId(@Path("id") int id);
 
     // Subir imagen pal profile
     @POST("/api/upload_image")
     public Call<ResponseBody> uploadImage(@Header("Authorization") String bearer, @Body RequestBody body);
+
+    @GET("/api/reviews/{id}/images")
+    public Call<ResponseBody> getImagesFromReview(@Path("id") int id);
+
 
 }

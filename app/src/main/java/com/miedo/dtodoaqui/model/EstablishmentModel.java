@@ -107,7 +107,7 @@ public class EstablishmentModel {
                             establishmentJsonObject.getBoolean("is_verified"),
                             establishmentJsonObject.getString("opening_hours"),
                             establishmentJsonObject.getString("price"),
-                            "http://35.226.8.87/images/"+establishmentJsonObject.getString("slug"),
+                            "http://35.226.8.87/"+establishmentJsonObject.getString("slug"),
                             (float) establishmentJsonObject.getDouble("rating")
                     ));
                 }
@@ -138,7 +138,7 @@ public class EstablishmentModel {
                         establishmentJsonObject.getBoolean("is_verified"),
                         establishmentJsonObject.getString("opening_hours"),
                         establishmentJsonObject.getString("price"),
-                        establishmentJsonObject.getString("slug"),
+                        "http://35.226.8.87/"+establishmentJsonObject.getString("slug"),
                         (float) establishmentJsonObject.getDouble("rating")
                 );
             }

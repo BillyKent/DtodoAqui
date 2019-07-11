@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -117,11 +118,16 @@ public class SearchFragment extends BaseFragment {
                 establishmentsSearchResult.setAdapter(null);
                 String location = String.valueOf(locationMap.get((String)locationSearchParam.getSelectedItem()));
                 String category = String.valueOf(categoriesMap.get((String)categoriesSearchParam.getSelectedItem()));
-                location = location.equals("-1")?"":location;
-                category = category.equals("-1")?"":category;
-                viewModel.SearchEstablishments(keywordSearchParam.getText().toString(),location,category);
-                appBarLayout.setExpanded(false);
-                getStateView().forceLoadingTitle("Buscando establecimientos");
+                String keyword = keywordSearchParam.getText().toString();
+                location = location.equals("null")?"":location;
+                category = category.equals("null")?"":category;
+                if(location.isEmpty() && category.isEmpty() && keyword.isEmpty()){
+                    Toast.makeText(getContext(), "¡Debe seleccionar al menos un criterio de búsqueda!", Toast.LENGTH_SHORT).show();
+                }else{
+                    viewModel.SearchEstablishments(keywordSearchParam.getText().toString(),location,category);
+                    appBarLayout.setExpanded(false);
+                    getStateView().forceLoadingTitle("Buscando establecimientos");
+                }
             }
         });
 

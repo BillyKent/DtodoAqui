@@ -1,17 +1,30 @@
 package com.miedo.dtodoaqui.data;
 
+import java.util.List;
+
 public class EstablishmentReviewTO {
     int id;
     String username;
     String name;
     String decription;
+    List<String> images;
     float rating;
 
-    public EstablishmentReviewTO(int id, String username, String name, String decription, float rating) {
+    public EstablishmentReviewTO(int id, String username, String name, String decription, float rating, List<String> images) {
         this.id = id;
         this.username = username;
         this.name = name;
         this.decription = decription;
+        this.images = images;
+        this.rating = rating;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 
     public int getId() {

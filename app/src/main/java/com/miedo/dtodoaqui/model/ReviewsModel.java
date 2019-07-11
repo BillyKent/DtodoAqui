@@ -1,13 +1,16 @@
 package com.miedo.dtodoaqui.model;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.miedo.dtodoaqui.data.EstablishmentReviewTO;
 import com.miedo.dtodoaqui.data.ProfileTO;
+import com.miedo.dtodoaqui.data.local.SessionManager;
 import com.miedo.dtodoaqui.data.remote.DeTodoAquiAPI;
 import com.miedo.dtodoaqui.data.remote.ServiceGenerator;
+import com.miedo.dtodoaqui.utils.CallbackUtils;
 import com.miedo.dtodoaqui.utils.JSONUtils;
 
 import org.json.JSONArray;
@@ -55,7 +58,7 @@ public class ReviewsModel {
 
     }
 
-    public void PostEstablishmentReview(String description, int establishmentId, String name, int userId, ReviewsModel.CallBack callBack){
+    public void PostEstablishmentReview(String description, int establishmentId, String name, int userId, String jwt, List<Bitmap> images, ReviewsModel.CallBack callBack){
         DeTodoAquiAPI api = ServiceGenerator.createServiceScalar(DeTodoAquiAPI.class);
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"),
@@ -68,11 +71,27 @@ public class ReviewsModel {
         callEstablishment.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                callBack.OnResult();
+                if(images != null && images.size() > 0){
+                    ImageModel imageModel = new ImageModel();
+                    imageModel.PostImages(images, "review", fetchReviewIdResponse(response.body()), jwt, new CallbackUtils.SimpleCallback<String[]>() {
+                        @Override
+                        public void OnResult(String[] strings) {
+                            callBack.OnResult();
+                        }
+
+                        @Override
+                        public void OnFailure(String response) {
+                            callBack.OnFailed();
+                        }
+                    });
+                }else{
+                    callBack.OnResult();
+                }
+                //callBack.OnResult();
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                callBack.OnFailed();
+               callBack.OnFailed();
             }
         });
     }
@@ -102,6 +121,23 @@ public class ReviewsModel {
     }
 
 
+    private int fetchReviewIdResponse(ResponseBody responseBody){
+        List<EstablishmentReviewTO> reviews = new ArrayList();
+        try {
+            JSONObject data = new JSONObject(responseBody.string());
+            JSONObject reviewJson = data.getJSONObject("data");
+            if(reviewJson != null){
+                return  reviewJson.getInt("id");
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return -1;
+    }
+
     private List<EstablishmentReviewTO> fetchEstablishmentReviewsResponse(ResponseBody response){
         List<EstablishmentReviewTO> reviews = new ArrayList();
         try {
@@ -123,7 +159,7 @@ public class ReviewsModel {
                                     String.valueOf(userId),
                                     establishmentJsonObject.getString("name"),
                                     establishmentJsonObject.getString("description"),
-                                    -1
+                                    -1, new ArrayList<>()
                     ));
                 }
             }
@@ -220,8 +256,12 @@ public class ReviewsModel {
 
         @Override
         protected Void doInBackground(Void... voids) {
+            ImageModel imageModel = new ImageModel();
+
             for(EstablishmentReviewTO review : reviews){
                 review.setRating(getRating(review.getId()));
+
+                review.setImages(imageModel.GetSyncImages(review.getId()));
             }
             return null;
         }

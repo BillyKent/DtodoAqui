@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -12,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.data.EstablishmentReviewTO;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -82,6 +86,22 @@ public class EstablishmentReviewAdapter extends RecyclerView.Adapter<Establishme
         @BindView(R.id.establishmentReviewRB)
         RatingBar ratingBar;
 
+        //Test
+        @BindView(R.id.establishmentReview_imageslayout_ll)
+        LinearLayout imagesLayout;
+        @BindView(R.id.establishmentReview_imageprev_1_iv)
+        ImageView imageView1;
+        @BindView(R.id.establishmentReview_imageprev_2_iv)
+        ImageView imageView2;
+        @BindView(R.id.establishmentReview_imageprev_3_iv)
+        ImageView imageView3;
+        @BindView(R.id.establishmentReview_imageprev_4_iv)
+        ImageView imageView4;
+        @BindView(R.id.establishmentReview_imageprev_5_iv)
+        ImageView imageView5;
+        @BindView(R.id.establishmentReview_imageprev_6_iv)
+        ImageView imageView6;
+
 
         public ViewHolder(View view) {
             super(view);
@@ -99,6 +119,23 @@ public class EstablishmentReviewAdapter extends RecyclerView.Adapter<Establishme
                 description.setText(est.getDecription());
                 ratingBar.setRating(est.getRating());
 
+                //Test
+                List<ImageView> images = new ArrayList<>();
+                images.add(imageView1);
+                images.add(imageView2);
+                images.add(imageView3);
+                images.add(imageView4);
+                images.add(imageView5);
+                images.add(imageView6);
+
+                int i = 0;
+                for(String imageName : est.getImages()){
+                    Picasso.get().load(imageName).into(images.get(i));
+                    i++;
+                }
+                if(i > 0){
+                    imagesLayout.setVisibility(View.VISIBLE);
+                }
                 mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

@@ -44,8 +44,8 @@
             android:name=".presentation.activities.ModifyProfileActivity"
             android:theme="@style/ActionBarAppTheme" />
         <activity
-            android:name=".customviews.PostReviewDialog"
-            android:theme="@style/Theme.MaterialComponents.Light.Dialog" />
+            android:name=".CustomViews.PostReviewDialog"
+            android:theme="@style/AppDialogTheme" />
         <activity
             android:name=".presentation.activities.EstablishmentActivity"
             android:configChanges="orientation"
