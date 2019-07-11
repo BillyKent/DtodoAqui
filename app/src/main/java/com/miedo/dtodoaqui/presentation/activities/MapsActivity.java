@@ -4,9 +4,13 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ZoomControls;
 
 import com.google.android.gms.common.api.Status;
@@ -26,22 +30,30 @@ import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.miedo.dtodoaqui.R;
+import com.miedo.dtodoaqui.core.BaseActivity;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveListener {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class MapsActivity extends BaseActivity implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraMoveStartedListener {
 
     private GoogleMap mMap;
     private AutocompleteSupportFragment autocompleteFragment;
     private static final String TAG = MapsActivity.class.getSimpleName();
 
+    @BindView(R.id.bt_listo)
+    Button boton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        ButterKnife.bind(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -69,6 +81,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.clear();
                 //mMap.addMarker(new MarkerOptions().position(ubicacion).title("Place").draggable(true));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacion, 15));
+                boton.setEnabled(true);
             }
 
             @Override
@@ -80,14 +93,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         autocompleteFragment.getView().findViewById(R.id.places_autocomplete_clear_button)
                 .setOnClickListener(v -> {
-                    autocompleteFragment.setText("");
                     v.setVisibility(View.GONE);
-                    mMap.clear();
+                    invalidar();
 
                 });
 
     }
 
+    private void invalidar() {
+        autocompleteFragment.setText("");
+        mMap.clear();
+        boton.setEnabled(false);
+    }
 
     /**
      * Manipulates the map once available.
@@ -111,16 +128,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posInicial, 16));
         mMap.setOnCameraIdleListener(this);
         mMap.setOnCameraMoveListener(this);
+        mMap.setOnCameraMoveStartedListener(this);
 
         currentZoom = mMap.getCameraPosition().zoom;
 
 
     }
 
+    BuscarPosicion buscarTask = new BuscarPosicion();
 
     @Override
     public void onCameraIdle() {
-        Log.i(TAG, "determinando ubicacion");
+
+        buscarTask.cancel(true);
+        buscarTask = new BuscarPosicion();
+        buscarTask.execute(mMap.getProjection().getVisibleRegion().latLngBounds.getCenter());
+
+
+        /*Log.i(TAG, "determinando ubicacion");
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         List<Address> addresses = null;
         LatLng point = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter();
@@ -129,7 +154,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions()
                 .position(point)
                 .draggable(true)
-        );*/
+        );
         try {
             addresses = geocoder.getFromLocation(point.latitude, point.longitude, 1);
             Log.i(TAG, addresses.toString());
@@ -142,7 +167,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
 
@@ -151,10 +176,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onCameraMove() {
         if (mMap.getCameraPosition().zoom != currentZoom) {
-            Log.i(TAG, "moviendo zoom:");
+            //Log.i(TAG, "moviendo zoom:");
             currentZoom = mMap.getCameraPosition().zoom;
 
         }
-        Log.i(TAG, "zoom actual :" + mMap.getCameraPosition().zoom);
+        //Log.i(TAG, "zoom actual :" + mMap.getCameraPosition().zoom);
     }
+
+    @Override
+    public void onCameraMoveStarted(int i) {
+        if (i == REASON_GESTURE) {
+            invalidar();
+        }
+
+    }
+
+    class BuscarPosicion extends AsyncTask<LatLng, Void, String> {
+
+        @Override
+        protected String doInBackground(LatLng... points) {
+            Log.i(TAG, "Buscando");
+
+            try {
+                Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
+                List<Address> addresses = geocoder.getFromLocation(points[0].latitude, points[0].longitude, 1);
+                Log.i(TAG, addresses.toString());
+                String cityName = addresses.get(0).getAddressLine(0);
+                String stateName = addresses.get(0).getAddressLine(1);
+
+                Log.i(TAG, "ciudad:" + cityName);
+                Log.i(TAG, "estado:" + cityName);
+                return cityName;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (s == null) {
+                showToastMessage("Error de geolocalizacion");
+                return;
+            }
+            autocompleteFragment.setText(s);
+            boton.setEnabled(true);
+        }
+    }
+
 }

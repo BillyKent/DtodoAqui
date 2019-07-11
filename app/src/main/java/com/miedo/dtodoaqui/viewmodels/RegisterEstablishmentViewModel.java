@@ -155,7 +155,8 @@ public class RegisterEstablishmentViewModel extends ViewModel {
 
     public boolean validarTercerPaso() {
         return establishment.getOpeningHours() != null &&
-                establishment.getLocationId() != null;
+                establishment.getLocationId() != null &&
+                establishment.getSlug() != null;
     }
 
     private String buildRequestBody(EstablishmentCreateTO establishment) {
