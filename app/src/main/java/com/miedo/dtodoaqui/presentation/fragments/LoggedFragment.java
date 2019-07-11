@@ -175,6 +175,7 @@ public class LoggedFragment extends BaseFragment {
 
         });
 
+
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
 
@@ -245,7 +246,10 @@ public class LoggedFragment extends BaseFragment {
         }
         Log.i(TAG, "Perfil a mostrar : " + profile);
         if (profile == null) return;
+
         items.clear();
+
+
         if (profile.getAvatarName() != null && profile.getAvatarName() != "empty.png") {
             Picasso.get().load("http://35.226.8.87/" + profile.getAvatarName()).into(profileImage);
         }

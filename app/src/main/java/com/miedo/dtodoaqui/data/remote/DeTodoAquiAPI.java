@@ -76,5 +76,6 @@ public interface DeTodoAquiAPI {
     @GET("/api/reviews/{id}/images")
     public Call<ResponseBody> getImagesFromReview(@Path("id") int id);
 
-
+    @GET("/api/profile/{id}/detail")
+    Call<ResponseBody> getProfileDetailById(@Path("id") int id);
 }

@@ -10,10 +10,13 @@ import com.miedo.dtodoaqui.data.ProfileTO;
 import com.miedo.dtodoaqui.data.UserTO;
 import com.miedo.dtodoaqui.data.remote.DeTodoAquiAPI;
 import com.miedo.dtodoaqui.data.remote.ServiceGenerator;
+import com.miedo.dtodoaqui.model.ProfileDetailModel;
 import com.miedo.dtodoaqui.model.ProfileModel;
 import com.miedo.dtodoaqui.utils.JSONUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -29,11 +32,16 @@ public class ProfileViewModel extends ViewModel {
     private ProfileModel model;
     private ProfileTO currentProfile;
 
+    private ProfileDetailModel detailModel;
+
     private String userID;
 
     private Boolean toCreate = false;
 
+    private List<Integer> detail;
+
     final MutableLiveData<ProfileState> profileState = new MutableLiveData<>();
+    final MutableLiveData<ArrayList<Integer>> detailList = new MutableLiveData<>();
 
     public enum ProfileState {
         ERROR_STATE,
@@ -45,6 +53,7 @@ public class ProfileViewModel extends ViewModel {
 
     public ProfileViewModel() {
         model = new ProfileModel();
+        detailModel = new ProfileDetailModel();
     }
 
 
@@ -71,6 +80,7 @@ public class ProfileViewModel extends ViewModel {
                             currentProfile = JSONUtils.getProfileFromJSONString(response.body().string());
                             userID = JSONUtils.getUserIDFromJSON(response.body().string());
 
+
                             profileState.setValue(ProfileState.CON_PERFIL);
                         }
 
@@ -90,6 +100,20 @@ public class ProfileViewModel extends ViewModel {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.i(TAG, "Mostrando error en logged xd");
                 profileState.setValue(ProfileState.ERROR_STATE);
+            }
+        });
+    }
+
+    public void obtenerDetalles() {
+        detailModel.getDetailById(Integer.parseInt(currentUser.getId()), new ProfileDetailModel.CallBack<List<Integer>>() {
+            @Override
+            public void onResult(List<Integer> integers) {
+                detailList.setValue((ArrayList<Integer>) integers);
+            }
+
+            @Override
+            public void onError() {
+
             }
         });
     }
@@ -156,6 +180,14 @@ public class ProfileViewModel extends ViewModel {
 
     public UserTO getCurrentUser() {
         return currentUser;
+    }
+
+    public List<Integer> getDetail() {
+        return detail;
+    }
+
+    public void setDetail(List<Integer> detail) {
+        this.detail = detail;
     }
 
     public String getUserID() {
