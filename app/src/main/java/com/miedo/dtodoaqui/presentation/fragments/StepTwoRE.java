@@ -112,7 +112,7 @@ public class StepTwoRE extends BaseFragment implements OnMapReadyCallback, Googl
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng posInicial = new LatLng(-12, -77);
+        LatLng posInicial = new LatLng(-12.053456, -77.085624);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posInicial, 15));
         mMap.setOnCameraIdleListener(this);
         mMap.setOnCameraMoveListener(this);
@@ -148,7 +148,7 @@ public class StepTwoRE extends BaseFragment implements OnMapReadyCallback, Googl
     @Override
     public void onPlaceSelected(@NonNull Place place) {
         LatLng ubicacion = place.getLatLng();
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacion, (float) currentZoom));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacion, (float) 15));
     }
 
     @Override

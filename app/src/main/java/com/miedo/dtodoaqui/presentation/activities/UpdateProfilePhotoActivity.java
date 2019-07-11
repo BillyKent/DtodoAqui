@@ -225,19 +225,14 @@ public class UpdateProfilePhotoActivity extends BaseActivity {
                     botonGuardar.setEnabled(true);
                 }
             });
-
-
             return encoded;
         }
 
     }
 
     private String fetchResponse(String string) throws JSONException {
-
         String retorno = null;
-
         retorno = new JSONObject(string).getJSONObject("data").getString("image_name");
-
         return retorno;
 
     }
