@@ -44,6 +44,9 @@ public class StepThreeRE extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.spinner_location)
     public TextView spinner_location;
 
+    @BindView(R.id.bt_cargar_imagen)
+    public Button uploadButton;
+
     // Cosntructor necesario
     public StepThreeRE() {
 
@@ -96,6 +99,8 @@ public class StepThreeRE extends BaseFragment implements View.OnClickListener {
                 showMessage("Campos inválidos.");
             }
         });
+
+
 
 
     }

@@ -1,6 +1,8 @@
 package com.miedo.dtodoaqui.presentation.fragments;
 
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -112,12 +114,8 @@ public class StepTwoRE extends BaseFragment implements OnMapReadyCallback, Googl
         mMap = googleMap;
         LatLng posInicial = new LatLng(-12, -77);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posInicial, 15));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posInicial, 16));
         mMap.setOnCameraIdleListener(this);
         mMap.setOnCameraMoveListener(this);
-
-        currentZoom = mMap.getCameraPosition().zoom;
-
     }
 
     private void configureAutocomplete() {
