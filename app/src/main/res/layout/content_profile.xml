@@ -109,14 +109,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Visitas"
-                        android:textSize="14sp" />
+                        android:text="Establecimientos registrados"
+                        android:textAlignment="center"
+                        android:textSize="11sp" />
 
                     <TextView
+                        android:id="@+id/tv_listings"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
-                        android:text="125"
+                        android:text="0"
                         android:textColor="@color/startblue"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -137,10 +139,11 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tv_reviews"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
-                        android:text="1205"
+                        android:text="0"
                         android:textColor="@color/startblue"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -157,14 +160,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Favoritos"
+                        android:text="Valoraciones"
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tv_ratings"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
-                        android:text="360"
+                        android:text="0"
                         android:textColor="@color/startblue"
                         android:textSize="14sp"
                         android:textStyle="bold" />

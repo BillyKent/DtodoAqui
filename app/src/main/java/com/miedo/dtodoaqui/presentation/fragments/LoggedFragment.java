@@ -63,6 +63,15 @@ public class LoggedFragment extends BaseFragment {
     @BindView(R.id.tv_nombre)
     public TextView tv_nombre;
 
+    @BindView(R.id.tv_listings)
+    public TextView tv_listings;
+
+    @BindView(R.id.tv_ratings)
+    public TextView tv_ratings;
+
+    @BindView(R.id.tv_reviews)
+    public TextView tv_reviews;
+
     @BindView(R.id.profile)
     public CircleImageView profileImage;
 
@@ -175,6 +184,20 @@ public class LoggedFragment extends BaseFragment {
 
         });
 
+        viewModel.getDetailList().observe(getViewLifecycleOwner(), integers ->
+        {
+            if (integers == null) {
+                tv_listings.setText("");
+                tv_ratings.setText("");
+                tv_reviews.setText("");
+            } else {
+                tv_listings.setText(Integer.toString(integers.get(0)));
+                tv_ratings.setText(Integer.toString(integers.get(1)));
+                tv_reviews.setText(Integer.toString(integers.get(2)));
+            }
+
+        });
+
 
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
@@ -248,6 +271,7 @@ public class LoggedFragment extends BaseFragment {
         if (profile == null) return;
 
         items.clear();
+        viewModel.obtenerDetalles();
 
 
         if (profile.getAvatarName() != null && profile.getAvatarName() != "empty.png") {

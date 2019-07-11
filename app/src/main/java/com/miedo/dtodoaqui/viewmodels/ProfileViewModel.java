@@ -38,7 +38,6 @@ public class ProfileViewModel extends ViewModel {
 
     private Boolean toCreate = false;
 
-    private List<Integer> detail;
 
     final MutableLiveData<ProfileState> profileState = new MutableLiveData<>();
     final MutableLiveData<ArrayList<Integer>> detailList = new MutableLiveData<>();
@@ -105,15 +104,15 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void obtenerDetalles() {
-        detailModel.getDetailById(Integer.parseInt(currentUser.getId()), new ProfileDetailModel.CallBack<List<Integer>>() {
+        detailModel.getDetailById(Integer.parseInt(currentUser.getId()), new ProfileDetailModel.CallBack<ArrayList<Integer>>() {
             @Override
-            public void onResult(List<Integer> integers) {
-                detailList.setValue((ArrayList<Integer>) integers);
+            public void onResult(ArrayList<Integer> integers) {
+                detailList.setValue(integers);
             }
 
             @Override
             public void onError() {
-
+                detailList.setValue(null);
             }
         });
     }
@@ -182,12 +181,8 @@ public class ProfileViewModel extends ViewModel {
         return currentUser;
     }
 
-    public List<Integer> getDetail() {
-        return detail;
-    }
-
-    public void setDetail(List<Integer> detail) {
-        this.detail = detail;
+    public MutableLiveData<ArrayList<Integer>> getDetailList() {
+        return detailList;
     }
 
     public String getUserID() {

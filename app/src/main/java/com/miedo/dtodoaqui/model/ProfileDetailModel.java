@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,14 +19,18 @@ import retrofit2.Response;
 
 public class ProfileDetailModel {
 
-    public void getDetailById(int id, CallBack<List<Integer>> callBack) {
+    public void getDetailById(int id, CallBack<ArrayList<Integer>> callBack) {
         DeTodoAquiAPI api = ServiceGenerator.createServiceScalar(DeTodoAquiAPI.class);
 
         Call<ResponseBody> call = api.getProfileDetailById(id);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                callBack.onResult(fetchResponse(response.body()));
+                if (response.code() == 200) {
+                    callBack.onResult(fetchResponse(response.body()));
+                } else {
+                    callBack.onError();
+                }
             }
 
             @Override
@@ -36,15 +41,17 @@ public class ProfileDetailModel {
 
     }
 
-    List<Integer> fetchResponse(ResponseBody responseBody) {
+    ArrayList<Integer> fetchResponse(ResponseBody responseBody) {
         try {
             JSONObject object = new JSONObject(responseBody.string());
 
-            return Arrays.asList(
-                    object.getInt("listings"),
-                    object.getInt("ratings"),
-                    object.getInt("reviews")
-            );
+            ArrayList<Integer> retorno = new ArrayList<>();
+            retorno.add(object.getInt("listings"));
+            retorno.add(object.getInt("ratings"));
+            retorno.add(object.getInt("reviews"));
+
+
+            return retorno;
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {
