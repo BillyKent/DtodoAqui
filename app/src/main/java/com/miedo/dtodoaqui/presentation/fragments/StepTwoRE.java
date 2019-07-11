@@ -1,10 +1,9 @@
 package com.miedo.dtodoaqui.presentation.fragments;
 
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -45,7 +44,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StepTwoRE extends BaseFragment implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveListener, PlaceSelectionListener {
+public class StepTwoRE extends BaseFragment implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveListener, PlaceSelectionListener, GoogleMap.OnCameraMoveStartedListener {
 
     private static final String TAG = StepTwoRE.class.getSimpleName();
 
@@ -56,6 +55,8 @@ public class StepTwoRE extends BaseFragment implements OnMapReadyCallback, Googl
     private GoogleMap mMap;
     private AutocompleteSupportFragment autocompleteFragment;
     private SupportMapFragment mapFragment;
+
+    BuscarPosicion buscarTask = new BuscarPosicion();
 
     // Auxiliares
     private double currentZoom;
@@ -116,6 +117,7 @@ public class StepTwoRE extends BaseFragment implements OnMapReadyCallback, Googl
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posInicial, 15));
         mMap.setOnCameraIdleListener(this);
         mMap.setOnCameraMoveListener(this);
+        mMap.setOnCameraMoveStartedListener(this);
     }
 
     private void configureAutocomplete() {
@@ -149,16 +151,22 @@ public class StepTwoRE extends BaseFragment implements OnMapReadyCallback, Googl
     public void onPlaceSelected(@NonNull Place place) {
         LatLng ubicacion = place.getLatLng();
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacion, (float) 15));
+        botonContinuar.setEnabled(true);
     }
 
     @Override
     public void onError(@NonNull Status status) {
+        invalidar();
     }
 
     // Google Maps
     @Override
     public void onCameraIdle() {
-        Log.i(TAG, "determinando ubicacion");
+        buscarTask.cancel(true);
+        buscarTask = new BuscarPosicion();
+        buscarTask.execute(mMap.getProjection().getVisibleRegion().latLngBounds.getCenter());
+
+        /*Log.i(TAG, "determinando ubicacion");
         Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
         List<Address> addresses = null;
         LatLng point = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter();
@@ -174,13 +182,69 @@ public class StepTwoRE extends BaseFragment implements OnMapReadyCallback, Googl
             botonContinuar.setEnabled(true);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
     public void onCameraMove() {
         if (mMap.getCameraPosition().zoom != currentZoom) {
             currentZoom = mMap.getCameraPosition().zoom;
+        }
+    }
+
+    private void invalidar() {
+        autocompleteFragment.setText("");
+        mMap.clear();
+        botonContinuar.setEnabled(false);
+        viewModel.getEstablishment().setAddress(null);
+        viewModel.getEstablishment().setLatitude(null);
+        viewModel.getEstablishment().setLongitude(null);
+    }
+
+
+    @Override
+    public void onCameraMoveStarted(int i) {
+        if (i == REASON_GESTURE) {
+            invalidar();
+        }
+
+    }
+
+    class BuscarPosicion extends AsyncTask<LatLng, Void, String> {
+
+        @Override
+        protected String doInBackground(LatLng... points) {
+            Log.i(TAG, "Buscando");
+
+            try {
+                Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
+                List<Address> addresses = geocoder.getFromLocation(points[0].latitude, points[0].longitude, 1);
+                Log.i(TAG, addresses.toString());
+                String cityName = addresses.get(0).getAddressLine(0);
+                String stateName = addresses.get(0).getAddressLine(1);
+
+                Log.i(TAG, "ciudad:" + cityName);
+                Log.i(TAG, "estado:" + cityName);
+
+                viewModel.getEstablishment().setAddress(cityName);
+                viewModel.getEstablishment().setLatitude(points[0].latitude + "");
+                viewModel.getEstablishment().setLongitude(points[0].longitude + "");
+                return cityName;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (s == null) {
+                showToastMessage("Error de geolocalizacion");
+                return;
+            }
+            autocompleteFragment.setText(s);
+            botonContinuar.setEnabled(true);
         }
     }
 

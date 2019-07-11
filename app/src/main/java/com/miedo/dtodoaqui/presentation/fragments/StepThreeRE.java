@@ -95,9 +95,9 @@ public class StepThreeRE extends BaseFragment implements View.OnClickListener {
 
                     if (bitmap != null) {
                         fotoReal = bitmap;
-                        fotoFake = BitmapUtils.getScaledDownBitmap(bitmap, 400, true);
+                        fotoFake = BitmapUtils.getScaledDownBitmap(bitmap, 500, true);
                         iv_foto.setImageBitmap(fotoFake);
-                        new GuardarTask().execute(fotoReal);
+                        new GuardarTask().execute(fotoFake);
                     }
 
                 } catch (IOException e) {
@@ -213,6 +213,11 @@ public class StepThreeRE extends BaseFragment implements View.OnClickListener {
     private class GuardarTask extends AsyncTask<Bitmap, Void, String> {
 
         @Override
+        protected void onPreExecute() {
+            registerButton.setEnabled(false);
+        }
+
+        @Override
         protected String doInBackground(Bitmap... bitmaps) {
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -273,6 +278,10 @@ public class StepThreeRE extends BaseFragment implements View.OnClickListener {
             return encoded;
         }
 
+        @Override
+        protected void onPostExecute(String s) {
+            registerButton.setEnabled(true);
+        }
     }
 
     private String fetchResponse(String string) throws JSONException {
