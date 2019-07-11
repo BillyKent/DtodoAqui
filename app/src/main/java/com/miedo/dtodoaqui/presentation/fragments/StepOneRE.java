@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -59,6 +60,10 @@ public class StepOneRE extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Registro de establecimientos");
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setSubtitle("Paso 1 de 3");
+
 
         viewModel.getRegisterState().setValue(RegisterEstablishmentViewModel.RegisterState.NORMAL);
         final NavController navController = NavHostFragment.findNavController(this);

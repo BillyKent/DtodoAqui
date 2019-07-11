@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -88,6 +89,8 @@ public class StepTwoRE extends BaseFragment implements OnMapReadyCallback, Googl
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setSubtitle("Paso 2 de 3");
         viewModel.getRegisterState().setValue(RegisterEstablishmentViewModel.RegisterState.NORMAL);
         final NavController navController = NavHostFragment.findNavController(this);
 

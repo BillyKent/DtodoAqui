@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -120,6 +121,8 @@ public class StepThreeRE extends BaseFragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setSubtitle("Paso 3 de 3");
         final View view = inflater.inflate(R.layout.fragment_step_three_re, container, false);
 
         ButterKnife.bind(this, view);
