@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,15 +40,23 @@ import com.miedo.dtodoaqui.adapters.EstablishmentReviewAdapter;
 import com.miedo.dtodoaqui.core.BaseActivity;
 import com.miedo.dtodoaqui.data.EstablishmentReviewTO;
 import com.miedo.dtodoaqui.data.EstablishmentTO;
+import com.miedo.dtodoaqui.data.RatingTO;
 import com.miedo.dtodoaqui.data.local.SessionManager;
+import com.miedo.dtodoaqui.model.RatingsModel;
+import com.miedo.dtodoaqui.utils.CallbackUtils;
 import com.miedo.dtodoaqui.viewmodels.EstablishmentViewModel;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoProvider;
 
+import org.w3c.dom.Text;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindDimen;
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 
 public class EstablishmentActivity extends BaseActivity {
@@ -66,12 +76,14 @@ public class EstablishmentActivity extends BaseActivity {
     TextView establishmentOpeningHours;
     @BindView(R.id.establishmentPriceTV)
     TextView establishmentPrice;
-    /*@BindView(R.id.establishmentAddressTV)
-    TextView establishmentAddress;*/
+    @BindView(R.id.establishmentAddressTV)
+    TextView establishmentAddress;
     @BindView(R.id.establishmentBackgroundIV)
     ImageView establishmentBackground;
     @BindView(R.id.establishmentNameTV)
     TextView establishmentName;
+    @BindView(R.id.establishmentCategoryTV)
+    TextView establishmentCategory;
 
     @BindView(R.id.establishmentReviewsRV)
     RecyclerView establishmentReviews;
@@ -79,8 +91,21 @@ public class EstablishmentActivity extends BaseActivity {
     @BindView(R.id.postReviewEstablishmentFAB)
     SpeedDialView publishFab;
 
+    //Test
+    @BindView(R.id.establishmentReviewsLoadingLL)
+    LinearLayout loadingLayout;
+    @BindView(R.id.establishmentReviewsNomatch)
+    LinearLayout nomatchLayout;
+
+    @BindView(R.id.establishmentReview_RB)
+    RatingBar establishmentRating;
+
     private GoogleMap establishmentMap = null;
     private Marker establishmentMarker = null;
+
+    //Test ratings
+
+    private Map<Integer, RatingTO> ratings = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +166,13 @@ public class EstablishmentActivity extends BaseActivity {
                         .setLabel("Reclamar titularidad")
                         .create()
         );
+
+        publishFab.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_establishment_update, R.drawable.ic_update_black_24dp)
+                        .setLabel("Actualizar")
+                        .create()
+        );
+
         publishFab.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
             @Override
             public boolean onActionSelected(SpeedDialActionItem actionItem) {
@@ -157,7 +189,9 @@ public class EstablishmentActivity extends BaseActivity {
                             break;
                         }
                         case R.id.fab_establishment_rating:{
-                            PostRatingDialog dialog = new PostRatingDialog(EstablishmentActivity.this, id, Integer.parseInt(SessionManager.getInstance(getApplicationContext()).getCurrentSession().getId().trim()), 5);
+                            RatingTO lastRating = ratings.get(Integer.parseInt(SessionManager.getInstance(getApplicationContext()).getCurrentSession().getId().trim()));
+
+                            PostRatingDialog dialog = new PostRatingDialog(EstablishmentActivity.this, id, Integer.parseInt(SessionManager.getInstance(getApplicationContext()).getCurrentSession().getId().trim()), lastRating);
                             dialog.show();
                             break;
                         }
@@ -171,6 +205,11 @@ public class EstablishmentActivity extends BaseActivity {
                             dialog.show();
                             break;
                         }
+                        case R.id.fab_establishment_update:
+                        {
+                            updateEstablishment();
+                            break;
+                        }
                     }
                 }else{
                     Toast.makeText(EstablishmentActivity.this, "Debe iniciar sesión primero", Toast.LENGTH_SHORT).show();
@@ -178,6 +217,8 @@ public class EstablishmentActivity extends BaseActivity {
                 return false;
             }
         });
+
+
 
        /* publishFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,6 +233,14 @@ public class EstablishmentActivity extends BaseActivity {
             }
         });*/
 
+    }
+
+    private void updateEstablishment(){
+        getStateView().forceLoadingTitle("Cargando datos del establecimiento");
+        int id = getIntent().getExtras().getInt("establishment_id");
+        viewModel.GetEstablishment(id);
+        viewModel.GetReviewsFromEstablishment(id);
+        onResume();
     }
 
     private void refreshEstablishment(EstablishmentTO establishment){
@@ -213,10 +262,12 @@ public class EstablishmentActivity extends BaseActivity {
         Picasso.get().load(establishment.getSlug()).into(establishmentBackground);
 
         establishmentName.setText(establishment.getName());
-        //establishmentAddress.setText(establishment.getAddress());
-        //establishmentCategory.setText(establishment.getCategory());
+        establishmentAddress.setText(establishment.getAddress());
+        establishmentCategory.setText(establishment.getCategory());
         establishmentDescription.setText(establishment.getDescription());
         establishmentOpeningHours.setText(establishment.getOpeningHours());
+        establishmentRating.setRating(establishment.getRating());
+
         if(establishment.getPrice() != null && !establishment.getPrice().equals("null"))
         establishmentPrice.setText(establishment.getPrice());
         else
@@ -230,9 +281,39 @@ public class EstablishmentActivity extends BaseActivity {
         super.onResume();
         int id = getIntent().getExtras().getInt("establishment_id");
         viewModel.GetReviewsFromEstablishment(id);
+
+        //tEST
+        loadingLayout.setVisibility(View.VISIBLE);
+        nomatchLayout.setVisibility(View.GONE);
+        establishmentReviews.setVisibility(View.GONE);
+
+        //Test ratings
+
+        RatingsModel ratingsModel = new RatingsModel();
+        ratingsModel.GetRatings(id, new CallbackUtils.SimpleCallback<Map<Integer, RatingTO>>() {
+            @Override
+            public void OnResult(Map<Integer, RatingTO> integerRatingTOMap) {
+                ratings = integerRatingTOMap;
+                Toast.makeText(EstablishmentActivity.this, "¡Bienvenido!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void OnFailure(String response) {
+                ratings = new HashMap<>();
+            }
+        });
     }
 
     private void refreshReviews(List<EstablishmentReviewTO> reviews){
+        loadingLayout.setVisibility(View.GONE);
+        if (reviews.size() == 0) {
+            nomatchLayout.setVisibility(View.VISIBLE);
+            establishmentReviews.setVisibility(View.GONE);
+        }else{
+            nomatchLayout.setVisibility(View.GONE);
+            establishmentReviews.setVisibility(View.VISIBLE);
+        }
+
         EstablishmentReviewAdapter adapter = new EstablishmentReviewAdapter(new EstablishmentReviewAdapter.OnClickViewHolder() {
             @Override
             public void clickViewHolder(EstablishmentReviewTO est) {

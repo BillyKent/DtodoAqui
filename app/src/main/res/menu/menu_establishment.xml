@@ -20,4 +20,9 @@
         android:title="Reclamar titularidad"
         android:icon="@drawable/ic_check_circle_black_24dp"
         />
+    <item
+        android:id="@+id/fab_establishment_update"
+        android:title="Actualizar"
+        android:icon="@drawable/ic_update_black_24dp"
+        />
 </menu>

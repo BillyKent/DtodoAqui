@@ -1,9 +1,10 @@
 package com.miedo.dtodoaqui.model;
 
+import android.os.AsyncTask;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.miedo.dtodoaqui.data.EstablishmentSearchTO;
 import com.miedo.dtodoaqui.data.EstablishmentTO;
 import com.miedo.dtodoaqui.data.remote.DeTodoAquiAPI;
 import com.miedo.dtodoaqui.data.remote.ServiceGenerator;
@@ -41,7 +42,8 @@ public class EstablishmentModel {
                 callEstablishment.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        establishment.setValue(fetchEstablishmentResponse(response.body(), arg));
+                        //establishment.setValue(fetchEstablishmentResponse(response.body(), arg));
+                        new GetRatingFromOne(fetchEstablishmentResponse(response.body(), arg), establishment).execute();
                     }
 
                     @Override
@@ -70,7 +72,12 @@ public class EstablishmentModel {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         List<EstablishmentTO> establishments = fetchSearchResponse(response.body(), arg);
-                        data.setValue(establishments);
+
+                        //Test
+
+                        new GetRating(establishments, data).execute();
+
+                        //data.setValue(establishments);
                     }
 
                     @Override
@@ -161,9 +168,75 @@ public class EstablishmentModel {
         return name;
     }
 
-    private void createEstablishment() {
 
 
+
+    public class GetRating extends AsyncTask<Void, Void, Void> {
+
+        List<EstablishmentTO> establishments;
+        MutableLiveData<List<EstablishmentTO>> establishmentLive;
+
+        public GetRating(List<EstablishmentTO> establishments, MutableLiveData<List<EstablishmentTO>> establishmentLive) {
+            this.establishments = establishments;
+            this.establishmentLive = establishmentLive;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            RatingsModel ratingsModel = new RatingsModel();
+            for (EstablishmentTO establishmentTO : establishments) {
+                establishmentTO.setRating(ratingsModel.GetSyncPromRatings(establishmentTO.getId()));
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            establishmentLive.setValue(establishments);
+            super.onPostExecute(aVoid);
+
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            establishmentLive.setValue(null);
+        }
     }
+
+    public class GetRatingFromOne extends AsyncTask<Void, Void, Void> {
+
+        EstablishmentTO establishment;
+        MutableLiveData<EstablishmentTO> establishmentLive;
+
+        public GetRatingFromOne(EstablishmentTO establishments, MutableLiveData<EstablishmentTO> establishmentLive) {
+            this.establishment = establishments;
+            this.establishmentLive = establishmentLive;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            RatingsModel ratingsModel = new RatingsModel();
+            establishment.setRating(ratingsModel.GetSyncPromRatings(establishment.getId()));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            establishmentLive.setValue(establishment);
+            super.onPostExecute(aVoid);
+
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            establishmentLive.setValue(null);
+        }
+    }
+
 
 }

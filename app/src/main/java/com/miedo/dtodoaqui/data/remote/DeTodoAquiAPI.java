@@ -78,4 +78,10 @@ public interface DeTodoAquiAPI {
 
     @GET("/api/profile/{id}/detail")
     Call<ResponseBody> getProfileDetailById(@Path("id") int id);
+
+    @GET("/api/listings/{id}/ratings")
+    public Call<ResponseBody> getListingRatings(@Path("id") int id);
+
+    @PUT("/api/ratings/{id}")
+    public Call<ResponseBody> putRating(@Path("id") int id, @Body RequestBody body);
 }
