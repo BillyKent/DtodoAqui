@@ -104,6 +104,9 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void obtenerDetalles() {
+        if (currentUser == null) return;
+        if (currentUser.getId() == null) return;
+
         detailModel.getDetailById(Integer.parseInt(currentUser.getId()), new ProfileDetailModel.CallBack<ArrayList<Integer>>() {
             @Override
             public void onResult(ArrayList<Integer> integers) {

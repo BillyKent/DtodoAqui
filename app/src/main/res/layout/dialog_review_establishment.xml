@@ -79,7 +79,7 @@
 
             <ImageView
                 android:id="@+id/establishment_imageprev_1_iv"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="3dp"
                 android:layout_weight="1"
@@ -87,7 +87,7 @@
 
             <ImageView
                 android:id="@+id/establishment_imageprev_2_iv"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="3dp"
                 android:layout_weight="1"
@@ -95,7 +95,7 @@
 
             <ImageView
                 android:id="@+id/establishment_imageprev_3_iv"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="3dp"
                 android:layout_weight="1"
@@ -103,7 +103,7 @@
 
             <ImageView
                 android:id="@+id/establishment_imageprev_4_iv"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="3dp"
                 android:layout_weight="1"
@@ -111,7 +111,7 @@
 
             <ImageView
                 android:id="@+id/establishment_imageprev_5_iv"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="3dp"
                 android:layout_weight="1"
@@ -119,7 +119,7 @@
 
             <ImageView
                 android:id="@+id/establishment_imageprev_6_iv"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="3dp"
                 android:layout_weight="1"

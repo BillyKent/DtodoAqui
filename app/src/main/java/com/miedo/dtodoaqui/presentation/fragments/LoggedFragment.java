@@ -266,12 +266,12 @@ public class LoggedFragment extends BaseFragment {
         SessionManager.getInstance(requireContext()).setJwtToken(viewModel.getCurrentUser().getJwt());
         if (viewModel.getCurrentProfile() != null) {
             SessionManager.getInstance(requireContext()).setUserID(viewModel.getCurrentProfile().getUserId());
+            viewModel.obtenerDetalles();
         }
         Log.i(TAG, "Perfil a mostrar : " + profile);
         if (profile == null) return;
 
         items.clear();
-        viewModel.obtenerDetalles();
 
 
         if (profile.getAvatarName() != null && profile.getAvatarName() != "empty.png") {

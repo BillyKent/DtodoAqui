@@ -37,7 +37,7 @@ public interface DeTodoAquiAPI {
     @PUT("/api/my_profile")
     public Call<ResponseBody> updateProfile(@Header("Authorization") String bearer, @Body RequestBody body);
 
-    // Obtener categorías
+    // Obtener categorias
     @GET("/api/categories")
     public Call<ResponseBody> getCategories();
 

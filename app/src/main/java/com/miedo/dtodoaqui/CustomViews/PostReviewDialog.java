@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -30,6 +31,7 @@ import com.miedo.dtodoaqui.R;
 import com.miedo.dtodoaqui.core.BaseActivity;
 import com.miedo.dtodoaqui.data.local.SessionManager;
 import com.miedo.dtodoaqui.model.ReviewsModel;
+import com.miedo.dtodoaqui.utils.BitmapUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,8 @@ import butterknife.ButterKnife;
 public class PostReviewDialog extends BaseActivity {
 
     private final int RESULT_LOAD_IMAGE = 322;
+
+    public static final String TAG = PostReviewDialog.class.getSimpleName();
 
     @BindView(R.id.establishment_postreview_tb)
     Toolbar toolbar;
@@ -102,26 +106,27 @@ public class PostReviewDialog extends BaseActivity {
         //toolbar.inflateMenu(R.menu.menu_review);
 
         establishmentId = getIntent().getExtras().getInt("establishment_id");
+        Log.i("GAAA", SessionManager.getInstance(getApplicationContext()).getCurrentSession().getId());
         userId = Integer.parseInt(SessionManager.getInstance(getApplicationContext()).getCurrentSession().getId());
 
         toolbar.setOnMenuItemClickListener(item -> {
-            if(!publishing){
+            if (!publishing) {
                 publishing = true;
                 boolean publish = true;
-                if(et_titulo.getText().toString().isEmpty()){
+                if (et_titulo.getText().toString().isEmpty()) {
                     et_titulo.setError("Debe ingresar un título");
                     publish = false;
                 }
-                if(et_descripcion.getText().toString().isEmpty()){
+                if (et_descripcion.getText().toString().isEmpty()) {
                     et_descripcion.setError("Debe ingresar una descripción");
                     publish = false;
                 }
-                if(publish){
+                if (publish) {
                     et_titulo.setEnabled(false);
                     et_descripcion.setEnabled(false);
                     button.setEnabled(false);
 
-                    reviewsModel.PostEstablishmentReview(et_descripcion.getText().toString(), establishmentId, et_titulo.getText().toString(), userId, SessionManager.getInstance(getApplicationContext()).getCurrentSession().getJwt(),imagesEncodedList
+                    reviewsModel.PostEstablishmentReview(et_descripcion.getText().toString(), establishmentId, et_titulo.getText().toString(), userId, SessionManager.getInstance(getApplicationContext()).getCurrentSession().getJwt(), imagesEncodedList
                             , new ReviewsModel.CallBack() {
                                 @Override
                                 public void OnResult() {
@@ -134,7 +139,7 @@ public class PostReviewDialog extends BaseActivity {
                                     Toast.makeText(getApplicationContext(), "No se pudo publicar su reseña", Toast.LENGTH_SHORT).show();
                                 }
                             });
-                }else{
+                } else {
                     publishing = false;
                     et_titulo.setEnabled(true);
                     et_descripcion.setEnabled(true);
@@ -149,11 +154,13 @@ public class PostReviewDialog extends BaseActivity {
             intent.setType("image/*");
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent,"Select Picture"), RESULT_LOAD_IMAGE);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), RESULT_LOAD_IMAGE);
         });
 
     }
+
     List<Bitmap> imagesEncodedList;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
@@ -162,17 +169,21 @@ public class PostReviewDialog extends BaseActivity {
                     && null != data) {
                 // Get the Image from data
 
-                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
                 imagesEncodedList = new ArrayList<>();
-                if(data.getData()!=null){
+                if (data.getData() != null) {
 
-                    imagesEncodedList.add(MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData()));
+                    Bitmap image = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                    image = BitmapUtils.getScaledDownBitmap(image, 800, true);
+                    imagesEncodedList.add(image);
 
                 } else {
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
                         for (int i = 0; i < mClipData.getItemCount(); i++) {
-                            imagesEncodedList.add(MediaStore.Images.Media.getBitmap(getContentResolver(), mClipData.getItemAt(i).getUri()));
+                            Bitmap image = MediaStore.Images.Media.getBitmap(getContentResolver(), mClipData.getItemAt(i).getUri());
+                            image = BitmapUtils.getScaledDownBitmap(image, 800, true);
+                            imagesEncodedList.add(image);
                         }
                     }
                 }
@@ -191,11 +202,11 @@ public class PostReviewDialog extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void setImages(List<Bitmap> bitmaps){
+    private void setImages(List<Bitmap> bitmaps) {
 
-        if(bitmaps.size() > 6){
+        if (bitmaps.size() > 6) {
             Toast.makeText(this, "Solo se tomará en cuenta las 6 primeras imágenes.", Toast.LENGTH_SHORT).show();
-            bitmaps = bitmaps.subList(0,6);
+            bitmaps = bitmaps.subList(0, 6);
         }
 
         for (ImageView imageView : imagesPreview) {
